@@ -1,5 +1,3 @@
-
-
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
@@ -14,9 +12,23 @@ buildscript {
 }
 
 allprojects {
+    def token = System.getenv('SDK_REGISTRY_TOKEN') ?: project.properties['MAPBOX_SECRET_TOKEN']
+    if (token == null || token.empty) {
+        throw new Exception("Please provide MAPBOX_SECRET_TOKEN in your gradle.properties")
+    }
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username = "mapbox"
+                password = token
+            }
+        }
     }
 }
 

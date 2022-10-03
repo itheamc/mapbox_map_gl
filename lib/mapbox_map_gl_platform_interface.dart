@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'mapbox_map_gl_method_channel.dart';
@@ -27,5 +27,5 @@ abstract class MapboxMapGlPlatform extends PlatformInterface {
 
   Widget buildView(
       {required Map<String, dynamic> creationParams,
-        void Function(int id)? onPlatformViewCreated});
+        void Function(int id)? onPlatformViewCreated, bool hyperComposition = false});
 }

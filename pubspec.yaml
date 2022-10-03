@@ -1,7 +1,7 @@
 name: mapbox_map_gl
 description: A flutter plugin for mapbox map.
 version: 0.0.1
-homepage:
+homepage: https://github.com/itheamc/mapbox_map_gl
 
 environment:
   sdk: '>=2.18.2 <3.0.0'

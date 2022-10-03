@@ -22,20 +22,19 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // final Map<String, dynamic> creationParams = <String, dynamic>{
-    //   'accessToken':
-    //   ">pk.eyJ1IjoiaXRoZWFtYyIsImEiOiJjanE3aGV6Mm4yaXN0NDltbDF2Y3J0dHVyIn0.rTic8L-foDQnigcr8-dOEQ",
-    // };
-    //
-    // return _mapboxMapGlPlugin.buildView(
-    //   creationParams: creationParams,
-    //   onPlatformViewCreated: (id) {
-    //     print("[PLATFORM CREATED] -----> $id");
-    //   },
-    // );
-    
-    return Center(
-      child: Text("Hello"),
+    final Map<String, dynamic> creationParams = <String, dynamic>{};
+
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: _mapboxMapGlPlugin.buildView(
+            creationParams: creationParams,
+            onPlatformViewCreated: (id) {
+              print("[PLATFORM CREATED] -----> $id");
+            },
+          ),
+        ),
+      ),
     );
   }
 }

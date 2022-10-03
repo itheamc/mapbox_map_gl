@@ -8,11 +8,12 @@ import io.flutter.plugin.platform.PlatformViewFactory
 
 internal class MapboxMapNativeViewFactory(
     private val messenger: BinaryMessenger,
-    private val lifecycleProvider: MapboxMapGlPlugin.MapboxLifecycleProvider
+    private val lifecycleOwnerProvider: MapboxMapGlPlugin.MapboxLLifecycleOwnerProvider
 ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         val creationParams = args as Map<*, *>?
-        return MapboxMapNativeView(context, viewId, creationParams, messenger, lifecycleProvider)
+        return MapboxMapNativeView(context, viewId, creationParams, messenger, lifecycleOwnerProvider)
     }
+
 }
