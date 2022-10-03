@@ -14,17 +14,18 @@ internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
     private var lifecycleOwner: LifecycleOwner? = null
 
     companion object {
-        const val VIEW_TYPE = "com.itheamc.mapbox_map_gl"
+        const val VIEW_TYPE_ID = "com.itheamc.mapbox_map_gl/view_type_id"
+        const val METHOD_CHANNEL_NAME = "com.itheamc.mapbox_map_gl/method_channel"
     }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, VIEW_TYPE)
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, METHOD_CHANNEL_NAME)
         channel.setMethodCallHandler(MapboxMapGlMethodCallHandler())
 
         flutterPluginBinding
             .platformViewRegistry
             .registerViewFactory(
-                VIEW_TYPE,
+                VIEW_TYPE_ID,
                 MapboxMapGlNativeViewFactory(
                     messenger = flutterPluginBinding.binaryMessenger,
                     lifecycleOwnerProvider = MapboxLLifecycleOwnerProvider(),

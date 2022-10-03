@@ -1,9 +1,8 @@
-package com.itheamc.mapbox_map_gl.utility
+package com.itheamc.mapbox_map_gl.utils
 
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
-import kotlinx.coroutines.delay
 
 class CameraPosition internal constructor(
     val center: Point,

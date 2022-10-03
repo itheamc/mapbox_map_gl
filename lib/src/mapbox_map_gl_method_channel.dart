@@ -3,24 +3,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:mapbox_map_gl/src/mapbox_map_gl_view_interface.dart';
 
 import 'mapbox_map_gl_platform_interface.dart';
 
 /// An implementation of [MapboxMapGlPlatform] that uses method channels.
 class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
-  /// Name/ ViewType
-  static const _viewType = "com.itheamc.mapbox_map_gl";
+  /// View Type Id and Method Channel Name
+  static const _viewType = "com.itheamc.mapbox_map_gl/view_type_id";
+  static const _channelName = "com.itheamc.mapbox_map_gl/method_channel";
 
   /// The method channel used to interact with the native platform.
-  @visibleForTesting
-  final methodChannel = const MethodChannel(_viewType);
-
-  // @override
-  // Future<String?> getPlatformVersion() async {
-  //   final version =
-  //       await methodChannel.invokeMethod<String>('getPlatformVersion');
-  //   return version;
-  // }
+  final methodChannel = const MethodChannel(_channelName);
 
   @override
   Widget buildMapView({
@@ -62,5 +56,12 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
       creationParamsCodec: const StandardMessageCodec(),
       onPlatformViewCreated: onPlatformViewCreated,
     );
+  }
+
+  /// Method to attached method call handler to handle the method call
+  /// triggered from the native channel
+  @override
+  void attachedMethodCallHandler(MethodCallHandler callHandler) {
+    methodChannel.setMethodCallHandler(callHandler);
   }
 }
