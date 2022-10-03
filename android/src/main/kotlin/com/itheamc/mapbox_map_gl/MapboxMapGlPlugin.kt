@@ -1,6 +1,5 @@
 package com.itheamc.mapbox_map_gl
 
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -15,18 +14,18 @@ internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
     private var lifecycleOwner: LifecycleOwner? = null
 
     companion object {
-        const val VIEW_TYPE = "mapbox_map_gl"
+        const val VIEW_TYPE = "com.itheamc.mapbox_map_gl"
     }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, VIEW_TYPE)
-        channel.setMethodCallHandler(MapboxMethodCallHandler())
+        channel.setMethodCallHandler(MapboxMapGlMethodCallHandler())
 
         flutterPluginBinding
             .platformViewRegistry
             .registerViewFactory(
                 VIEW_TYPE,
-                MapboxMapNativeViewFactory(
+                MapboxMapGlNativeViewFactory(
                     messenger = flutterPluginBinding.binaryMessenger,
                     lifecycleOwnerProvider = MapboxLLifecycleOwnerProvider(),
                 )
@@ -38,11 +37,12 @@ internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
     }
 
     /**
-     * Overrided from ActivityAware
+     * Override from ActivityAware
      */
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        val reference = binding.lifecycle as HiddenLifecycleReference
         lifecycleOwner = LifecycleOwner {
-            FlutterLifecycleAdapter.getActivityLifecycle(binding)
+            reference.lifecycle
         }
     }
 
@@ -58,18 +58,11 @@ internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
         lifecycleOwner = null
     }
 
+    /**
+     * Inner Provider class for providing lifecycle owner for map view
+     */
     inner class MapboxLLifecycleOwnerProvider {
         val lifecycleOwner: LifecycleOwner?
             get() = this@MapboxMapGlPlugin.lifecycleOwner
-    }
-
-
-    object FlutterLifecycleAdapter {
-        fun getActivityLifecycle(
-            activityPluginBinding: ActivityPluginBinding
-        ): Lifecycle {
-            val reference = activityPluginBinding.lifecycle as HiddenLifecycleReference
-            return reference.lifecycle
-        }
     }
 }

@@ -10,7 +10,7 @@ import 'mapbox_map_gl_platform_interface.dart';
 class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('mapbox_map_gl');
+  final methodChannel = const MethodChannel('com.itheamc.mapbox_map_gl');
 
   // @override
   // Future<String?> getPlatformVersion() async {
@@ -24,7 +24,7 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
       {required Map<String, dynamic> creationParams,
       void Function(int id)? onPlatformViewCreated,
       bool hyperComposition = false}) {
-    const viewType = "mapbox_map_gl";
+    const viewType = "com.itheamc.mapbox_map_gl";
 
     if (hyperComposition) {
       return PlatformViewLink(

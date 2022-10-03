@@ -14,9 +14,9 @@ import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
 
-private const val TAG = "MapboxMapNativeView"
+private const val TAG = "MapboxMapGlNativeView"
 
-internal class MapboxMapNativeView(
+internal class MapboxMapGlNativeView(
     private val context: Context,
     private val id: Int,
     private val creationParams: Map<*, *>?,
@@ -25,9 +25,15 @@ internal class MapboxMapNativeView(
 ) : PlatformView, DefaultLifecycleObserver {
 
 
+    /**
+     * Map View
+     */
     private var mapView: MapView?
 
 
+    /**
+     * Initializing the views and adding lifecycle observer
+     */
     init {
         Log.d(TAG, ": $creationParams")
 
@@ -75,11 +81,17 @@ internal class MapboxMapNativeView(
     }
 
 
+    /**
+     * Method to get the view
+     */
     override fun getView(): View? {
         return mapView
     }
 
 
+    /**
+     * On Dispose of Platform View
+     */
     override fun dispose() {
         lifecycleOwnerProvider.lifecycleOwner?.lifecycle?.removeObserver(this)
     }
