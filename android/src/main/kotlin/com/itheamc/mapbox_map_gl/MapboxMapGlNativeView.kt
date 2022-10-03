@@ -5,10 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ViewTreeLifecycleOwner
-import com.mapbox.geojson.Point
+import com.itheamc.mapbox_map_gl.utility.CameraPosition
 import com.mapbox.maps.*
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
-import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
 import io.flutter.plugin.common.BinaryMessenger
@@ -62,17 +61,25 @@ internal class MapboxMapGlNativeView(
                 }
             )
         }.also {
-            it.getMapboxMap().flyTo(
-                cameraOptions = CameraOptions.Builder()
-                    .center(Point.fromLngLat(82.518042, 27.828390))
-                    .zoom(13.0)
-                    .build(),
-                animationOptions = MapAnimationOptions
-                    .mapAnimationOptions {
-                        startDelay(300L)
-                        duration(1500L)
-                    }
-            )
+            val hasInitialCameraPosition =
+                creationParams?.containsKey("initialCameraPosition") ?: false
+            val initialCameraPosition = creationParams?.get("initialCameraPosition")
+
+            if (hasInitialCameraPosition && initialCameraPosition != null) {
+                val cameraPosition: CameraPosition =
+                    CameraPosition.fromMap(initialCameraPosition as Map<*, *>)
+
+                it.getMapboxMap().flyTo(
+                    cameraOptions = CameraOptions.Builder()
+                        .center(cameraPosition.center)
+                        .zoom(cameraPosition.zoom)
+                        .bearing(cameraPosition.bearing)
+                        .pitch(cameraPosition.pitch)
+                        .anchor(cameraPosition.anchor)
+                        .build(),
+                    animationOptions = cameraPosition.animationOptions
+                )
+            }
         }
 
         mapView?.let {

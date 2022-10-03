@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:mapbox_map_gl/src/mapbox_map_gl_view_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'mapbox_map_gl_method_channel.dart';
 
-abstract class MapboxMapGlPlatform extends PlatformInterface {
+abstract class MapboxMapGlPlatform extends PlatformInterface
+    with MapboxMapGlViewInterface {
   /// Constructs a MapboxMapGlPlatform.
   MapboxMapGlPlatform() : super(token: _token);
 
@@ -23,9 +24,4 @@ abstract class MapboxMapGlPlatform extends PlatformInterface {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
-
-
-  Widget buildView(
-      {required Map<String, dynamic> creationParams,
-        void Function(int id)? onPlatformViewCreated, bool hyperComposition = false});
 }

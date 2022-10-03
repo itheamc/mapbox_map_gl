@@ -13,8 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _mapboxMapGlPlugin = MapboxMapGl();
-
   @override
   void initState() {
     super.initState();
@@ -22,19 +20,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> creationParams = <String, dynamic>{};
-
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: _mapboxMapGlPlugin.buildView(
-            creationParams: creationParams,
-            onPlatformViewCreated: (id) {
-              print("[PLATFORM CREATED] -----> $id");
-            },
-          ),
-        ),
-      ),
+          body: MapboxMap(
+        initialCameraPosition: CameraPosition(
+            center: LatLng(27.837785, 82.538961),
+            zoom: 15.0,
+            // anchor: ScreenCoordinate(120.0, 200.0),
+            animationOptions: AnimationOptions.mapAnimationOptions(
+                startDelay: 300, duration: const Duration(milliseconds: 750))),
+      )),
     );
   }
 }

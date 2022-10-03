@@ -8,9 +8,12 @@ import 'mapbox_map_gl_platform_interface.dart';
 
 /// An implementation of [MapboxMapGlPlatform] that uses method channels.
 class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
+  /// Name/ ViewType
+  static const _viewType = "com.itheamc.mapbox_map_gl";
+
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('com.itheamc.mapbox_map_gl');
+  final methodChannel = const MethodChannel(_viewType);
 
   // @override
   // Future<String?> getPlatformVersion() async {
@@ -20,15 +23,14 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
   // }
 
   @override
-  Widget buildView(
-      {required Map<String, dynamic> creationParams,
-      void Function(int id)? onPlatformViewCreated,
-      bool hyperComposition = false}) {
-    const viewType = "com.itheamc.mapbox_map_gl";
-
+  Widget buildMapView({
+    required Map<String, dynamic> creationParams,
+    void Function(int id)? onPlatformViewCreated,
+    bool hyperComposition = false,
+  }) {
     if (hyperComposition) {
       return PlatformViewLink(
-        viewType: viewType,
+        viewType: _viewType,
         surfaceFactory: (context, controller) {
           return AndroidViewSurface(
             controller: controller as AndroidViewController,
@@ -39,7 +41,7 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
         onCreatePlatformView: (params) {
           return PlatformViewsService.initSurfaceAndroidView(
             id: params.id,
-            viewType: viewType,
+            viewType: _viewType,
             layoutDirection: TextDirection.ltr,
             creationParams: creationParams,
             creationParamsCodec: const StandardMessageCodec(),
@@ -54,7 +56,7 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
     }
 
     return AndroidView(
-      viewType: viewType,
+      viewType: _viewType,
       layoutDirection: TextDirection.ltr,
       creationParams: creationParams,
       creationParamsCodec: const StandardMessageCodec(),
