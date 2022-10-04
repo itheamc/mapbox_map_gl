@@ -12,7 +12,7 @@ Currently this plugin only support android platform.
 You have to include your mapbox map secret token and access token in order to use the mapbox map.
 
 #### Mapbox Map Secret Token
-Include your Mapbox Map Secret token to your gradle.properties.
+Include your Mapbox Map Secret token to your ```gradle.properties```.
 You can get your Mapbox Map secret token from your mapbox account page.
 It starts with ```sk.```
 
@@ -20,7 +20,7 @@ It starts with ```sk.```
     MAPBOX_SECRET_TOKEN=<your-mapbox-map-secret-token>
 ```
 
-Also include this line of code in your project level build.gradle file
+Also include this line of code in your project level ```build.gradle``` file
 ```
 allprojects {
     repositories {
@@ -43,7 +43,7 @@ allprojects {
 ```
 
 #### Mapbox Map Access Token
-Include your Mapbox Map access token to string.xml file of the app/src/main/res/values/ directory of 
+Include your Mapbox Map access token to ```string.xml``` file of the ```app/src/main/res/values/``` directory of 
 android section
 It starts with ```pk.```
 
