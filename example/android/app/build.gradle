@@ -60,6 +60,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'com.itheamc.mapbox_map_gl_example'
 }
 
 flutter {
