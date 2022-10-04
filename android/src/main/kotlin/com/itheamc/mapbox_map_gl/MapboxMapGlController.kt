@@ -356,9 +356,9 @@ class MapboxMapGlController(
                 callback = { expectedValue ->
                     expectedValue.onValue { features ->
 
-                        val coordinate =
+                        val latLng =
                             mapOf("latitude" to it.latitude(), "longitude" to it.longitude())
-                        val point = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
+                        val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
 
                         if (features.isNotEmpty()) {
 
@@ -367,9 +367,8 @@ class MapboxMapGlController(
 
                             val arguments: Map<String, Any?> =
                                 mapOf(
-                                    "id" to feature.id(),
-                                    "coordinate" to coordinate,
-                                    "point" to point,
+                                    "latLng" to latLng,
+                                    "screen_coordinate" to scrCords,
                                     "feature" to feature.toJson(),
                                     "source" to source
                                 )
@@ -378,8 +377,8 @@ class MapboxMapGlController(
                         } else {
                             val arguments: Map<String, Any?> =
                                 mapOf(
-                                    "coordinate" to coordinate,
-                                    "point" to point,
+                                    "latLng" to latLng,
+                                    "screen_coordinate" to scrCords,
                                 )
                             methodChannel.invokeMethod(Methods.onMapClick, arguments)
                         }
@@ -406,9 +405,9 @@ class MapboxMapGlController(
                 callback = { expectedValue ->
                     expectedValue.onValue { features ->
 
-                        val coordinate =
+                        val latLng =
                             mapOf("latitude" to it.latitude(), "longitude" to it.longitude())
-                        val point = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
+                        val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
 
                         if (features.isNotEmpty()) {
                             val source = features[0].source
@@ -416,9 +415,8 @@ class MapboxMapGlController(
 
                             val arguments: Map<String, Any?> =
                                 mapOf(
-                                    "id" to feature.id(),
-                                    "coordinate" to coordinate,
-                                    "point" to point,
+                                    "latLng" to latLng,
+                                    "screen_coordinate" to scrCords,
                                     "feature" to feature.toJson(),
                                     "source" to source
                                 )
@@ -427,8 +425,8 @@ class MapboxMapGlController(
                         } else {
                             val arguments: Map<String, Any?> =
                                 mapOf(
-                                    "coordinate" to coordinate,
-                                    "point" to point,
+                                    "latLng" to latLng,
+                                    "screen_coordinate" to scrCords,
                                 )
                             methodChannel.invokeMethod(Methods.onMapLongClick, arguments)
                         }
