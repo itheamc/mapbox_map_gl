@@ -21,7 +21,6 @@ typedef OnStyleLoaded = VoidCallback;
 /// [String] - Error message
 typedef OnStyleLoadError = void Function(String);
 
-
 /// Method to handle onMapClick callback
 /// [LatLng] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
