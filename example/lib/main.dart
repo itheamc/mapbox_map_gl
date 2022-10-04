@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
               duration: const Duration(milliseconds: 750),
             ),
           ),
-          onMapCreated: () {
+          onMapCreated: (controller) {
             if (kDebugMode) {
               print("[Method Call -> onMapCreated] ---> From _MyAppState");
             }
@@ -49,24 +49,24 @@ class _MyAppState extends State<MyApp> {
                   "[Method Call -> onStyleLoadError] ---> From _MyAppState -> $err");
             }
           },
-          onMapClick: (args) {
+          onMapClick: (latLng, screenCoordinate) {
             if (kDebugMode) {
-              print("[Method Call -> onMapClick] ---> $args");
+              print("[Method Call -> onMapClick] ---> ${latLng.toJson()}, ${screenCoordinate.toJson()}");
             }
           },
-          onMapLongClick: (args) {
+          onMapLongClick: (latLng, screenCoordinate) {
             if (kDebugMode) {
-              print("[Method Call -> onMapLongClick] ---> $args");
+              print("[Method Call -> onMapLongClick] ---> ${latLng.toJson()}, ${screenCoordinate.toJson()}");
             }
           },
-          onFeatureClick: (args) {
+          onFeatureClick: (latLng, screenCoordinate, feature, source) {
             if (kDebugMode) {
-              print("[Method Call -> onFeatureClick] ---> $args");
+              print("[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
             }
           },
-          onFeatureLongClick: (args) {
+          onFeatureLongClick: (latLng, screenCoordinate, feature, source) {
             if (kDebugMode) {
-              print("[Method Call -> onFeatureLongClick] ---> $args");
+              print("[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
             }
           },
         ),

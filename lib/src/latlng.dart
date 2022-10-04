@@ -10,4 +10,8 @@ class LatLng {
       "longitude": longitude,
     };
   }
+
+  factory LatLng.from(dynamic json) {
+    return LatLng(json['latitude'], json['longitude']);
+  }
 }

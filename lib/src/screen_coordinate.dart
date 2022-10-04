@@ -10,4 +10,8 @@ class ScreenCoordinate {
       "y": y,
     };
   }
+
+  factory ScreenCoordinate.from(dynamic json) {
+    return ScreenCoordinate(json['x'], json['y']);
+  }
 }
