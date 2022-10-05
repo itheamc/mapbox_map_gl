@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
@@ -136,12 +135,10 @@ class _MapboxMapState extends State<MapboxMap> {
         widget.onFeatureLongClick?.call(latLng, coordinate, feature, source);
         break;
       default:
-        if (kDebugMode) {
-          print("[METHOD INVOKED]-----------> ${call.method}");
-        }
     }
   }
 
+  /// Build method too render the Mapbox map
   @override
   Widget build(BuildContext context) {
     final creationParams = <String, dynamic>{};
