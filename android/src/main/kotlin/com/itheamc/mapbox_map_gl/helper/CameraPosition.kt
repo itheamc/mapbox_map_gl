@@ -1,4 +1,4 @@
-package com.itheamc.mapbox_map_gl.utils
+package com.itheamc.mapbox_map_gl.helper
 
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ScreenCoordinate
