@@ -1,4 +1,7 @@
 import 'package:mapbox_map_gl/src/layers/circle_layer.dart';
+import 'package:mapbox_map_gl/src/layers/fill_layer.dart';
+import 'package:mapbox_map_gl/src/layers/line_layer.dart';
+import 'package:mapbox_map_gl/src/layers/symbol_layer.dart';
 import 'package:mapbox_map_gl/src/utils/camera_position.dart';
 
 abstract class MapboxMapController {
@@ -27,15 +30,14 @@ abstract class MapboxMapController {
   Future<bool> isLayerExist(String layerId, LayerType layerType);
 
   /// Method to add geo json source
-  Future<void> addGeoJsonSource({required String sourceId, required String layerId, CircleLayer? circleLayer});
+  Future<void> addGeoJsonSource({
+    required String sourceId,
+    required String layerId,
+    CircleLayer? circleLayer,
+    LineLayer? lineLayer,
+    SymbolLayer? symbolLayer,
+    FillLayer? fillLayer,
+  });
 }
 
-
-enum LayerType {
-  fill,
-  line,
-  circle,
-  symbol,
-  vector,
-  raster
-}
+enum LayerType { fill, line, circle, symbol, vector, raster }

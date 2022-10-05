@@ -1,5 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/src/layers/circle_layer.dart';
+import 'package:mapbox_map_gl/src/layers/fill_layer.dart';
+import 'package:mapbox_map_gl/src/layers/line_layer.dart';
+import 'package:mapbox_map_gl/src/layers/symbol_layer.dart';
 import 'package:mapbox_map_gl/src/utils/camera_position.dart';
 import 'package:mapbox_map_gl/src/utils/methods.dart';
 
@@ -19,7 +22,8 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
   @override
   Future<void> animateCameraPosition(CameraPosition cameraPosition) async {
-    await channel.invokeMethod(Methods.animateCameraPosition, cameraPosition.toJson());
+    await channel.invokeMethod(
+        Methods.animateCameraPosition, cameraPosition.toJson());
   }
 
   @override
@@ -42,19 +46,23 @@ class MapboxMapControllerImpl extends MapboxMapController {
   }
 
   @override
-  Future<void> addGeoJsonSource({required String sourceId, required String layerId, CircleLayer? circleLayer}) async {
-
+  Future<void> addGeoJsonSource({
+    required String sourceId,
+    required String layerId,
+    CircleLayer? circleLayer,
+    LineLayer? lineLayer,
+    SymbolLayer? symbolLayer,
+    FillLayer? fillLayer,
+  }) async {
     final args = <String, dynamic>{};
 
     args['sourceId'] = sourceId;
     args['layerId'] = layerId;
-    args['circleLayer'] = circleLayer?.toJson();
-    args['lineLayer'] = null;
-    args['fillLayer'] = null;
-    args['symbolLayer'] = null;
+    args['circleLayer'] = circleLayer?.toArgs();
+    args['lineLayer'] = lineLayer?.toArgs();
+    args['fillLayer'] = fillLayer?.toArgs();
+    args['symbolLayer'] = symbolLayer?.toArgs();
 
     await channel.invokeMethod("addGeoJsonSource", args);
   }
-
-
 }
