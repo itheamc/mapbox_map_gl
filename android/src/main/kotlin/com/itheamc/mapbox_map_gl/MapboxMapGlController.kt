@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
-import com.itheamc.mapbox_map_gl.utils.LayerUtils
+import com.itheamc.mapbox_map_gl.utils.CircleLayerUtils
 import com.itheamc.mapbox_map_gl.utils.Methods
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
@@ -625,7 +625,7 @@ class MapboxMapGlController(
                 addGeoJsonSource(
                     sourceId = sourceId as String,
                     layerId = layerId as String,
-                    circleLayer = if (circleLayer != null) LayerUtils.processCircleLayerArguments(
+                    circleLayer = if (circleLayer != null) CircleLayerUtils.processLayerArguments(
                         (circleLayer as Map<*, *>)["options"] as Map<*, *>
                     ) else null
                 ) {
