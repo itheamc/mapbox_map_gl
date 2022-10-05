@@ -1,3 +1,4 @@
+import 'package:flutter/src/services/platform_channel.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mapbox_map_gl/src/mapbox_map_gl_method_channel.dart';
@@ -21,6 +22,10 @@ class MockMapboxMapGlPlatform
   void attachedMethodCallHandler(MethodCallHandler callHandler) {
     // TODO: implement attachedMethodCallHandler
   }
+
+  @override
+  // TODO: implement channel
+  MethodChannel get channel => throw UnimplementedError();
 }
 
 void main() {

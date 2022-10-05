@@ -14,7 +14,7 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
   static const _channelName = "com.itheamc.mapbox_map_gl/method_channel";
 
   /// The method channel used to interact with the native platform.
-  final methodChannel = const MethodChannel(_channelName);
+  final _methodChannel = const MethodChannel(_channelName);
 
   @override
   Widget buildMapView({
@@ -62,6 +62,10 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
   /// triggered from the native channel
   @override
   void attachedMethodCallHandler(MethodCallHandler callHandler) {
-    methodChannel.setMethodCallHandler(callHandler);
+    _methodChannel.setMethodCallHandler(callHandler);
   }
+
+  /// Getter for method channel
+  @override
+  MethodChannel get channel => _methodChannel;
 }

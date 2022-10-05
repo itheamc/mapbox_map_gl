@@ -1,5 +1,5 @@
-import 'package:mapbox_map_gl/src/animation_options.dart';
-import 'package:mapbox_map_gl/src/latlng.dart';
+import 'package:mapbox_map_gl/src/utils/animation_options.dart';
+import 'package:mapbox_map_gl/src/utils/latlng.dart';
 import 'package:mapbox_map_gl/src/screen_coordinate.dart';
 
 class CameraPosition {

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-
-typedef MethodCallHandler = Future<dynamic> Function (MethodCall call);
+typedef MethodCallHandler = Future<dynamic> Function(MethodCall call);
 
 mixin MapboxMapGlViewInterface {
   Widget buildMapView({
@@ -13,4 +12,7 @@ mixin MapboxMapGlViewInterface {
 
   /// Method to set call handler to the method channel
   void attachedMethodCallHandler(MethodCallHandler callHandler);
+
+  /// Method to get the method channel
+  MethodChannel get channel;
 }

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
-import 'package:mapbox_map_gl/src/feature.dart';
-import 'package:mapbox_map_gl/src/mapbox_map_controller.dart';
-import 'package:mapbox_map_gl/src/methods.dart';
+import 'package:mapbox_map_gl/src/utils/feature.dart';
+import 'package:mapbox_map_gl/src/mapbox_map_controller_impl.dart';
+import 'package:mapbox_map_gl/src/utils/methods.dart';
 
 import 'mapbox_map_gl_platform_interface.dart';
 
@@ -80,13 +80,17 @@ class MapboxMap extends StatefulWidget {
 }
 
 class _MapboxMapState extends State<MapboxMap> {
+  /// MapboxMapGlPlatform Instance
+  late MapboxMapGlPlatform _glPlatform;
+
   /// Attaching the method call handler to the Channel method
   /// to handle the method call triggered through the native channel
   @override
   void initState() {
     super.initState();
 
-    MapboxMapGlPlatform.instance.attachedMethodCallHandler(_methodCallHandler);
+    _glPlatform = MapboxMapGlPlatform.instance;
+    _glPlatform.attachedMethodCallHandler(_methodCallHandler);
   }
 
   /// Method to handle the method call
@@ -95,7 +99,7 @@ class _MapboxMapState extends State<MapboxMap> {
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     switch (call.method) {
       case Methods.onMapCreated:
-        widget.onMapCreated?.call(MapboxMapController());
+        widget.onMapCreated?.call(MapboxMapControllerImpl(_glPlatform));
         break;
       case Methods.onStyleLoaded:
         widget.onStyleLoaded?.call();
