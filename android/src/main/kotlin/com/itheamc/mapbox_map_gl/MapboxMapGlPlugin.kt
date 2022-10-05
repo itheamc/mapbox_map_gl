@@ -20,7 +20,6 @@ internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, METHOD_CHANNEL_NAME)
-        channel.setMethodCallHandler(MapboxMapGlMethodCallHandler())
 
         flutterPluginBinding
             .platformViewRegistry

@@ -6,6 +6,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.scalebar.scalebar
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
@@ -43,6 +44,7 @@ internal class MapboxMapGlNativeView(
             )
         ).apply {
             scalebar.enabled = false
+            compass.enabled = false
             id = this@MapboxMapGlNativeView.id
         }.also {
             MapboxMapGlController(
