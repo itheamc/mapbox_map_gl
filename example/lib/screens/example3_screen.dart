@@ -39,7 +39,7 @@ class _Example3ScreenState extends State<Example3Screen> {
             ],
             circleColorTransition: StyleTransition.build(
               delay: 500,
-              duration: const Duration(milliseconds: 1000)
+              duration: const Duration(milliseconds: 1000),
             ),
             circleRadius: [
               'case',
