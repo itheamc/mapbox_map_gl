@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mapbox_map_gl/src/utils/style_transition.dart';
 
 class FillLayer {
@@ -10,6 +12,14 @@ class FillLayer {
     required this.sourceId,
     this.options,
   });
+
+  Map<String, dynamic> toArgs() {
+    return <String, dynamic>{
+      "layerId": layerId,
+      "sourceId": sourceId,
+      "options": (options ?? FillLayerOptions.defaultOptions).toArgs(),
+    };
+  }
 }
 
 /// FillLayerOptions class
@@ -104,6 +114,97 @@ class FillLayerOptions {
         duration: const Duration(milliseconds: 500),
       ),
     );
+  }
+
+  /// Method to proceeds the fill layer option for native
+  Map<String, dynamic> toArgs() {
+    final json = <String, dynamic>{};
+
+    if (fillColor != null) {
+      json['fillColor'] = fillColor is List ? jsonEncode(fillColor) : fillColor;
+    }
+
+    if (fillColorTransition != null) {
+      json['fillColorTransition'] = fillColorTransition?.toJson();
+    }
+
+    if (fillAntialias != null) {
+      json['fillAntialias'] =
+          fillAntialias is List ? jsonEncode(fillAntialias) : fillAntialias;
+    }
+
+    if (fillOpacity != null) {
+      json['fillOpacity'] =
+          fillOpacity is List ? jsonEncode(fillOpacity) : fillOpacity;
+    }
+
+    if (fillOpacityTransition != null) {
+      json['fillOpacityTransition'] = fillOpacityTransition?.toJson();
+    }
+
+    if (fillOutlineColor != null) {
+      json['fillOutlineColor'] = fillOutlineColor is List
+          ? jsonEncode(fillOutlineColor)
+          : fillOutlineColor;
+    }
+
+    if (fillOutlineColorTransition != null) {
+      json['fillOutlineColorTransition'] = fillOutlineColorTransition?.toJson();
+    }
+
+    if (fillPattern != null) {
+      json['fillPattern'] =
+          fillPattern is List ? jsonEncode(fillPattern) : fillPattern;
+    }
+
+    if (fillPatternTransition != null) {
+      json['fillPatternTransition'] = fillPatternTransition?.toJson();
+    }
+
+    if (fillSortKey != null) {
+      json['fillSortKey'] =
+          fillSortKey is List ? jsonEncode(fillSortKey) : fillSortKey;
+    }
+
+    if (fillTranslate != null) {
+      json['fillTranslate'] = fillTranslate is List<double>
+          ? fillTranslate
+          : jsonEncode(fillTranslate);
+    }
+
+    if (fillTranslateTransition != null) {
+      json['fillTranslateTransition.'] = fillTranslateTransition?.toJson();
+    }
+
+    if (fillTranslateAnchor != null) {
+      json['fillTranslateAnchor'] = fillTranslateAnchor is FillTranslateAnchor
+          ? (fillTranslateAnchor as FillTranslateAnchor).name
+          : fillTranslateAnchor is List
+              ? jsonEncode(fillTranslateAnchor)
+              : fillTranslateAnchor;
+    }
+
+    if (sourceLayer != null) {
+      json['sourceLayer'] = sourceLayer;
+    }
+
+    if (filter != null) {
+      json['filter'] = jsonEncode(filter);
+    }
+
+    if (maxZoom != null) {
+      json['maxZoom'] = maxZoom;
+    }
+
+    if (minZoom != null) {
+      json['minZoom'] = minZoom;
+    }
+
+    if (visibility != null) {
+      json['visibility'] = visibility;
+    }
+
+    return json;
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mapbox_map_gl/src/utils/style_transition.dart';
 
 class LineLayer {
@@ -10,6 +12,14 @@ class LineLayer {
     required this.sourceId,
     this.options,
   });
+
+  Map<String, dynamic> toArgs() {
+    return <String, dynamic>{
+      "layerId": layerId,
+      "sourceId": sourceId,
+      "options": (options ?? LineLayerOptions.defaultOptions).toArgs(),
+    };
+  }
 }
 
 /// LineLayerOptions class
@@ -177,6 +187,7 @@ class LineLayerOptions {
     this.visibility,
   });
 
+  /// Default Line Layer Options
   static LineLayerOptions get defaultOptions {
     return LineLayerOptions(
       lineWidth: 2.0,
@@ -184,6 +195,164 @@ class LineLayerOptions {
       lineCap: LineCap.round,
       lineJoin: LineJoin.round,
     );
+  }
+
+  /// Method to proceeds the line layer option for native
+  Map<String, dynamic> toArgs() {
+    final json = <String, dynamic>{};
+
+    if (lineWidth != null) {
+      json['lineWidth'] = lineWidth is List ? jsonEncode(lineWidth) : lineWidth;
+    }
+
+    if (lineWidthTransition != null) {
+      json['lineWidthTransition'] = lineWidthTransition?.toJson();
+    }
+
+    if (lineColor != null) {
+      json['lineColor'] = lineColor is List ? jsonEncode(lineColor) : lineColor;
+    }
+
+    if (lineColorTransition != null) {
+      json['lineColorTransition'] = lineColorTransition?.toJson();
+    }
+
+    if (lineBlur != null) {
+      json['lineBlur'] = lineBlur is List ? jsonEncode(lineBlur) : lineBlur;
+    }
+
+    if (lineBlurTransition != null) {
+      json['lineBlurTransition'] = lineBlurTransition?.toJson();
+    }
+
+    if (lineDashArray != null) {
+      json['lineDashArray'] = lineDashArray is List<double>
+          ? lineDashArray
+          : jsonEncode(lineDashArray);
+    }
+
+    if (lineDashArrayTransition != null) {
+      json['lineDashArrayTransition'] = lineDashArrayTransition?.toJson();
+    }
+
+    if (lineGapWidth != null) {
+      json['lineGapWidth'] =
+          lineGapWidth is List ? jsonEncode(lineGapWidth) : lineGapWidth;
+    }
+
+    if (lineGapWidthTransition != null) {
+      json['lineGapWidthTransition'] = lineGapWidthTransition?.toJson();
+    }
+
+    if (lineGradient != null && lineGradient is List) {
+      json['lineGradient'] = lineGradient;
+    }
+
+    if (lineMiterLimit != null) {
+      json['lineMiterLimit'] =
+          lineMiterLimit is List ? jsonEncode(lineMiterLimit) : lineMiterLimit;
+    }
+
+    if (lineOffset != null) {
+      json['lineOffset'] =
+          lineOffset is List ? jsonEncode(lineOffset) : lineOffset;
+    }
+
+    if (lineOffsetTransition != null) {
+      json['lineOffsetTransition'] = lineOffsetTransition?.toJson();
+    }
+
+    if (lineOpacity != null) {
+      json['lineOpacity'] =
+          lineOpacity is List ? jsonEncode(lineOpacity) : lineOpacity;
+    }
+
+    if (lineOpacityTransition != null) {
+      json['lineOpacityTransition'] = lineOpacityTransition?.toJson();
+    }
+
+    if (linePattern != null) {
+      json['linePattern'] =
+          linePattern is List ? jsonEncode(linePattern) : linePattern;
+    }
+
+    if (linePatternTransition != null) {
+      json['linePatternTransition'] = linePatternTransition?.toJson();
+    }
+
+    if (lineRoundLimit != null) {
+      json['lineRoundLimit'] =
+          lineRoundLimit is List ? jsonEncode(lineRoundLimit) : lineRoundLimit;
+    }
+
+    if (lineSortKey != null) {
+      json['lineSortKey'] =
+          lineSortKey is List ? jsonEncode(lineSortKey) : lineSortKey;
+    }
+
+    if (lineTranslate != null) {
+      json['lineTranslate'] = lineTranslate is List<double>
+          ? lineTranslate
+          : jsonEncode(lineTranslate);
+    }
+
+    if (lineTranslateTransition != null) {
+      json['lineTranslateTransition.'] = lineTranslateTransition?.toJson();
+    }
+
+    if (lineTranslateAnchor != null &&
+        (lineTranslateAnchor is LineTranslateAnchor ||
+            lineTranslateAnchor is List)) {
+      json['lineTranslateAnchor'] = lineTranslateAnchor is LineTranslateAnchor
+          ? (lineTranslateAnchor as LineTranslateAnchor).name
+          : lineTranslateAnchor is List
+              ? jsonEncode(lineTranslateAnchor)
+              : lineTranslateAnchor;
+    }
+
+    if (lineTrimOffset != null) {
+      json['lineTrimOffset'] = lineTrimOffset is List<double>
+          ? lineTrimOffset
+          : jsonEncode(lineTrimOffset);
+    }
+
+    if (lineCap != null && (lineCap is LineCap || lineCap is List)) {
+      json['lineCap'] = lineCap is LineCap
+          ? (lineCap as LineCap).name
+          : lineCap is List
+              ? jsonEncode(lineCap)
+              : lineCap;
+    }
+
+    if (lineJoin != null && (lineJoin is LineJoin || lineJoin is List)) {
+      json['lineCap'] = lineJoin is LineJoin
+          ? (lineJoin as LineJoin).name
+          : lineJoin is List
+              ? jsonEncode(lineJoin)
+              : lineJoin;
+    }
+
+    if (sourceLayer != null) {
+      json['sourceLayer'] = sourceLayer;
+    }
+
+    if (filter != null) {
+      json['filter'] = jsonEncode(filter);
+    }
+
+    if (maxZoom != null) {
+      json['maxZoom'] = maxZoom;
+    }
+
+    if (minZoom != null) {
+      json['minZoom'] = minZoom;
+    }
+
+    if (visibility != null) {
+      json['visibility'] = visibility;
+    }
+
+    return json;
   }
 }
 
