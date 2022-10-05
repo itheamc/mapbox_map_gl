@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
-import 'package:mapbox_map_gl/src/utils/feature.dart';
 import 'package:mapbox_map_gl/src/mapbox_map_controller_impl.dart';
-import 'package:mapbox_map_gl/src/utils/methods.dart';
-
+import 'helper/feature.dart';
+import 'helper/methods.dart';
 import 'mapbox_map_gl_platform_interface.dart';
 
 /// Method to handle onMapCreated callback
@@ -53,14 +52,44 @@ typedef OnFeatureLongClick = void Function(
     LatLng, ScreenCoordinate, Feature, String?);
 
 class MapboxMap extends StatefulWidget {
+  /// [initialCameraPosition] An initial camera position to animate the camera
+  /// whenever map is loaded
   final CameraPosition? initialCameraPosition;
+
+  /// [onMapCreated] A callback that will be triggered whenever map is
+  /// fully loaded/created
   final OnMapCreated? onMapCreated;
+
+  /// [onStyleLoaded] A callback that will be triggered whenever style is loaded
   final OnStyleLoaded? onStyleLoaded;
+
+  /// [onStyleLoadError] A callback that will be triggered if error occurred
+  /// while loading the style
   final OnStyleLoadError? onStyleLoadError;
+
+  /// [onMapClick] A callback that will be triggered whenever user click
+  /// anywhere on the map
   final OnMapClick? onMapClick;
+
+  /// [onMapLongClick] A callback that will be triggered whenever user long
+  /// click anywhere on the map
   final OnMapLongClick? onMapLongClick;
+
+  /// [onFeatureClick] A callback that will be triggered whenever user click
+  /// on the feature i.e. circle, fill, symbol, line etc.
   final OnFeatureClick? onFeatureClick;
+
+  /// [onFeatureLongClick] A callback that will be triggered whenever user long
+  /// click on the feature i.e. circle, fill, symbol, line etc.
   final OnFeatureLongClick? onFeatureLongClick;
+
+  /// [hyperComposition] Hybrid composition appends the native android.view.View
+  /// to the view hierarchy. Therefore, keyboard handling, and accessibility
+  /// work out of the box. Prior to Android 10, this mode might significantly
+  /// reduce the frame throughput (FPS) of the Flutter UI.
+  /// See https://docs.flutter.dev/development/platform-integration/android/platform-views#performance
+  /// for more info.
+  final bool hyperComposition;
 
   const MapboxMap({
     Key? key,
@@ -72,6 +101,7 @@ class MapboxMap extends StatefulWidget {
     this.onMapLongClick,
     this.onFeatureClick,
     this.onFeatureLongClick,
+    this.hyperComposition = false,
   }) : super(key: key);
 
   @override
@@ -141,12 +171,18 @@ class _MapboxMapState extends State<MapboxMap> {
   /// Build method too render the Mapbox map
   @override
   Widget build(BuildContext context) {
+
+    /// [creationParams] Creation parameters that will be passed to native
+    /// platform on initial view creation
     final creationParams = <String, dynamic>{};
 
     creationParams['initialCameraPosition'] =
         widget.initialCameraPosition?.toJson();
 
     return MapboxMapGlPlatform.instance.buildMapView(
-        creationParams: creationParams, onPlatformViewCreated: (id) {});
+      creationParams: creationParams,
+      onPlatformViewCreated: (id) {},
+      hyperComposition: widget.hyperComposition,
+    );
   }
 }

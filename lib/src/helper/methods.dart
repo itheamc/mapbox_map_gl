@@ -1,3 +1,6 @@
+
+/// A class to contains all the methods that are responsible for communicating
+/// with native platform
 class Methods {
   /// Methods triggered from the native side
   static const onMapCreated = "onMapCreated";

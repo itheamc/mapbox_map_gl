@@ -1,17 +1,20 @@
-import '../../mapbox_map_gl.dart';
+import '../helper/style_transition.dart';
 
+/// SymbolLayer Object
 class SymbolLayer {
   final String layerId;
   final String sourceId;
   final SymbolLayerOptions? options;
 
+  /// Constructor for SymbolLayer
   SymbolLayer({
     required this.layerId,
     required this.sourceId,
     this.options,
   });
 
-  /// Method to convert properties to args
+  /// Method to convert the SymbolLayer Object to the
+  /// Map data to pass to the native platform through args
   Map<String, dynamic> toArgs() {
     return <String, dynamic>{
       "layerId": layerId,

@@ -1,18 +1,21 @@
 import 'dart:convert';
+import '../helper/style_transition.dart';
 
-import 'package:mapbox_map_gl/src/utils/style_transition.dart';
-
+/// LineLayer Object
 class LineLayer {
   final String layerId;
   final String sourceId;
   final LineLayerOptions? options;
 
+  /// Constructor for LineLayer
   LineLayer({
     required this.layerId,
     required this.sourceId,
     this.options,
   });
 
+  /// Method to convert the LineLayer Object to the
+  /// Map data to pass to the native platform through args
   Map<String, dynamic> toArgs() {
     return <String, dynamic>{
       "layerId": layerId,

@@ -1,18 +1,21 @@
 import 'dart:convert';
+import '../helper/style_transition.dart';
 
-import 'package:mapbox_map_gl/src/utils/style_transition.dart';
-
+/// CircleLayer Object
 class CircleLayer {
   final String layerId;
   final String sourceId;
   final CircleLayerOptions? options;
 
+  /// Constructor for CircleLayer
   CircleLayer({
     required this.layerId,
     required this.sourceId,
     this.options,
   });
 
+  /// Method to convert the CircleLayer Object to the
+  /// Map data to pass to the native platform through args
   Map<String, dynamic> toArgs() {
     return <String, dynamic>{
       "layerId": layerId,

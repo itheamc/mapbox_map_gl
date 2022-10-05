@@ -1,18 +1,21 @@
 import 'dart:convert';
+import '../helper/style_transition.dart';
 
-import 'package:mapbox_map_gl/src/utils/style_transition.dart';
-
+/// FillLayer Object
 class FillLayer {
   final String layerId;
   final String sourceId;
   final FillLayerOptions? options;
 
+  /// Constructor for FillLayer
   FillLayer({
     required this.layerId,
     required this.sourceId,
     this.options,
   });
 
+  /// Method to convert the FillLayer Object to the
+  /// Map data to pass to the native platform through args
   Map<String, dynamic> toArgs() {
     return <String, dynamic>{
       "layerId": layerId,

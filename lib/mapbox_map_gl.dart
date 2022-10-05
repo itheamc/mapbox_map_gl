@@ -1,8 +1,12 @@
 export 'src/mapbox_map.dart';
-export 'src/utils/latlng.dart';
-export 'src/utils/camera_position.dart';
-export 'src/utils/animation_options.dart';
-export 'src/utils/style_transition.dart';
-export 'src/screen_coordinate.dart';
+export 'src/helper/screen_coordinate.dart';
 export 'src/mapbox_map_controller.dart';
+export 'src/helper/latlng.dart';
+export 'src/helper/camera_position.dart';
+export 'src/helper/animation_options.dart';
+export 'src/helper/style_transition.dart';
+export 'src/helper/feature.dart';
 export 'src/layers/circle_layer.dart';
+export 'src/layers/line_layer.dart';
+export 'src/layers/fill_layer.dart';
+export 'src/layers/symbol_layer.dart';

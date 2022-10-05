@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
-import 'package:mapbox_map_gl/src/layers/circle_layer.dart';
-import 'package:mapbox_map_gl/src/layers/fill_layer.dart';
-import 'package:mapbox_map_gl/src/layers/line_layer.dart';
-import 'package:mapbox_map_gl/src/layers/symbol_layer.dart';
-import 'package:mapbox_map_gl/src/utils/camera_position.dart';
-import 'package:mapbox_map_gl/src/utils/methods.dart';
+import 'layers/circle_layer.dart';
+import 'layers/fill_layer.dart';
+import 'layers/line_layer.dart';
+import 'layers/symbol_layer.dart';
+import 'helper/camera_position.dart';
+import 'helper/methods.dart';
 
 import 'mapbox_map_controller.dart';
 
