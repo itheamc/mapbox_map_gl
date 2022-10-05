@@ -21,12 +21,49 @@ class _Example3ScreenState extends State<Example3Screen> {
 
   Future<void> _addGeoJson() async {
     await _controller?.addGeoJsonSource(
-        sourceId: "my-geojson-source",
-        layerId: "my-layer",
-        circleLayer: CircleLayer(
-            layerId: "layerId",
-            sourceId: "sourceId",
-            options: CircleLayerOptions.defaultOptions));
+      sourceId: "my-geojson-source",
+      layerId: "my-layer",
+      circleLayer: CircleLayer(
+        layerId: "layerId",
+        sourceId: "sourceId",
+        options: CircleLayerOptions(
+            circleColor: [
+              'case',
+              [
+                'boolean',
+                ['has', 'point_count'],
+                true
+              ],
+              'red',
+              'blue'
+            ],
+            circleColorTransition: StyleTransition.build(
+              delay: 500,
+              duration: const Duration(milliseconds: 1000)
+            ),
+            circleRadius: [
+              'case',
+              [
+                'boolean',
+                ['has', 'point_count'],
+                true
+              ],
+              15,
+              10
+            ],
+            circleStrokeWidth: [
+              'case',
+              [
+                'boolean',
+                ['has', 'point_count'],
+                true
+              ],
+              4.5,
+              2
+            ],
+            circleStrokeColor: "#fff"),
+      ),
+    );
   }
 
   @override
