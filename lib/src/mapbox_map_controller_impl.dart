@@ -23,7 +23,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
   @override
   Future<void> animateCameraPosition(CameraPosition cameraPosition) async {
     await channel.invokeMethod(
-        Methods.animateCameraPosition, cameraPosition.toJson());
+        Methods.animateCameraPosition, cameraPosition.toMap());
   }
 
   @override
@@ -58,9 +58,9 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
     args['sourceId'] = sourceId;
     args['layerId'] = layerId;
-    args['circleLayer'] = circleLayer?.toArgs();
-    args['lineLayer'] = lineLayer?.toArgs();
-    args['fillLayer'] = fillLayer?.toArgs();
+    args['circleLayer'] = circleLayer?.toMap();
+    args['lineLayer'] = lineLayer?.toMap();
+    args['fillLayer'] = fillLayer?.toMap();
     args['symbolLayer'] = symbolLayer?.toArgs();
 
     await channel.invokeMethod("addGeoJsonSource", args);

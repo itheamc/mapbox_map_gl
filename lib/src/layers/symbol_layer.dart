@@ -19,7 +19,7 @@ class SymbolLayer {
     return <String, dynamic>{
       "layerId": layerId,
       "sourceId": sourceId,
-      "options": (options ?? SymbolLayerOptions.defaultOptions).toArgs(),
+      "options": (options ?? SymbolLayerOptions.defaultOptions).toMap(),
     };
   }
 }
@@ -537,10 +537,10 @@ class SymbolLayerOptions {
   }
 
   /// Method to proceeds the symbol layer option for native
-  Map<String, dynamic> toArgs() {
-    final json = <String, dynamic>{};
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
 
-    return json;
+    return args.isNotEmpty ? args : null;
   }
 
   /// Method to convert SymbolPlacement as formatted string

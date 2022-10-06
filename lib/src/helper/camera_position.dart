@@ -1,9 +1,11 @@
-import 'package:mapbox_map_gl/src/helper/animation_options.dart';
-import 'package:mapbox_map_gl/src/helper/latlng.dart';
-import 'package:mapbox_map_gl/src/helper/screen_coordinate.dart';
+import 'animation_options.dart';
+import 'point.dart';
+import 'screen_coordinate.dart';
 
+/// CameraPosition Class
+/// It will be mainly used for animating camera to the specific coordinate
 class CameraPosition {
-  final LatLng center;
+  final Point center;
   final double? zoom;
   final double? bearing;
   final double? pitch;
@@ -19,14 +21,16 @@ class CameraPosition {
     this.animationOptions,
   });
 
-  Map<String, dynamic> toJson() {
+  /// Method to convert CameraPosition object to Map
+  /// It is basically for passing to the native platform
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "center": center.toJson(),
+      "center": center.toMap(),
       "zoom": zoom ?? 14.0,
       "bearing": bearing,
       "pitch": pitch,
-      "anchor": anchor?.toJson(),
-      "animationOptions": animationOptions?.toJson()
+      "anchor": anchor?.toMap(),
+      "animationOptions": animationOptions?.toMap()
     };
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '../helper/style_transition.dart';
 
-/// FillLayer Object
+/// FillLayer
 class FillLayer {
   final String layerId;
   final String sourceId;
@@ -16,11 +16,11 @@ class FillLayer {
 
   /// Method to convert the FillLayer Object to the
   /// Map data to pass to the native platform through args
-  Map<String, dynamic> toArgs() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
       "sourceId": sourceId,
-      "options": (options ?? FillLayerOptions.defaultOptions).toArgs(),
+      "options": (options ?? FillLayerOptions.defaultOptions).toMap(),
     };
   }
 }
@@ -109,6 +109,7 @@ class FillLayerOptions {
     this.visibility,
   });
 
+  /// Default FillLayerOptions
   static FillLayerOptions get defaultOptions {
     return FillLayerOptions(
       fillColor: 'blue',
@@ -120,67 +121,67 @@ class FillLayerOptions {
   }
 
   /// Method to proceeds the fill layer option for native
-  Map<String, dynamic> toArgs() {
-    final json = <String, dynamic>{};
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
 
     if (fillColor != null) {
-      json['fillColor'] = fillColor is List ? jsonEncode(fillColor) : fillColor;
+      args['fillColor'] = fillColor is List ? jsonEncode(fillColor) : fillColor;
     }
 
     if (fillColorTransition != null) {
-      json['fillColorTransition'] = fillColorTransition?.toJson();
+      args['fillColorTransition'] = fillColorTransition?.toMap();
     }
 
     if (fillAntialias != null) {
-      json['fillAntialias'] =
+      args['fillAntialias'] =
           fillAntialias is List ? jsonEncode(fillAntialias) : fillAntialias;
     }
 
     if (fillOpacity != null) {
-      json['fillOpacity'] =
+      args['fillOpacity'] =
           fillOpacity is List ? jsonEncode(fillOpacity) : fillOpacity;
     }
 
     if (fillOpacityTransition != null) {
-      json['fillOpacityTransition'] = fillOpacityTransition?.toJson();
+      args['fillOpacityTransition'] = fillOpacityTransition?.toMap();
     }
 
     if (fillOutlineColor != null) {
-      json['fillOutlineColor'] = fillOutlineColor is List
+      args['fillOutlineColor'] = fillOutlineColor is List
           ? jsonEncode(fillOutlineColor)
           : fillOutlineColor;
     }
 
     if (fillOutlineColorTransition != null) {
-      json['fillOutlineColorTransition'] = fillOutlineColorTransition?.toJson();
+      args['fillOutlineColorTransition'] = fillOutlineColorTransition?.toMap();
     }
 
     if (fillPattern != null) {
-      json['fillPattern'] =
+      args['fillPattern'] =
           fillPattern is List ? jsonEncode(fillPattern) : fillPattern;
     }
 
     if (fillPatternTransition != null) {
-      json['fillPatternTransition'] = fillPatternTransition?.toJson();
+      args['fillPatternTransition'] = fillPatternTransition?.toMap();
     }
 
     if (fillSortKey != null) {
-      json['fillSortKey'] =
+      args['fillSortKey'] =
           fillSortKey is List ? jsonEncode(fillSortKey) : fillSortKey;
     }
 
     if (fillTranslate != null) {
-      json['fillTranslate'] = fillTranslate is List<double>
+      args['fillTranslate'] = fillTranslate is List<double>
           ? fillTranslate
           : jsonEncode(fillTranslate);
     }
 
     if (fillTranslateTransition != null) {
-      json['fillTranslateTransition.'] = fillTranslateTransition?.toJson();
+      args['fillTranslateTransition.'] = fillTranslateTransition?.toMap();
     }
 
     if (fillTranslateAnchor != null) {
-      json['fillTranslateAnchor'] = fillTranslateAnchor is FillTranslateAnchor
+      args['fillTranslateAnchor'] = fillTranslateAnchor is FillTranslateAnchor
           ? (fillTranslateAnchor as FillTranslateAnchor).name
           : fillTranslateAnchor is List
               ? jsonEncode(fillTranslateAnchor)
@@ -188,26 +189,26 @@ class FillLayerOptions {
     }
 
     if (sourceLayer != null) {
-      json['sourceLayer'] = sourceLayer;
+      args['sourceLayer'] = sourceLayer;
     }
 
     if (filter != null) {
-      json['filter'] = jsonEncode(filter);
+      args['filter'] = jsonEncode(filter);
     }
 
     if (maxZoom != null) {
-      json['maxZoom'] = maxZoom;
+      args['maxZoom'] = maxZoom;
     }
 
     if (minZoom != null) {
-      json['minZoom'] = minZoom;
+      args['minZoom'] = minZoom;
     }
 
     if (visibility != null) {
-      json['visibility'] = visibility;
+      args['visibility'] = visibility;
     }
 
-    return json;
+    return args.isNotEmpty ? args : null;
   }
 }
 

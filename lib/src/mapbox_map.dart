@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
 import 'package:mapbox_map_gl/src/mapbox_map_controller_impl.dart';
-import 'helper/feature.dart';
 import 'helper/methods.dart';
 import 'mapbox_map_gl_platform_interface.dart';
 
@@ -20,36 +17,36 @@ typedef OnStyleLoaded = VoidCallback;
 typedef OnStyleLoadError = void Function(String);
 
 /// Method to handle onMapClick callback
-/// [LatLng] - It consists the latitude and longitude of the clicked feature
+/// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
-typedef OnMapClick = void Function(LatLng, ScreenCoordinate);
+typedef OnMapClick = void Function(Point, ScreenCoordinate);
 
 /// Method to handle onMapLongClick callback
-/// [LatLng] - It consists the latitude and longitude of the clicked feature
+/// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
-typedef OnMapLongClick = void Function(LatLng, ScreenCoordinate);
+typedef OnMapLongClick = void Function(Point, ScreenCoordinate);
 
 /// Method to handle onFeatureClick callback
-/// [LatLng] - It consists the latitude and longitude of the clicked feature
+/// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 /// [Feature] - It is the feature objects that contains feature id, properties,
 /// geometry etc.
 /// [String] - Source of the feature
 typedef OnFeatureClick = void Function(
-    LatLng, ScreenCoordinate, Feature, String?);
+    Point, ScreenCoordinate, Feature, String?);
 
 /// Method to handle onFeatureLongClick callback
-/// [LatLng] - It consists the latitude and longitude of the clicked feature
+/// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 /// [Feature] - It is the feature objects that contains feature id, properties,
 /// geometry etc.
 /// [String] - Source of the feature
 typedef OnFeatureLongClick = void Function(
-    LatLng, ScreenCoordinate, Feature, String?);
+    Point, ScreenCoordinate, Feature, String?);
 
 class MapboxMap extends StatefulWidget {
   /// [initialCameraPosition] An initial camera position to animate the camera
@@ -137,32 +134,32 @@ class _MapboxMapState extends State<MapboxMap> {
         widget.onStyleLoadError?.call(call.arguments);
         break;
       case Methods.onMapClick:
-        final latLng = LatLng.from(call.arguments['latLng']);
+        final point = Point.fromArgs(call.arguments['point']);
         final coordinate =
-            ScreenCoordinate.from(call.arguments['screen_coordinate']);
-        widget.onMapClick?.call(latLng, coordinate);
+            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
+        widget.onMapClick?.call(point, coordinate);
         break;
       case Methods.onMapLongClick:
-        final latLng = LatLng.from(call.arguments['latLng']);
+        final point = Point.fromArgs(call.arguments['point']);
         final coordinate =
-            ScreenCoordinate.from(call.arguments['screen_coordinate']);
-        widget.onMapLongClick?.call(latLng, coordinate);
+            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
+        widget.onMapLongClick?.call(point, coordinate);
         break;
       case Methods.onFeatureClick:
-        final latLng = LatLng.from(call.arguments['latLng']);
+        final point = Point.fromArgs(call.arguments['point']);
         final coordinate =
-            ScreenCoordinate.from(call.arguments['screen_coordinate']);
-        final feature = Feature.from(jsonDecode(call.arguments['feature']));
+            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
+        final feature = Feature.fromArgs(call.arguments['feature']);
         final source = call.arguments['source'];
-        widget.onFeatureClick?.call(latLng, coordinate, feature, source);
+        widget.onFeatureClick?.call(point, coordinate, feature, source);
         break;
       case Methods.onFeatureLongClick:
-        final latLng = LatLng.from(call.arguments['latLng']);
+        final point = Point.fromArgs(call.arguments['point']);
         final coordinate =
-            ScreenCoordinate.from(call.arguments['screen_coordinate']);
-        final feature = Feature.from(jsonDecode(call.arguments['feature']));
+            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
+        final feature = Feature.fromArgs(call.arguments['feature']);
         final source = call.arguments['source'];
-        widget.onFeatureLongClick?.call(latLng, coordinate, feature, source);
+        widget.onFeatureLongClick?.call(point, coordinate, feature, source);
         break;
       default:
     }
@@ -171,13 +168,12 @@ class _MapboxMapState extends State<MapboxMap> {
   /// Build method too render the Mapbox map
   @override
   Widget build(BuildContext context) {
-
     /// [creationParams] Creation parameters that will be passed to native
     /// platform on initial view creation
     final creationParams = <String, dynamic>{};
 
     creationParams['initialCameraPosition'] =
-        widget.initialCameraPosition?.toJson();
+        widget.initialCameraPosition?.toMap();
 
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,

@@ -16,11 +16,11 @@ class CircleLayer {
 
   /// Method to convert the CircleLayer Object to the
   /// Map data to pass to the native platform through args
-  Map<String, dynamic> toArgs() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
       "sourceId": sourceId,
-      "options": (options ?? CircleLayerOptions.defaultOptions).toArgs(),
+      "options": (options ?? CircleLayerOptions.defaultOptions).toMap(),
     };
   }
 }
@@ -160,80 +160,80 @@ class CircleLayerOptions {
   }
 
   /// Method to proceeds the circle layer option for native
-  Map<String, dynamic> toArgs() {
-    final json = <String, dynamic>{};
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
 
     if (circleColor != null) {
-      json['circleColor'] =
+      args['circleColor'] =
           circleColor is List ? jsonEncode(circleColor) : circleColor;
     }
 
     if (circleColorTransition != null) {
-      json['circleColorTransition'] = circleColorTransition?.toJson();
+      args['circleColorTransition'] = circleColorTransition?.toMap();
     }
 
     if (circleRadius != null) {
-      json['circleRadius'] =
+      args['circleRadius'] =
           circleRadius is List ? jsonEncode(circleRadius) : circleRadius;
     }
 
     if (circleRadiusTransition != null) {
-      json['circleRadiusTransition'] = circleRadiusTransition?.toJson();
+      args['circleRadiusTransition'] = circleRadiusTransition?.toMap();
     }
 
     if (circleBlur != null) {
-      json['circleBlur'] =
+      args['circleBlur'] =
           circleBlur is List ? jsonEncode(circleBlur) : circleBlur;
     }
 
     if (circleBlurTransition != null) {
-      json['circleBlurTransition'] = circleBlurTransition?.toJson();
+      args['circleBlurTransition'] = circleBlurTransition?.toMap();
     }
 
     if (circleOpacity != null) {
-      json['circleOpacity'] =
+      args['circleOpacity'] =
           circleOpacity is List ? jsonEncode(circleOpacity) : circleOpacity;
     }
 
     if (circleOpacityTransition != null) {
-      json['circleOpacityTransition'] = circleOpacityTransition?.toJson();
+      args['circleOpacityTransition'] = circleOpacityTransition?.toMap();
     }
 
     if (circleStrokeColor != null) {
-      json['circleStrokeColor'] = circleStrokeColor is List
+      args['circleStrokeColor'] = circleStrokeColor is List
           ? jsonEncode(circleStrokeColor)
           : circleStrokeColor;
     }
 
     if (circleStrokeColorTransition != null) {
-      json['circleStrokeColorTransition'] =
-          circleStrokeColorTransition?.toJson();
+      args['circleStrokeColorTransition'] =
+          circleStrokeColorTransition?.toMap();
     }
 
     if (circleStrokeWidth != null) {
-      json['circleStrokeWidth'] = circleStrokeWidth is List
+      args['circleStrokeWidth'] = circleStrokeWidth is List
           ? jsonEncode(circleStrokeWidth)
           : circleStrokeWidth;
     }
 
     if (circleStrokeWidthTransition != null) {
-      json['circleStrokeWidthTransition'] =
-          circleStrokeWidthTransition?.toJson();
+      args['circleStrokeWidthTransition'] =
+          circleStrokeWidthTransition?.toMap();
     }
 
     if (circleStrokeOpacity != null) {
-      json['circleStrokeOpacity'] = circleStrokeOpacity is List
+      args['circleStrokeOpacity'] = circleStrokeOpacity is List
           ? jsonEncode(circleStrokeOpacity)
           : circleStrokeOpacity;
     }
 
     if (circleStrokeOpacityTransition != null) {
-      json['circleStrokeOpacityTransition'] =
-          circleStrokeOpacityTransition?.toJson();
+      args['circleStrokeOpacityTransition'] =
+          circleStrokeOpacityTransition?.toMap();
     }
 
     if (circlePitchScale != null) {
-      json['circlePitchScale'] = circlePitchScale is CirclePitchScale
+      args['circlePitchScale'] = circlePitchScale is CirclePitchScale
           ? (circlePitchScale as CirclePitchScale).name
           : circlePitchScale is List
               ? jsonEncode(circlePitchScale)
@@ -241,7 +241,7 @@ class CircleLayerOptions {
     }
 
     if (circlePitchAlignment != null) {
-      json['circlePitchAlignment'] =
+      args['circlePitchAlignment'] =
           circlePitchAlignment is CirclePitchAlignment
               ? (circlePitchAlignment as CirclePitchAlignment).name
               : circlePitchAlignment is List
@@ -250,22 +250,22 @@ class CircleLayerOptions {
     }
 
     if (circleSortKey != null) {
-      json['circleSortKey'] =
+      args['circleSortKey'] =
           circleSortKey is List ? jsonEncode(circleSortKey) : circleSortKey;
     }
 
     if (circleTranslate != null) {
-      json['circleTranslate'] = circleTranslate is List<double>
+      args['circleTranslate'] = circleTranslate is List<double>
           ? circleTranslate
           : jsonEncode(circleTranslate);
     }
 
     if (circleTranslateTransition != null) {
-      json['circleTranslateTransition.'] = circleTranslateTransition?.toJson();
+      args['circleTranslateTransition.'] = circleTranslateTransition?.toMap();
     }
 
     if (circleTranslateAnchor != null) {
-      json['circleTranslateAnchor'] =
+      args['circleTranslateAnchor'] =
           circleTranslateAnchor is CircleTranslateAnchor
               ? (circleTranslateAnchor as CircleTranslateAnchor).name
               : circleTranslateAnchor is List
@@ -274,26 +274,26 @@ class CircleLayerOptions {
     }
 
     if (sourceLayer != null) {
-      json['sourceLayer'] = sourceLayer;
+      args['sourceLayer'] = sourceLayer;
     }
 
     if (filter != null) {
-      json['filter'] = jsonEncode(filter);
+      args['filter'] = jsonEncode(filter);
     }
 
     if (maxZoom != null) {
-      json['maxZoom'] = maxZoom;
+      args['maxZoom'] = maxZoom;
     }
 
     if (minZoom != null) {
-      json['minZoom'] = minZoom;
+      args['minZoom'] = minZoom;
     }
 
     if (visibility != null) {
-      json['visibility'] = visibility;
+      args['visibility'] = visibility;
     }
 
-    return json;
+    return args.isNotEmpty ? args : null;
   }
 }
 

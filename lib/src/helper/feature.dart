@@ -1,29 +1,43 @@
+import 'dart:convert';
+
+/// Feature Class
 class Feature {
+  /// [type] It represents the feature type
   final String? type;
 
-  final dynamic bBox;
+  /// [bbox] It is the bounding box object
+  final dynamic bbox;
 
+  /// [id] It represents the feature id
   final String? id;
 
+  /// [geometry] Geometry of the feature
   final dynamic geometry;
 
+  /// [properties] Properties of the feature
   final dynamic properties;
 
+  /// Internal or Private Constructor
   Feature._(
     this.type,
-    this.bBox,
+    this.bbox,
     this.id,
     this.geometry,
     this.properties,
   );
 
-  factory Feature.from(dynamic json) {
+  /// Factory method to convert args passes prom native platform
+  /// to Feature object
+  /// [args] arguments send from the native platform
+  factory Feature.fromArgs(dynamic args) {
+    final decodedArgs = jsonDecode(args);
+
     return Feature._(
-      json['type'],
-      json['bbox'],
-      json['id'],
-      json['geometry'],
-      json['properties'],
+      decodedArgs['type'],
+      decodedArgs['bbox'],
+      decodedArgs['id'],
+      decodedArgs['geometry'],
+      decodedArgs['properties'],
     );
   }
 }

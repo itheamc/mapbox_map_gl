@@ -17,8 +17,8 @@ class StyleTransition {
     );
   }
 
-  /// Method to convert the StyleTransition to Json form
-  Map<String, dynamic> toJson() {
+  /// Method to convert the StyleTransition to map
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "delay": delay,
       "duration": duration.inMilliseconds

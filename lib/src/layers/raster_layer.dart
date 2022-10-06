@@ -17,11 +17,11 @@ class RasterLayer {
 
   /// Method to convert the RasterLayer Object to the
   /// Map data to pass to the native platform through args
-  Map<String, dynamic> toArgs() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
       "sourceId": sourceId,
-      "options": (options ?? RasterLayerOptions.defaultOptions).toArgs(),
+      "options": (options ?? RasterLayerOptions.defaultOptions).toMap(),
     };
   }
 }
@@ -163,67 +163,67 @@ class RasterLayerOptions {
   }
 
   /// Method to proceeds the fill layer option for native
-  Map<String, dynamic> toArgs() {
-    final json = <String, dynamic>{};
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
 
     if (rasterBrightnessMax != null) {
-      json['rasterBrightnessMax'] = rasterBrightnessMax is List
+      args['rasterBrightnessMax'] = rasterBrightnessMax is List
           ? jsonEncode(rasterBrightnessMax)
           : rasterBrightnessMax;
     }
 
     if (rasterBrightnessMaxTransition != null) {
-      json['rasterBrightnessMaxTransition'] =
-          rasterBrightnessMaxTransition?.toJson();
+      args['rasterBrightnessMaxTransition'] =
+          rasterBrightnessMaxTransition?.toMap();
     }
 
     if (rasterBrightnessMin != null) {
-      json['rasterBrightnessMax'] = rasterBrightnessMin is List
+      args['rasterBrightnessMax'] = rasterBrightnessMin is List
           ? jsonEncode(rasterBrightnessMin)
           : rasterBrightnessMin;
     }
 
     if (rasterBrightnessMinTransition != null) {
-      json['rasterBrightnessMinTransition'] =
-          rasterBrightnessMinTransition?.toJson();
+      args['rasterBrightnessMinTransition'] =
+          rasterBrightnessMinTransition?.toMap();
     }
 
     if (rasterContrast != null) {
-      json['rasterContrast'] =
+      args['rasterContrast'] =
           rasterContrast is List ? jsonEncode(rasterContrast) : rasterContrast;
     }
 
     if (rasterContrastTransition != null) {
-      json['rasterContrastTransition'] = rasterContrastTransition?.toJson();
+      args['rasterContrastTransition'] = rasterContrastTransition?.toMap();
     }
 
     if (rasterFadeDuration != null) {
-      json['rasterFadeDuration'] = rasterFadeDuration is List
+      args['rasterFadeDuration'] = rasterFadeDuration is List
           ? jsonEncode(rasterFadeDuration)
           : rasterFadeDuration;
     }
 
     if (rasterHueRotate != null) {
-      json['rasterHueRotate'] = rasterHueRotate is List
+      args['rasterHueRotate'] = rasterHueRotate is List
           ? jsonEncode(rasterHueRotate)
           : rasterHueRotate;
     }
 
     if (rasterHueRotateTransition != null) {
-      json['rasterHueRotateTransition'] = rasterHueRotateTransition?.toJson();
+      args['rasterHueRotateTransition'] = rasterHueRotateTransition?.toMap();
     }
 
     if (rasterOpacity != null) {
-      json['rasterOpacity'] =
+      args['rasterOpacity'] =
           rasterOpacity is List ? jsonEncode(rasterOpacity) : rasterOpacity;
     }
 
     if (rasterOpacityTransition != null) {
-      json['rasterOpacityTransition'] = rasterOpacityTransition?.toJson();
+      args['rasterOpacityTransition'] = rasterOpacityTransition?.toMap();
     }
 
     if (rasterResampling != null) {
-      json['rasterResampling'] = rasterResampling is RasterResampling
+      args['rasterResampling'] = rasterResampling is RasterResampling
           ? (rasterResampling as RasterResampling).name
           : rasterResampling is List
               ? jsonEncode(rasterResampling)
@@ -231,31 +231,31 @@ class RasterLayerOptions {
     }
 
     if (rasterSaturation != null) {
-      json['rasterSaturation'] = rasterSaturation is List
+      args['rasterSaturation'] = rasterSaturation is List
           ? jsonEncode(rasterSaturation)
           : rasterSaturation;
     }
 
     if (rasterSaturationTransition != null) {
-      json['rasterSaturationTransition'] = rasterSaturationTransition?.toJson();
+      args['rasterSaturationTransition'] = rasterSaturationTransition?.toMap();
     }
 
     if (sourceLayer != null) {
-      json['sourceLayer'] = sourceLayer;
+      args['sourceLayer'] = sourceLayer;
     }
 
     if (maxZoom != null) {
-      json['maxZoom'] = maxZoom;
+      args['maxZoom'] = maxZoom;
     }
 
     if (minZoom != null) {
-      json['minZoom'] = minZoom;
+      args['minZoom'] = minZoom;
     }
 
     if (visibility != null) {
-      json['visibility'] = visibility;
+      args['visibility'] = visibility;
     }
-    return json;
+    return args.isNotEmpty ? args : null;
   }
 }
 

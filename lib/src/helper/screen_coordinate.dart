@@ -8,18 +8,19 @@ class ScreenCoordinate {
   /// Constructor to construct Screen coordinate object
   ScreenCoordinate(this.x, this.y);
 
-  /// Method to convert screen coordinate object to json form
+  /// Method to convert screen coordinate object to map
   /// i.e. to Map<String, dynamic>
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "x": x,
       "y": y,
     };
   }
 
-  /// Method to convert json data to screen coordinate object
-  /// [json] Map<String, dynamic> json
-  factory ScreenCoordinate.from(dynamic json) {
-    return ScreenCoordinate(json['x'], json['y']);
+  /// Method to convert args get from native platform
+  /// to screen coordinate object
+  /// [args] Map<String, dynamic> args
+  factory ScreenCoordinate.fromArgs(dynamic args) {
+    return ScreenCoordinate(args['x'], args['y']);
   }
 }
