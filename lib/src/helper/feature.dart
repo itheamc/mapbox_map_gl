@@ -40,4 +40,15 @@ class Feature {
       decodedArgs['properties'],
     );
   }
+
+  /// Method to convert Feature object to map
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "id": type,
+      "type": type,
+      "geometry": geometry,
+      "properties": properties,
+      "bbox": bbox?.toMap()
+    };
+  }
 }
