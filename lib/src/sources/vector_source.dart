@@ -1,3 +1,4 @@
+import '../helper/promoted_id.dart';
 import '../helper/tileset.dart';
 
 /// VectorSource Class
@@ -82,6 +83,9 @@ class VectorSource {
   /// default is 0.0
   final double? tileNetworkRequestsDelay;
 
+  /// Add a TileSet to the Source.
+  final TileSet? tileSet;
+
   /// Constructor
   VectorSource({
     this.url,
@@ -98,6 +102,7 @@ class VectorSource {
     this.maxOverScaleFactorForParentTiles,
     this.tileRequestsDelay,
     this.tileNetworkRequestsDelay,
+    this.tileSet
   });
 
   /// Method to convert VectorSource Object to Map
@@ -107,74 +112,64 @@ class VectorSource {
     if (url != null) {
       args["url"] = url;
     }
+
     if (tiles != null && tiles!.isNotEmpty) {
       args["tiles"] = tiles;
     }
+
     if (bounds != null && bounds!.isNotEmpty && bounds!.length == 4) {
       args["bounds"] = bounds;
     }
+
     if (scheme != null) {
       args["scheme"] = scheme?.name;
     }
+
     if (minZoom != null) {
       args["minZoom"] = minZoom;
     }
+
     if (maxZoom != null) {
       args["maxZoom"] = maxZoom;
     }
+
     if (attribution != null) {
       args["attribution"] = attribution;
     }
+
     if (promoteId != null) {
       args["promoteId"] = promoteId?.toMap();
     }
+
     if (volatile != null) {
       args["volatile"] = volatile;
     }
+
     if (prefetchZoomDelta != null) {
       args["prefetchZoomDelta"] = prefetchZoomDelta;
     }
+
     if (minimumTileUpdateInterval != null) {
       args["minimumTileUpdateInterval"] = minimumTileUpdateInterval;
     }
+
     if (maxOverScaleFactorForParentTiles != null) {
       args["maxOverScaleFactorForParentTiles"] =
           maxOverScaleFactorForParentTiles;
     }
+
     if (tileRequestsDelay != null) {
       args["tileRequestsDelay"] = tileRequestsDelay;
     }
+
     if (tileNetworkRequestsDelay != null) {
       args["tileNetworkRequestsDelay"] = tileNetworkRequestsDelay;
     }
 
+    if (tileSet != null) {
+      args["tileSet"] = tileSet?.toMap();
+    }
+
     return args.isNotEmpty ? args : null;
-  }
-}
-
-/// PromotedId class
-/// It holds a property type to promote a specific feature for feature state API.
-class PromotedId {
-  /// [propertyName] -feature property name.
-  final String propertyName;
-
-  /// [sourceId] - source layer id of the feature, either source GeoJsonSource or VectorSource.
-  final String? sourceId;
-
-  /// Constructor for PromotedId
-  /// [propertyName] -feature property name.
-  /// [sourceId] - source layer id of the feature,
-  /// either source GeoJsonSource or VectorSource.
-  PromotedId({
-    required this.propertyName,
-    this.sourceId,
-  });
-
-  /// Method to convert PromotedId to map
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      "propertyName": propertyName,
-      "sourceId": sourceId,
-    };
   }
 }
