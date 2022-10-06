@@ -1,4 +1,4 @@
-package com.itheamc.mapbox_map_gl.helper
+package com.itheamc.mapbox_map_gl.utils
 
 /**
  * Methods.kt

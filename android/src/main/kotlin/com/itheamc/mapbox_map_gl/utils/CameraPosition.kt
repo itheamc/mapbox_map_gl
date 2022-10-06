@@ -1,5 +1,6 @@
-package com.itheamc.mapbox_map_gl.helper
+package com.itheamc.mapbox_map_gl.utils
 
+import com.itheamc.mapbox_map_gl.helper.PointHelper
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
@@ -24,7 +25,7 @@ class CameraPosition internal constructor(
 ) {
 
     companion object {
-        fun fromMap(map: Map<*, *>): CameraPosition {
+        fun fromArgs(map: Map<*, *>): CameraPosition {
             val center = map["center"] as Map<*, *>
 
             val zoom = if (map["zoom"] != null) map["zoom"] as Double else 14.0
