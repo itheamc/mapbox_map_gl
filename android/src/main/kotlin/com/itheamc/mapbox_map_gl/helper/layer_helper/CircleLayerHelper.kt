@@ -1,4 +1,4 @@
-package com.itheamc.mapbox_map_gl.helper
+package com.itheamc.mapbox_map_gl.helper.layer_helper
 
 import com.mapbox.maps.extension.style.expressions.generated.Expression
 import com.mapbox.maps.extension.style.layers.generated.CircleLayerDsl
@@ -7,10 +7,20 @@ import com.mapbox.maps.extension.style.layers.properties.generated.CirclePitchSc
 import com.mapbox.maps.extension.style.layers.properties.generated.CircleTranslateAnchor
 import com.mapbox.maps.extension.style.layers.properties.generated.Visibility
 import com.mapbox.maps.extension.style.types.StyleTransition
+import java.util.*
 
-object CircleLayerUtils {
 
-    fun processLayerArguments(args: Map<*, *>): CircleLayerDsl.() -> Unit {
+/**
+ * CircleLayerHelper.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/4
+ */
+object CircleLayerHelper {
+
+    /**
+     * Method to set properties got from the flutter side to CircleLayerDsl block
+     */
+    fun blockFromArgs(args: Map<*, *>): CircleLayerDsl.() -> Unit {
         return {
             // circleColor
             if (args.containsKey("circleColor")) {
@@ -175,7 +185,13 @@ object CircleLayerUtils {
                 if (pitchAlignment.contains("[") && pitchAlignment.contains("]")) {
                     circlePitchAlignment(Expression.fromRaw(pitchAlignment))
                 } else {
-                    circlePitchAlignment(CirclePitchAlignment.valueOf(pitchAlignment))
+                    circlePitchAlignment(
+                        CirclePitchAlignment.valueOf(
+                            pitchAlignment.uppercase(
+                                Locale.ENGLISH
+                            ).replace("-", "_")
+                        )
+                    )
                 }
             }
 
@@ -219,7 +235,13 @@ object CircleLayerUtils {
                 if (translateAnchor.contains("[") && translateAnchor.contains("]")) {
                     circleTranslateAnchor(Expression.fromRaw(translateAnchor))
                 } else {
-                    circleTranslateAnchor(CircleTranslateAnchor.valueOf(translateAnchor))
+                    circleTranslateAnchor(
+                        CircleTranslateAnchor.valueOf(
+                            translateAnchor.uppercase(
+                                Locale.ENGLISH
+                            ).replace("-", "_")
+                        )
+                    )
                 }
             }
 
