@@ -1,5 +1,12 @@
 package com.itheamc.mapbox_map_gl.helper
 
+/**
+ * Methods.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/3
+ *
+ * Objects containing methods to communicate with flutter
+ */
 object Methods {
     /**
      * These are the methods triggered from the native side

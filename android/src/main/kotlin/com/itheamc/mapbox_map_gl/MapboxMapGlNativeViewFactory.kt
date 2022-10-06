@@ -6,6 +6,11 @@ import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
+/**
+ * MapboxMapGlNativeViewFactory.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/3
+ */
 internal class MapboxMapGlNativeViewFactory(
     private val messenger: BinaryMessenger,
     private val lifecycleOwnerProvider: MapboxMapGlPlugin.MapboxLLifecycleOwnerProvider

@@ -4,6 +4,11 @@ import com.mapbox.geojson.Point
 import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 
+/**
+ * CameraPosition.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/3
+ */
 class CameraPosition internal constructor(
     val center: Point,
     val zoom: Double = 13.0,
@@ -20,7 +25,7 @@ class CameraPosition internal constructor(
 
     companion object {
         fun fromMap(map: Map<*, *>): CameraPosition {
-            val latLng = map["center"] as Map<*, *>
+            val center = map["center"] as Map<*, *>
 
             val zoom = if (map["zoom"] != null) map["zoom"] as Double else 14.0
             val bearing = if (map["bearing"] != null) map["bearing"] as Double else 0.0
@@ -29,12 +34,8 @@ class CameraPosition internal constructor(
             val animationOptions =
                 if (map["animationOptions"] != null) map["animationOptions"] as Map<*, *> else null
 
-
             return CameraPosition(
-                center = Point.fromLngLat(
-                    latLng["longitude"] as Double,
-                    latLng["latitude"] as Double
-                ),
+                center = PointHelper.fromArgs(center)!!,
                 zoom = zoom,
                 bearing = bearing,
                 pitch = pitch,

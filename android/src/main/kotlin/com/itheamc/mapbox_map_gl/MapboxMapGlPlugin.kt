@@ -9,6 +9,12 @@ import io.flutter.plugin.common.MethodChannel
 
 
 /** MapboxMapGlPlugin */
+
+/**
+ * MapboxMapGlPlugin.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/3
+ */
 internal class MapboxMapGlPlugin : FlutterPlugin, ActivityAware {
     private lateinit var channel: MethodChannel
     private var lifecycleOwner: LifecycleOwner? = null

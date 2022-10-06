@@ -11,6 +11,11 @@ import com.mapbox.maps.plugin.scalebar.scalebar
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
 
+/**
+ * MapboxMapGlNativeView.kt
+ *
+ * Created by Amit Chaudhary, 2022/10/3
+ */
 internal class MapboxMapGlNativeView(
     context: Context,
     private val id: Int,
