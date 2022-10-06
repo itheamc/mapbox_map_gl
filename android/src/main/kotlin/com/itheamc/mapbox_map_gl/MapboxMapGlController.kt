@@ -3,9 +3,9 @@ package com.itheamc.mapbox_map_gl
 import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
-import com.itheamc.mapbox_map_gl.helper.CameraPosition
+import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.itheamc.mapbox_map_gl.helper.layer_helper.CircleLayerHelper
-import com.itheamc.mapbox_map_gl.helper.Methods
+import com.itheamc.mapbox_map_gl.utils.Methods
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
 import com.mapbox.bindgen.None
@@ -108,7 +108,7 @@ class MapboxMapGlController(
         if (!hasInitialCameraPosition || initialCameraPosition == null) return
 
         val cameraPosition: CameraPosition = CameraPosition
-            .fromMap(initialCameraPosition as Map<*, *>)
+            .fromArgs(initialCameraPosition as Map<*, *>)
 
         mapboxMap.flyTo(
             cameraOptions = CameraOptions
@@ -607,7 +607,7 @@ class MapboxMapGlController(
             }
             Methods.animateCameraPosition -> {
                 val cameraPosition: CameraPosition = CameraPosition
-                    .fromMap(args as Map<*, *>)
+                    .fromArgs(args as Map<*, *>)
                 animateCameraPosition(cameraPosition)
                 return result.success(true)
             }
