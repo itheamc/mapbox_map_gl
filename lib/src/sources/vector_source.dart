@@ -99,6 +99,57 @@ class VectorSource {
     this.tileRequestsDelay,
     this.tileNetworkRequestsDelay,
   });
+
+  /// Method to convert VectorSource Object to Map
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
+
+    if (url != null) {
+      args["url"] = url;
+    }
+    if (tiles != null && tiles!.isNotEmpty) {
+      args["tiles"] = tiles;
+    }
+    if (bounds != null && bounds!.isNotEmpty && bounds!.length == 4) {
+      args["bounds"] = bounds;
+    }
+    if (scheme != null) {
+      args["scheme"] = scheme?.name;
+    }
+    if (minZoom != null) {
+      args["minZoom"] = minZoom;
+    }
+    if (maxZoom != null) {
+      args["maxZoom"] = maxZoom;
+    }
+    if (attribution != null) {
+      args["attribution"] = attribution;
+    }
+    if (promoteId != null) {
+      args["promoteId"] = promoteId?.toMap();
+    }
+    if (volatile != null) {
+      args["volatile"] = volatile;
+    }
+    if (prefetchZoomDelta != null) {
+      args["prefetchZoomDelta"] = prefetchZoomDelta;
+    }
+    if (minimumTileUpdateInterval != null) {
+      args["minimumTileUpdateInterval"] = minimumTileUpdateInterval;
+    }
+    if (maxOverScaleFactorForParentTiles != null) {
+      args["maxOverScaleFactorForParentTiles"] =
+          maxOverScaleFactorForParentTiles;
+    }
+    if (tileRequestsDelay != null) {
+      args["tileRequestsDelay"] = tileRequestsDelay;
+    }
+    if (tileNetworkRequestsDelay != null) {
+      args["tileNetworkRequestsDelay"] = tileNetworkRequestsDelay;
+    }
+
+    return args.isNotEmpty ? args : null;
+  }
 }
 
 /// PromotedId class
@@ -118,4 +169,12 @@ class PromotedId {
     required this.propertyName,
     this.sourceId,
   });
+
+  /// Method to convert PromotedId to map
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "propertyName": propertyName,
+      "sourceId": sourceId,
+    };
+  }
 }
