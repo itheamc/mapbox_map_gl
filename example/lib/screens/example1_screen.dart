@@ -59,7 +59,7 @@ class _Example1ScreenState extends State<Example1Screen> {
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
-            center: LatLng(27.837785, 82.538961),
+            center: Point.fromLatLng(27.837785, 82.538961),
             zoom: 15.0,
             // anchor: ScreenCoordinate(120.0, 200.0),
             animationOptions: AnimationOptions.mapAnimationOptions(
@@ -79,25 +79,25 @@ class _Example1ScreenState extends State<Example1Screen> {
                   "[Method Call -> onStyleLoadError] ---> From _MyAppState -> $err");
             }
           },
-          onMapClick: (latLng, screenCoordinate) {
+          onMapClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapClick] ---> ${latLng.toJson()}, ${screenCoordinate.toJson()}");
+                  "[Method Call -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
-          onMapLongClick: (latLng, screenCoordinate) {
+          onMapLongClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapLongClick] ---> ${latLng.toJson()}, ${screenCoordinate.toJson()}");
+                  "[Method Call -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
-          onFeatureClick: (latLng, screenCoordinate, feature, source) {
+          onFeatureClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
                   "[Method Call -> onFeatureClick] ---> $source, ${feature.properties}");
             }
           },
-          onFeatureLongClick: (latLng, screenCoordinate, feature, source) {
+          onFeatureLongClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
                   "[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
