@@ -1,15 +1,57 @@
+import 'package:mapbox_map_gl/src/sources/source.dart';
+import 'package:mapbox_map_gl/src/sources/source_properties.dart';
+
 import '../helper/tileset.dart';
 
 /// RasterDemSource Class
 /// Created by Amit Chaudhary, 2022/10/6
-class RasterDemSource {
-  /// A URL to a TileJSON resource. Supported protocols are http:,
-  /// https:, and mapbox://<Tileset ID>
-  final String? url;
-
+class RasterDemSource extends Source<RasterDemSourceProperties> {
   /// An array of one or more tile source URLs, as in the TileJSON spec.
   final List<String>? tiles;
 
+  /// Add a TileSet to the Source.
+  final TileSet? tileSet;
+
+  /// Constructor
+  RasterDemSource({
+    required super.sourceId,
+    super.url,
+    this.tiles,
+    this.tileSet,
+    super.sourceProperties,
+  }) : assert(url != null || tiles != null || tileSet != null,
+            "Please provide url or tiles or tile set for raster dem source.");
+
+  /// Method to convert RasterDemSource Object to Map
+  @override
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
+
+    args["sourceId"] = sourceId;
+
+    if (url != null) {
+      args["url"] = url;
+    }
+
+    if (tiles != null && tiles!.isNotEmpty) {
+      args["tiles"] = tiles;
+    }
+
+    if (tileSet != null) {
+      args["tileSet"] = tileSet?.toMap();
+    }
+
+    args['sourceProperties'] =
+        (sourceProperties ?? RasterDemSourceProperties.defaultProperties)
+            .toMap();
+
+    return args.isNotEmpty ? args : null;
+  }
+}
+
+/// RasterDemSourceProperties Class
+/// Created by Amit Chaudhary, 2022/10/7
+class RasterDemSourceProperties extends SourceProperties {
   /// An array containing the longitude and latitude of
   /// the southwest and northeast corners of the source's
   /// bounding box in the following order: [sw.lng, sw.lat, ne.lng, ne.lat].
@@ -80,13 +122,8 @@ class RasterDemSource {
   /// default is 0.0
   final double? tileNetworkRequestsDelay;
 
-  /// Add a TileSet to the Source.
-  final TileSet? tileSet;
-
   /// Constructor
-  RasterDemSource({
-    this.url,
-    this.tiles,
+  RasterDemSourceProperties({
     this.bounds,
     this.minZoom,
     this.maxZoom,
@@ -99,20 +136,22 @@ class RasterDemSource {
     this.maxOverScaleFactorForParentTiles,
     this.tileRequestsDelay,
     this.tileNetworkRequestsDelay,
-    this.tileSet,
   });
 
-  /// Method to convert VectorSource Object to Map
+  /// Getter for defaultRasterDemSourceProperties
+  static SourceProperties get defaultProperties {
+    return RasterDemSourceProperties(
+      minZoom: 0,
+      maxZoom: 22,
+      tileSize: 512,
+      volatile: false,
+    );
+  }
+
+  /// Method to convert RasterDemSourceProperties Object to Map
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
-
-    if (url != null) {
-      args["url"] = url;
-    }
-
-    if (tiles != null && tiles!.isNotEmpty) {
-      args["tiles"] = tiles;
-    }
 
     if (bounds != null && bounds!.isNotEmpty && bounds!.length == 4) {
       args["bounds"] = bounds;
@@ -161,10 +200,6 @@ class RasterDemSource {
 
     if (tileNetworkRequestsDelay != null) {
       args["tileNetworkRequestsDelay"] = tileNetworkRequestsDelay;
-    }
-
-    if (tileSet != null) {
-      args["tileSet"] = tileSet?.toMap();
     }
 
     return args.isNotEmpty ? args : null;

@@ -1,13 +1,37 @@
+import 'package:mapbox_map_gl/src/sources/source.dart';
+import 'package:mapbox_map_gl/src/sources/source_properties.dart';
+
 /// ImageSource Class
 /// Created by Amit Chaudhary, 2022/10/6
-class ImageSource {
-  /// URL that points to an image.
-  final String url;
-
+class ImageSource extends Source<ImageSourceProperties> {
   /// Corners of image specified in longitude, latitude pairs.
   /// List<List<double>>
   final List<List<double>> coordinates;
 
+  /// Constructor
+  ImageSource({
+    required super.sourceId,
+    required super.url,
+    required this.coordinates,
+    super.sourceProperties,
+  });
+
+  /// Method to convert ImageSource object to map
+  @override
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "sourceId": sourceId,
+      "url": "url",
+      "coordinates": coordinates,
+      "sourceProperties":
+          (sourceProperties ?? ImageSourceProperties.defaultProperties).toMap()
+    };
+  }
+}
+
+/// ImageSourceProperties Class
+/// Created by Amit Chaudhary, 2022/10/7
+class ImageSourceProperties extends SourceProperties {
   /// When loading a map, if PrefetchZoomDelta is set to any number greater
   /// than 0, the map will first request a tile at zoom level lower than
   /// zoom - delta, but so that the zoom level is multiple of delta, in an
@@ -17,23 +41,25 @@ class ImageSource {
   final int? prefetchZoomDelta;
 
   /// Constructor
-  ImageSource({
-    required this.url,
-    required this.coordinates,
+  ImageSourceProperties({
     this.prefetchZoomDelta,
   });
 
-  /// Method to convert ImageSource object to map
-  Map<String, dynamic> toMap() {
-    final args = <String, dynamic>{};
+  /// Getter for defaultImageSourceProperties
+  static SourceProperties get defaultProperties {
+    return ImageSourceProperties(
+      prefetchZoomDelta: 4,
+    );
+  }
 
-    args["url"] = url;
-    args["coordinates"] = coordinates;
+  /// Method to convert ImageSourceProperties Object to Map
+  @override
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
 
     if (prefetchZoomDelta != null) {
       args["prefetchZoomDelta"] = prefetchZoomDelta;
     }
-
-    return args;
+    return args.isNotEmpty ? args : null;
   }
 }

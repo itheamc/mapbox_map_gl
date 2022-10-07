@@ -1,16 +1,49 @@
 import 'package:mapbox_map_gl/src/helper/feature.dart';
 import 'package:mapbox_map_gl/src/helper/feature_collection.dart';
 import 'package:mapbox_map_gl/src/helper/promoted_id.dart';
+import 'package:mapbox_map_gl/src/sources/source.dart';
+import 'package:mapbox_map_gl/src/sources/source_properties.dart';
 
 /// GeoJsonSource Class
 /// Created by Amit Chaudhary, 2022/10/6
-class GeoJsonSource {
+class GeoJsonSource extends Source<GeoJsonSourceProperties> {
   /// A URL to a GeoJSON file, or inline GeoJSON.
   final String? data;
 
-  /// A URL to a GeoJSON file, or inline GeoJSON.
-  final String? url;
+  /// Constructor
+  GeoJsonSource({
+    required super.sourceId,
+    super.url,
+    this.data,
+    super.sourceProperties,
+  }) : assert(data != null || url != null,
+            "Please provide geoJson data or url for geoJson data");
 
+  /// Method to convert GeoJsonSource object to map
+  @override
+  Map<String, dynamic>? toMap() {
+    final args = <String, dynamic>{};
+
+    args["sourceId"] = sourceId;
+
+    if (data != null) {
+      args["data"] = data;
+    }
+
+    if (url != null) {
+      args["url"] = url;
+    }
+
+    args['sourceProperties'] =
+        (sourceProperties ?? GeoJsonSourceProperties.defaultProperties).toMap();
+
+    return args.isNotEmpty ? args : null;
+  }
+}
+
+/// GeoJsonSourceProperties Class
+/// Created by Amit Chaudhary, 2022/10/7
+class GeoJsonSourceProperties extends SourceProperties {
   /// Maximum zoom level at which to create vector tiles
   /// (higher means greater detail at high zoom
   /// Default value is 18
@@ -100,9 +133,7 @@ class GeoJsonSource {
   final Map<String, dynamic>? geometry;
 
   /// Constructor
-  GeoJsonSource({
-    this.data,
-    this.url,
+  GeoJsonSourceProperties({
     this.maxZoom,
     this.attribution,
     this.buffer,
@@ -120,17 +151,19 @@ class GeoJsonSource {
     this.geometry,
   });
 
-  /// Method to convert GeoJsonSource object to map
+  /// Getter for defaultGeoJonSourceProperties
+  static SourceProperties get defaultProperties {
+    return GeoJsonSourceProperties(
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50,
+    );
+  }
+
+  /// Method to convert GeoJsonSourceProperties object to map
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
-
-    if (data != null) {
-      args["data"] = data;
-    }
-
-    if (url != null) {
-      args["url"] = url;
-    }
 
     if (maxZoom != null) {
       args["maxZoom"] = maxZoom;

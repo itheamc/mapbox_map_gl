@@ -1,38 +1,37 @@
 import 'dart:convert';
+import 'package:mapbox_map_gl/src/layers/layer.dart';
+import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
 
 import '../../mapbox_map_gl.dart';
 
-/// RasterLayer
-class RasterLayer {
-  final String layerId;
-  final String sourceId;
-  final RasterLayerOptions? options;
-
+/// RasterLayer class
+/// Created by Amit Chaudhary, 2022/10/4
+class RasterLayer extends Layer<RasterLayerProperties> {
   /// Constructor for RasterLayer
   RasterLayer({
-    required this.layerId,
-    required this.sourceId,
-    this.options,
+    required super.layerId,
+    super.layerProperties,
   });
 
   /// Method to convert the RasterLayer Object to the
   /// Map data to pass to the native platform through args
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
-      "sourceId": sourceId,
-      "options": (options ?? RasterLayerOptions.defaultOptions).toMap(),
+      "layerProperties":
+          (layerProperties ?? RasterLayerProperties.defaultProperties).toMap(),
     };
   }
 }
 
-/// RasterLayerOptions class
+/// RasterLayerProperties class
 /// It contains all the properties for the raster layer
 /// e.g.
-/// final fillLayerOptions = RasterLayerOptions(
+/// final rasterLayerProperties = RasterLayerProperties(
 ///                             rasterBrightnessMax: 0.88,
 ///                         );
-class RasterLayerOptions {
+class RasterLayerProperties extends LayerProperties {
   /// Increase or reduce the brightness of the image.
   /// The value is the maximum brightness.
   /// Accepted data type - double or expression
@@ -130,7 +129,7 @@ class RasterLayerOptions {
   final dynamic maxZoom;
 
   /// Constructor
-  RasterLayerOptions({
+  RasterLayerProperties({
     this.rasterBrightnessMax,
     this.rasterBrightnessMaxTransition,
     this.rasterBrightnessMin,
@@ -151,9 +150,9 @@ class RasterLayerOptions {
     this.maxZoom,
   });
 
-  /// Default RasterLayerOptions
-  static RasterLayerOptions get defaultOptions {
-    return RasterLayerOptions(
+  /// Default RasterLayerProperties
+  static RasterLayerProperties get defaultProperties {
+    return RasterLayerProperties(
       rasterBrightnessMax: 1.0,
       rasterBrightnessMaxTransition: StyleTransition.build(
         delay: 300,
@@ -162,7 +161,8 @@ class RasterLayerOptions {
     );
   }
 
-  /// Method to proceeds the fill layer option for native
+  /// Method to proceeds the fill layer properties for native
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
 

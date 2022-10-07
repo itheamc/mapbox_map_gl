@@ -1,37 +1,37 @@
 import 'dart:convert';
+import 'package:mapbox_map_gl/src/layers/layer.dart';
+import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+
 import '../helper/style_transition.dart';
 
-/// FillLayer
-class FillLayer {
-  final String layerId;
-  final String sourceId;
-  final FillLayerOptions? options;
-
+/// FillLayer class
+/// Created by Amit Chaudhary, 2022/10/3
+class FillLayer extends Layer<FillLayerProperties> {
   /// Constructor for FillLayer
   FillLayer({
-    required this.layerId,
-    required this.sourceId,
-    this.options,
+    required super.layerId,
+    super.layerProperties,
   });
 
   /// Method to convert the FillLayer Object to the
   /// Map data to pass to the native platform through args
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
-      "sourceId": sourceId,
-      "options": (options ?? FillLayerOptions.defaultOptions).toMap(),
+      "layerProperties":
+          (layerProperties ?? FillLayerProperties.defaultProperties).toMap(),
     };
   }
 }
 
-/// FillLayerOptions class
+/// FillLayerProperties class
 /// It contains all the properties for the fill layer
 /// e.g.
-/// final fillLayerOptions = FillLayerOptions(
+/// final fillLayerProperties = FillLayerProperties(
 ///                             fillColor: 'red',
 ///                         );
-class FillLayerOptions {
+class FillLayerProperties extends LayerProperties {
   /// String, Int
   /// Expression
   final dynamic fillColor;
@@ -88,7 +88,7 @@ class FillLayerOptions {
   final double? minZoom;
   final bool? visibility;
 
-  FillLayerOptions({
+  FillLayerProperties({
     this.fillColor,
     this.fillColorTransition,
     this.fillAntialias,
@@ -109,9 +109,9 @@ class FillLayerOptions {
     this.visibility,
   });
 
-  /// Default FillLayerOptions
-  static FillLayerOptions get defaultOptions {
-    return FillLayerOptions(
+  /// Default fill layer properties
+  static FillLayerProperties get defaultProperties {
+    return FillLayerProperties(
       fillColor: 'blue',
       fillColorTransition: StyleTransition.build(
         delay: 300,
@@ -120,7 +120,8 @@ class FillLayerOptions {
     );
   }
 
-  /// Method to proceeds the fill layer option for native
+  /// Method to proceeds the fill layer properties for native
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
 

@@ -1,41 +1,41 @@
 import 'dart:convert';
+import 'package:mapbox_map_gl/src/layers/layer.dart';
+import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+
 import '../helper/style_transition.dart';
 
-/// CircleLayer Object
-class CircleLayer {
-  final String layerId;
-  final String sourceId;
-  final CircleLayerOptions? options;
-
+/// CircleLayer class
+/// Created by Amit Chaudhary, 2022/10/3
+class CircleLayer extends Layer<CircleLayerProperties> {
   /// Constructor for CircleLayer
   CircleLayer({
-    required this.layerId,
-    required this.sourceId,
-    this.options,
+    required super.layerId,
+    super.layerProperties,
   });
 
   /// Method to convert the CircleLayer Object to the
   /// Map data to pass to the native platform through args
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
-      "sourceId": sourceId,
-      "options": (options ?? CircleLayerOptions.defaultOptions).toMap(),
+      "layerProperties":
+          (layerProperties ?? CircleLayerProperties.defaultProperties).toMap(),
     };
   }
 }
 
-/// CircleLayerOptions class
+/// CircleLayerProperties class
 /// It contains all the properties for the circle layer
 /// e.g.
-/// final circleLayerOptions = CircleLayerOptions(
+/// final circleLayerProperties = CircleLayerProperties(
 ///                             circleColor: 'green',
 ///                             circleRadius: 10.0,
 ///                             circleStrokeWidth: 2.0,
 ///                             circleStrokeColor: "#fff",
 ///                             circleColor: 'green',
 ///                         );
-class CircleLayerOptions {
+class CircleLayerProperties extends LayerProperties {
   /// String, Int
   /// Expression
   final dynamic circleColor;
@@ -117,7 +117,8 @@ class CircleLayerOptions {
   final double? minZoom;
   final bool? visibility;
 
-  CircleLayerOptions({
+  /// Constructor
+  CircleLayerProperties({
     this.circleColor,
     this.circleColorTransition,
     this.circleRadius,
@@ -145,9 +146,9 @@ class CircleLayerOptions {
     this.visibility,
   });
 
-  /// Default Circle layer options
-  static CircleLayerOptions get defaultOptions {
-    return CircleLayerOptions(
+  /// Default Circle layer properties
+  static CircleLayerProperties get defaultProperties {
+    return CircleLayerProperties(
       circleColor: 'blue',
       circleColorTransition: StyleTransition.build(
         delay: 300,
@@ -159,7 +160,8 @@ class CircleLayerOptions {
     );
   }
 
-  /// Method to proceeds the circle layer option for native
+  /// Method to proceeds the circle layer properties for native
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
 

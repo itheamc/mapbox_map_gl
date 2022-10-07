@@ -1,40 +1,40 @@
 import 'dart:convert';
+import 'package:mapbox_map_gl/src/layers/layer.dart';
+import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+
 import '../helper/style_transition.dart';
 
-/// LineLayer Object
-class LineLayer {
-  final String layerId;
-  final String sourceId;
-  final LineLayerOptions? options;
-
+/// LineLayer class
+/// Created by Amit Chaudhary, 2022/10/3
+class LineLayer extends Layer<LineLayerProperties> {
   /// Constructor for LineLayer
   LineLayer({
-    required this.layerId,
-    required this.sourceId,
-    this.options,
+    required super.layerId,
+    super.layerProperties,
   });
 
   /// Method to convert the LineLayer Object to the
   /// Map data to pass to the native platform through args
+  @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
-      "sourceId": sourceId,
-      "options": (options ?? LineLayerOptions.defaultOptions).toMap(),
+      "layerProperties":
+          (layerProperties ?? LineLayerProperties.defaultProperties).toMap(),
     };
   }
 }
 
-/// LineLayerOptions class
+/// LineLayerProperties class
 /// It contains all the properties for the line layer
 /// e.g.
-/// final lineLayerOptions = LineLayerOptions(
+/// final lineLayerProperties = LineLayerProperties(
 ///                             lineWidth: 2.0,
 ///                             lineColor: 'red',
 ///                             lineWidth: 2.0,
 ///                             lineWidth: 2.0,
 ///                         );
-class LineLayerOptions {
+class LineLayerProperties extends LayerProperties {
   /// Double
   /// Expression
   final dynamic lineWidth;
@@ -156,7 +156,8 @@ class LineLayerOptions {
   final double? minZoom;
   final bool? visibility;
 
-  LineLayerOptions({
+  /// Constructor
+  LineLayerProperties({
     this.lineWidth,
     this.lineWidthTransition,
     this.lineColor,
@@ -190,9 +191,9 @@ class LineLayerOptions {
     this.visibility,
   });
 
-  /// Default Line Layer Options
-  static LineLayerOptions get defaultOptions {
-    return LineLayerOptions(
+  /// Default line layer properties
+  static LineLayerProperties get defaultProperties {
+    return LineLayerProperties(
       lineWidth: 2.0,
       lineColor: 'blue',
       lineCap: LineCap.round,
@@ -200,7 +201,8 @@ class LineLayerOptions {
     );
   }
 
-  /// Method to proceeds the line layer option for native
+  /// Method to proceeds the line layer properties for native
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
 

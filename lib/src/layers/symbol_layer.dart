@@ -1,37 +1,37 @@
+import 'package:mapbox_map_gl/src/layers/layer.dart';
+import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+
 import '../helper/style_transition.dart';
 
-/// SymbolLayer Object
-class SymbolLayer {
-  final String layerId;
-  final String sourceId;
-  final SymbolLayerOptions? options;
-
+/// SymbolLayer class
+/// Created by Amit Chaudhary, 2022/10/4
+class SymbolLayer extends Layer<SymbolLayerProperties> {
   /// Constructor for SymbolLayer
   SymbolLayer({
-    required this.layerId,
-    required this.sourceId,
-    this.options,
+    required super.layerId,
+    super.layerProperties,
   });
 
   /// Method to convert the SymbolLayer Object to the
   /// Map data to pass to the native platform through args
-  Map<String, dynamic> toArgs() {
+  @override
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
-      "sourceId": sourceId,
-      "options": (options ?? SymbolLayerOptions.defaultOptions).toMap(),
+      "layerProperties":
+          (layerProperties ?? SymbolLayerProperties.defaultProperties).toMap(),
     };
   }
 }
 
-/// SymbolLayerOptions class
+/// SymbolLayerProperties class
 /// It contains all the properties for the circle layer
 /// e.g.
-/// final circleLayerOptions = SymbolLayerOptions(
+/// final symbolLayerProperties = SymbolLayerProperties(
 ///                             iconImage: 'my-image-name',
 ///                             iconSize: 2.0,
 ///                         );
-class SymbolLayerOptions {
+class SymbolLayerProperties extends LayerProperties {
   /// If true, the icon will be visible even if it collides with other
   /// previously drawn symbols.
   /// Boolean - true or false or Expression
@@ -453,7 +453,8 @@ class SymbolLayerOptions {
   /// maximum: 24
   final double? maxZoom;
 
-  SymbolLayerOptions({
+  /// Constructor
+  SymbolLayerProperties({
     this.iconAllowOverlap,
     this.iconAnchor,
     this.iconIgnorePlacement,
@@ -528,15 +529,16 @@ class SymbolLayerOptions {
     this.maxZoom,
   });
 
-  /// Default Symbol Layer Options
-  static SymbolLayerOptions get defaultOptions {
-    return SymbolLayerOptions(
+  /// Default Symbol Layer properties
+  static SymbolLayerProperties get defaultProperties {
+    return SymbolLayerProperties(
         textField: ['get', 'point_count_abbreviated'],
         textSize: 12.0,
         textColor: "#fff");
   }
 
-  /// Method to proceeds the symbol layer option for native
+  /// Method to proceeds the symbol layer properties for native
+  @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
 
