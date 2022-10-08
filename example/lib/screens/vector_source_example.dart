@@ -2,30 +2,49 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
 
-import 'example3_screen.dart';
-
-class Example1Screen extends StatefulWidget {
-  const Example1Screen({Key? key}) : super(key: key);
+class VectorSourceExampleScreen extends StatefulWidget {
+  const VectorSourceExampleScreen({Key? key}) : super(key: key);
 
   @override
-  State<Example1Screen> createState() => _Example1ScreenState();
+  State<VectorSourceExampleScreen> createState() =>
+      _VectorSourceExampleScreenState();
 }
 
-class _Example1ScreenState extends State<Example1Screen> {
+class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
   void _onMapCreated(MapboxMapController controller) {
     _controller = controller;
-    if (kDebugMode) {
-      print("[ON MAP CREATED]------->");
-    }
   }
 
-  /// Method to toggle theme mode
-  /// Satellite and Street
-  Future<void> _toggleMode() async {
-    // await _controller?.toggleBetween(dark: true);
+  Future<void> _addVectorSource() async {
+    _controller
+        ?.addSource<VectorSource>(
+      source: VectorSource(
+        sourceId: "my-line-data-source",
+        tiles: [
+          "https://cleanup.naxa.com.np/api/v1/core/maps/vector_layer/{z}/{x}/{y}/?layer_id=3"
+        ],
+      ),
+    )
+        .then((value) {
+      _addLineLayer();
+    });
+  }
+
+  Future<void> _addLineLayer() async {
+    await _controller?.addLayer<LineLayer>(
+      layer: LineLayer(
+          layerId: "line-layer-id",
+          sourceId: "my-line-data-source",
+          layerProperties: LineLayerProperties(
+              lineColor: "purple",
+              lineWidth: 3.5,
+              lineJoin: LineJoin.round,
+              lineCap: LineCap.round,
+              sourceLayer: "routes")),
+    );
   }
 
   @override
@@ -36,22 +55,9 @@ class _Example1ScreenState extends State<Example1Screen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton.small(
+              onPressed: _addVectorSource,
               child: const Icon(
-                Icons.alt_route,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const Example3Screen(),
-                  ),
-                );
-              },
-            ),
-            FloatingActionButton.small(
-              onPressed: _toggleMode,
-              child: const Icon(
-                Icons.toggle_off_outlined,
+                Icons.layers,
                 color: Colors.white,
               ),
             ),
@@ -60,7 +66,7 @@ class _Example1ScreenState extends State<Example1Screen> {
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
             center: Point.fromLatLng(27.837785, 82.538961),
-            zoom: 15.0,
+            zoom: 5.0,
             // anchor: ScreenCoordinate(120.0, 200.0),
             animationOptions: AnimationOptions.mapAnimationOptions(
               startDelay: 300,

@@ -20,48 +20,66 @@ class _Example3ScreenState extends State<Example3Screen> {
   }
 
   Future<void> _addGeoJson() async {
-    await _controller?.addGeoJsonSource(
-      sourceId: "my-geojson-source",
-      layerId: "my-layer",
-      circleLayer: CircleLayer(
-        layerId: "layerId",
-        sourceId: "sourceId",
-        options: CircleLayerOptions(
-            circleColor: [
-              'case',
-              [
-                'boolean',
-                ['has', 'point_count'],
-                true
-              ],
-              'red',
-              'blue'
+    _controller?.addSource<GeoJsonSource>(
+      source: GeoJsonSource(
+        sourceId: "my-data-source",
+        url:
+            "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_land_ocean_label_points.geojson",
+        sourceProperties: GeoJsonSourceProperties(
+            cluster: true, clusterRadius: 50, clusterMaxZoom: 14, maxZoom: 20),
+      ),
+    ).then((value) {
+      _addCircleLayer();
+    });
+  }
+
+  Future<void> _addCircleLayer() async {
+    await _controller?.addLayer<CircleLayer>(
+      layer: CircleLayer(
+        layerId: "my-layer-id",
+        sourceId: "my-data-source",
+        layerProperties: CircleLayerProperties(
+          circleColor: [
+            'case',
+            [
+              'boolean',
+              ['has', 'point_count'],
+              true
             ],
-            circleColorTransition: StyleTransition.build(
-              delay: 500,
-              duration: const Duration(milliseconds: 1000),
-            ),
-            circleRadius: [
-              'case',
-              [
-                'boolean',
-                ['has', 'point_count'],
-                true
-              ],
-              15,
-              10
+            'red',
+            'blue'
+          ],
+          circleColorTransition: StyleTransition.build(
+            delay: 500,
+            duration: const Duration(milliseconds: 1000),
+          ),
+          circleRadius: [
+            'case',
+            [
+              'boolean',
+              ['has', 'point_count'],
+              true
             ],
-            circleStrokeWidth: [
-              'case',
-              [
-                'boolean',
-                ['has', 'point_count'],
-                true
-              ],
-              4.5,
-              2
+            15,
+            10
+          ],
+          circleStrokeWidth: [
+            'case',
+            [
+              'boolean',
+              ['has', 'point_count'],
+              true
             ],
-            circleStrokeColor: "#fff"),
+            3,
+            2
+          ],
+          circleStrokeColor: "#fff",
+          circleTranslate: [-5, -5],
+          circleTranslateTransition: StyleTransition.build(
+            delay: 0,
+            duration: const Duration(milliseconds: 1000),
+          ),
+        ),
       ),
     );
   }
@@ -89,7 +107,7 @@ class _Example3ScreenState extends State<Example3Screen> {
             FloatingActionButton.small(
               onPressed: _addGeoJson,
               child: const Icon(
-                Icons.place,
+                Icons.layers,
                 color: Colors.white,
               ),
             ),
@@ -107,9 +125,7 @@ class _Example3ScreenState extends State<Example3Screen> {
           ),
           onMapCreated: _onMapCreated,
           onStyleLoaded: () {
-            if (kDebugMode) {
-              print("[Method Call -> onStyleLoaded] ---> From _MyAppState");
-            }
+            _addGeoJson();
           },
           onStyleLoadError: (err) {
             if (kDebugMode) {
