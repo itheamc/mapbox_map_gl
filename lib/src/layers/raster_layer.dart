@@ -10,6 +10,7 @@ class RasterLayer extends Layer<RasterLayerProperties> {
   /// Constructor for RasterLayer
   RasterLayer({
     required super.layerId,
+    required super.sourceId,
     super.layerProperties,
   });
 
@@ -19,6 +20,7 @@ class RasterLayer extends Layer<RasterLayerProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
+      "sourceId": sourceId,
       "layerProperties":
           (layerProperties ?? RasterLayerProperties.defaultProperties).toMap(),
     };

@@ -10,6 +10,7 @@ class CircleLayer extends Layer<CircleLayerProperties> {
   /// Constructor for CircleLayer
   CircleLayer({
     required super.layerId,
+    required super.sourceId,
     super.layerProperties,
   });
 
@@ -19,6 +20,7 @@ class CircleLayer extends Layer<CircleLayerProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
+      "sourceId": sourceId,
       "layerProperties":
           (layerProperties ?? CircleLayerProperties.defaultProperties).toMap(),
     };

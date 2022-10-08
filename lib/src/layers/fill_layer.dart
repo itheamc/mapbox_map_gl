@@ -10,6 +10,7 @@ class FillLayer extends Layer<FillLayerProperties> {
   /// Constructor for FillLayer
   FillLayer({
     required super.layerId,
+    required super.sourceId,
     super.layerProperties,
   });
 
@@ -19,6 +20,7 @@ class FillLayer extends Layer<FillLayerProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
+      "sourceId": sourceId,
       "layerProperties":
           (layerProperties ?? FillLayerProperties.defaultProperties).toMap(),
     };

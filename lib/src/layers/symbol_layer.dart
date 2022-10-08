@@ -9,6 +9,7 @@ class SymbolLayer extends Layer<SymbolLayerProperties> {
   /// Constructor for SymbolLayer
   SymbolLayer({
     required super.layerId,
+    required super.sourceId,
     super.layerProperties,
   });
 
@@ -18,6 +19,7 @@ class SymbolLayer extends Layer<SymbolLayerProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
+      "sourceId": sourceId,
       "layerProperties":
           (layerProperties ?? SymbolLayerProperties.defaultProperties).toMap(),
     };

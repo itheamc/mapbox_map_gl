@@ -10,6 +10,7 @@ class LineLayer extends Layer<LineLayerProperties> {
   /// Constructor for LineLayer
   LineLayer({
     required super.layerId,
+    required super.sourceId,
     super.layerProperties,
   });
 
@@ -19,6 +20,7 @@ class LineLayer extends Layer<LineLayerProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "layerId": layerId,
+      "sourceId": sourceId,
       "layerProperties":
           (layerProperties ?? LineLayerProperties.defaultProperties).toMap(),
     };

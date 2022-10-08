@@ -1,6 +1,9 @@
 /// Abstract Layer class
 /// Created by Amit Chaudhary, 2022/10/7
 abstract class Layer<T> {
+  /// [sourceId] - Id of the source on which you apply to this layer
+  final String sourceId;
+
   /// [layerId] - An unique identifier for the style layer
   final String layerId;
 
@@ -11,6 +14,7 @@ abstract class Layer<T> {
   /// Constructor
   Layer({
     required this.layerId,
+    required this.sourceId,
     this.layerProperties,
   });
 
