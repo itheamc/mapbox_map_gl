@@ -1,5 +1,6 @@
-import 'package:mapbox_map_gl/src/layers/layer.dart';
-import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+import 'dart:convert';
+import 'layer.dart';
+import 'layer_properties.dart';
 
 import '../helper/style_transition.dart';
 
@@ -543,6 +544,413 @@ class SymbolLayerProperties extends LayerProperties {
   @override
   Map<String, dynamic>? toMap() {
     final args = <String, dynamic>{};
+
+    if (iconAllowOverlap != null) {
+      args['iconAllowOverlap'] = iconAllowOverlap is List
+          ? jsonEncode(iconAllowOverlap)
+          : iconAllowOverlap;
+    }
+
+    if (iconAnchor != null &&
+        (iconAnchor is IconAnchor || iconAnchor is List)) {
+      args['iconAnchor'] = iconAnchor is IconAnchor
+          ? _iconAnchorAsString((iconAnchor as IconAnchor))
+          : iconAnchor is List
+              ? jsonEncode(iconAnchor)
+              : iconAnchor;
+    }
+
+    if (iconIgnorePlacement != null) {
+      args['iconIgnorePlacement'] = iconIgnorePlacement is List
+          ? jsonEncode(iconIgnorePlacement)
+          : iconIgnorePlacement;
+    }
+
+    if (iconImage != null) {
+      args['iconImage'] = iconImage is List ? jsonEncode(iconImage) : iconImage;
+    }
+
+    if (iconKeepUpright != null) {
+      args['iconKeepUpright'] = iconKeepUpright is List
+          ? jsonEncode(iconKeepUpright)
+          : iconKeepUpright;
+    }
+
+    if (iconOffset != null && iconOffset is List) {
+      args['iconOffset'] =
+          iconOffset is List<double> ? iconOffset : jsonEncode(iconOffset);
+    }
+
+    if (iconOptional != null) {
+      args['iconOptional'] =
+          iconOptional is List ? jsonEncode(iconOptional) : iconOptional;
+    }
+
+    if (iconPadding != null) {
+      args['iconPadding'] =
+          iconPadding is List ? jsonEncode(iconPadding) : iconPadding;
+    }
+
+    if (iconPitchAlignment != null &&
+        (iconPitchAlignment is IconPitchAlignment ||
+            iconPitchAlignment is List)) {
+      args['iconPitchAlignment'] = iconPitchAlignment is IconPitchAlignment
+          ? (iconPitchAlignment as IconPitchAlignment).name
+          : iconPitchAlignment is List
+              ? jsonEncode(iconPitchAlignment)
+              : iconPitchAlignment;
+    }
+
+    if (iconRotate != null) {
+      args['iconRotate'] =
+          iconRotate is List ? jsonEncode(iconRotate) : iconRotate;
+    }
+
+    if (iconRotationAlignment != null &&
+        (iconRotationAlignment is IconRotationAlignment ||
+            iconRotationAlignment is List)) {
+      args['iconRotationAlignment'] =
+          iconRotationAlignment is IconRotationAlignment
+              ? (iconRotationAlignment as IconRotationAlignment).name
+              : iconRotationAlignment is List
+                  ? jsonEncode(iconRotationAlignment)
+                  : iconRotationAlignment;
+    }
+
+    if (iconSize != null) {
+      args['iconSize'] = iconSize is List ? jsonEncode(iconSize) : iconSize;
+    }
+
+    if (iconTextFit != null &&
+        (iconTextFit is IconTextFit || iconTextFit is List)) {
+      args['iconTextFit'] = iconTextFit is IconTextFit
+          ? (iconTextFit as IconTextFit).name
+          : iconTextFit is List
+              ? jsonEncode(iconTextFit)
+              : iconTextFit;
+    }
+
+    if (iconTextFitPadding != null && iconTextFitPadding is List) {
+      args['iconTextFitPadding'] = iconTextFitPadding is List<double>
+          ? iconTextFitPadding
+          : jsonEncode(iconTextFitPadding);
+    }
+
+    if (symbolAvoidEdges != null) {
+      args['symbolAvoidEdges'] = symbolAvoidEdges is List
+          ? jsonEncode(symbolAvoidEdges)
+          : symbolAvoidEdges;
+    }
+
+    if (symbolPlacement != null &&
+        (symbolPlacement is SymbolPlacement || symbolPlacement is List)) {
+      args['symbolPlacement'] = symbolPlacement is SymbolPlacement
+          ? _symbolPlacementAsString((symbolPlacement as SymbolPlacement))
+          : symbolPlacement is List
+              ? jsonEncode(symbolPlacement)
+              : symbolPlacement;
+    }
+
+    if (symbolSortKey != null) {
+      args['symbolSortKey'] =
+          symbolSortKey is List ? jsonEncode(symbolSortKey) : symbolSortKey;
+    }
+
+    if (symbolSpacing != null) {
+      args['symbolSpacing'] =
+          symbolSpacing is List ? jsonEncode(symbolSpacing) : symbolSpacing;
+    }
+
+    if (symbolZOrder != null &&
+        (symbolZOrder is SymbolZOrder || symbolZOrder is List)) {
+      args['symbolZOrder'] = symbolZOrder is SymbolZOrder
+          ? _symbolZOrderAsString((symbolZOrder as SymbolZOrder))
+          : symbolZOrder is List
+              ? jsonEncode(symbolZOrder)
+              : symbolZOrder;
+    }
+
+    if (textAllowOverlap != null) {
+      args['textAllowOverlap'] = textAllowOverlap is List
+          ? jsonEncode(textAllowOverlap)
+          : textAllowOverlap;
+    }
+
+    if (textAnchor != null &&
+        (textAnchor is TextAnchor || textAnchor is List)) {
+      args['textAnchor'] = textAnchor is TextAnchor
+          ? _textAnchorAsString((textAnchor as TextAnchor))
+          : textAnchor is List
+              ? jsonEncode(textAnchor)
+              : textAnchor;
+    }
+
+    if (textField != null) {
+      args['textField'] = textField is List ? jsonEncode(textField) : textField;
+    }
+
+    if (textFont != null && textFont is List) {
+      args['textFont'] =
+          textFont is List<String> ? textFont : jsonEncode(textFont);
+    }
+
+    if (textIgnorePlacement != null) {
+      args['textIgnorePlacement'] = textIgnorePlacement is List
+          ? jsonEncode(textIgnorePlacement)
+          : textIgnorePlacement;
+    }
+
+    if (textJustify != null) {
+      args['textJustify'] =
+          textJustify is List ? jsonEncode(textJustify) : textJustify;
+    }
+
+    if (textKeepUpright != null) {
+      args['textKeepUpright'] = textKeepUpright is List
+          ? jsonEncode(textKeepUpright)
+          : textKeepUpright;
+    }
+
+    if (textLetterSpacing != null) {
+      args['textLetterSpacing'] = textLetterSpacing is List
+          ? jsonEncode(textLetterSpacing)
+          : textLetterSpacing;
+    }
+
+    if (textLineHeight != null) {
+      args['textLineHeight'] =
+          textLineHeight is List ? jsonEncode(textLineHeight) : textLineHeight;
+    }
+
+    if (textMaxAngle != null) {
+      args['textMaxAngle'] =
+          textMaxAngle is List ? jsonEncode(textMaxAngle) : textMaxAngle;
+    }
+
+    if (textMaxWidth != null) {
+      args['textMaxWidth'] =
+          textMaxWidth is List ? jsonEncode(textMaxWidth) : textMaxWidth;
+    }
+
+    if (textOffset != null && textOffset is List) {
+      args['textOffset'] =
+          textOffset is List<double> ? textOffset : jsonEncode(textOffset);
+    }
+
+    if (textOptional != null) {
+      args['textOptional'] =
+          textOptional is List ? jsonEncode(textOptional) : textOptional;
+    }
+
+    if (textPadding != null) {
+      args['textPadding'] =
+          textPadding is List ? jsonEncode(textPadding) : textPadding;
+    }
+
+    if (textPitchAlignment != null &&
+        (textPitchAlignment is TextPitchAlignment ||
+            textPitchAlignment is List)) {
+      args['textPitchAlignment'] = textPitchAlignment is TextPitchAlignment
+          ? (textPitchAlignment as TextPitchAlignment).name
+          : textPitchAlignment is List
+              ? jsonEncode(textPitchAlignment)
+              : textPitchAlignment;
+    }
+
+    if (textRadialOffset != null) {
+      args['textRadialOffset'] = textRadialOffset is List
+          ? jsonEncode(textRadialOffset)
+          : textRadialOffset;
+    }
+
+    if (textRotate != null) {
+      args['textRotate'] =
+          textRotate is List ? jsonEncode(textRotate) : textRotate;
+    }
+
+    if (textRotationAlignment != null &&
+        (textRotationAlignment is TextRotationAlignment ||
+            textRotationAlignment is List)) {
+      args['textRotationAlignment'] =
+          textRotationAlignment is TextRotationAlignment
+              ? (textRotationAlignment as TextRotationAlignment).name
+              : textRotationAlignment is List
+                  ? jsonEncode(textRotationAlignment)
+                  : textRotationAlignment;
+    }
+
+    if (textSize != null) {
+      args['textSize'] = textSize is List ? jsonEncode(textSize) : textSize;
+    }
+
+    if (textTransform != null &&
+        (textTransform is TextTransform || textTransform is List)) {
+      args['textTransform'] = textTransform is TextTransform
+          ? (textTransform as TextTransform).name
+          : textTransform is List
+              ? jsonEncode(textTransform)
+              : textTransform;
+    }
+
+    if (textVariableAnchor != null && textVariableAnchor is List) {
+      args['textVariableAnchor'] = textVariableAnchor is List<String>
+          ? textVariableAnchor
+          : jsonEncode(textVariableAnchor);
+    }
+
+    if (textWritingMode != null && textWritingMode is List) {
+      args['textWritingMode'] = textWritingMode is List<String>
+          ? textWritingMode
+          : jsonEncode(textWritingMode);
+    }
+
+    if (iconColor != null) {
+      args['iconColor'] = iconColor is List ? jsonEncode(iconColor) : iconColor;
+    }
+
+    if (iconColorTransition != null) {
+      args['iconColorTransition'] = iconColorTransition?.toMap();
+    }
+
+    if (iconHaloBlur != null) {
+      args['iconHaloBlur'] =
+          iconHaloBlur is List ? jsonEncode(iconHaloBlur) : iconHaloBlur;
+    }
+
+    if (iconHaloBlurTransition != null) {
+      args['iconHaloBlurTransition'] = iconHaloBlurTransition?.toMap();
+    }
+
+    if (iconHaloColor != null) {
+      args['iconHaloColor'] =
+          iconHaloColor is List ? jsonEncode(iconHaloColor) : iconHaloColor;
+    }
+
+    if (iconHaloColorTransition != null) {
+      args['iconHaloColorTransition'] = iconHaloColorTransition?.toMap();
+    }
+
+    if (iconHaloWidth != null) {
+      args['iconHaloWidth'] =
+          iconHaloWidth is List ? jsonEncode(iconHaloWidth) : iconHaloWidth;
+    }
+
+    if (iconHaloWidthTransition != null) {
+      args['iconHaloWidthTransition'] = iconHaloWidthTransition?.toMap();
+    }
+
+    if (iconOpacity != null) {
+      args['iconOpacity'] =
+          iconOpacity is List ? jsonEncode(iconOpacity) : iconOpacity;
+    }
+
+    if (iconOpacityTransition != null) {
+      args['iconOpacityTransition'] = iconOpacityTransition?.toMap();
+    }
+
+    if (iconTranslate != null && iconTranslate is List) {
+      args['iconTranslate'] = iconTranslate is List<double>
+          ? iconTranslate
+          : jsonEncode(iconTranslate);
+    }
+
+    if (iconTranslateTransition != null) {
+      args['iconTranslateTransition'] = iconTranslateTransition?.toMap();
+    }
+
+    if (iconTranslateAnchor != null &&
+        (iconTranslateAnchor is IconTranslateAnchor ||
+            iconTranslateAnchor is List)) {
+      args['iconTranslateAnchor'] = iconTranslateAnchor is IconTranslateAnchor
+          ? (iconTranslateAnchor as IconTranslateAnchor).name
+          : iconTranslateAnchor is List
+              ? jsonEncode(iconTranslateAnchor)
+              : iconTranslateAnchor;
+    }
+
+    if (textColor != null) {
+      args['textColor'] = textColor is List ? jsonEncode(textColor) : textColor;
+    }
+
+    if (textColorTransition != null) {
+      args['textColorTransition'] = textColorTransition?.toMap();
+    }
+
+    if (textHaloBlur != null) {
+      args['textHaloBlur'] =
+          textHaloBlur is List ? jsonEncode(textHaloBlur) : textHaloBlur;
+    }
+
+    if (textHaloBlurTransition != null) {
+      args['textHaloBlurTransition'] = textHaloBlurTransition?.toMap();
+    }
+
+    if (textHaloColor != null) {
+      args['textHaloColor'] =
+          textHaloColor is List ? jsonEncode(textHaloColor) : textHaloColor;
+    }
+
+    if (textHaloColorTransition != null) {
+      args['textHaloColorTransition'] = textHaloColorTransition?.toMap();
+    }
+
+    if (textHaloWidth != null) {
+      args['textHaloWidth'] =
+          textHaloWidth is List ? jsonEncode(textHaloWidth) : textHaloWidth;
+    }
+
+    if (textHaloWidthTransition != null) {
+      args['textHaloWidthTransition'] = textHaloWidthTransition?.toMap();
+    }
+
+    if (textOpacity != null) {
+      args['textOpacity'] =
+          textOpacity is List ? jsonEncode(textOpacity) : textOpacity;
+    }
+
+    if (textOpacityTransition != null) {
+      args['textOpacityTransition'] = textOpacityTransition?.toMap();
+    }
+
+    if (textTranslate != null && textTranslate is List) {
+      args['textTranslate'] = textTranslate is List<double>
+          ? textTranslate
+          : jsonEncode(textTranslate);
+    }
+
+    if (textTranslateTransition != null) {
+      args['textTranslateTransition'] = textTranslateTransition?.toMap();
+    }
+
+    if (textTranslateAnchor != null &&
+        (textTranslateAnchor is TextTranslateAnchor ||
+            textTranslateAnchor is List)) {
+      args['textTranslateAnchor'] = textTranslateAnchor is TextTranslateAnchor
+          ? (textTranslateAnchor as TextTranslateAnchor).name
+          : textTranslateAnchor is List
+              ? jsonEncode(textTranslateAnchor)
+              : textTranslateAnchor;
+    }
+
+    if (sourceLayer != null) {
+      args['sourceLayer'] = sourceLayer;
+    }
+
+    if (filter != null && filter is List) {
+      args['filter'] = jsonEncode(filter);
+    }
+
+    if (maxZoom != null) {
+      args['maxZoom'] = maxZoom;
+    }
+
+    if (minZoom != null) {
+      args['minZoom'] = minZoom;
+    }
+
+    if (visibility != null) {
+      args['visibility'] = visibility;
+    }
 
     return args.isNotEmpty ? args : null;
   }

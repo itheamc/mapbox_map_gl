@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:mapbox_map_gl/src/layers/layer.dart';
-import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+import 'layer.dart';
+import 'layer_properties.dart';
 
 import '../helper/style_transition.dart';
 
@@ -37,39 +37,70 @@ class LineLayer extends Layer<LineLayerProperties> {
 ///                             lineWidth: 2.0,
 ///                         );
 class LineLayerProperties extends LayerProperties {
-  /// Double
-  /// Expression
+  /// Stroke thickness.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 1.0
   final dynamic lineWidth;
 
-  /// StyleTransition
+  /// StyleTransition for line width
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineWidthTransition;
 
-  /// String, Int
-  /// Expression
+  /// The color with which the line will be drawn.
+  /// Accepted data type:
+  /// - String,
+  /// - int and
+  /// - Expression
+  /// default value is '#000000'
   final dynamic lineColor;
 
-  /// StyleTransition
+  /// StyleTransition for line color
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineColorTransition;
 
-  /// Double
-  /// Expression
+  /// Blur applied to the line, in pixels.
+  /// Accepted data type:
+  /// - double and
+  /// - Expression
+  /// default value is 0.0
   final dynamic lineBlur;
 
-  /// StyleTransition
+  /// StyleTransition for line blur
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineBlurTransition;
 
-  /// List<Double>
-  /// Expression
+  /// Specifies the lengths of the alternating dashes and gaps that form
+  /// the dash pattern. The lengths are later scaled by the line width.
+  /// To convert a dash length to pixels, multiply the length by the current
+  /// line width. Note that GeoJSON sources with lineMetrics: true specified
+  /// won't render dashed lines to the expected scale. Also note that
+  /// zoom-dependent expressions will be evaluated only at integer zoom levels.
+  /// Accepted data type:
+  /// - List<Double> and
+  /// - Expression
   final dynamic lineDashArray;
 
-  /// StyleTransition
+  /// StyleTransition for dash array
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineDashArrayTransition;
 
-  /// Double
-  /// Expression
+  /// Draws a line casing outside of a line's actual path. Value indicates
+  /// the width of the inner gap.
+  /// Accepted data type:
+  /// - double and
+  /// - Expression
+  /// default value is 0.0
   final dynamic lineGapWidth;
 
-  /// StyleTransition
+  /// StyleTransition for line gap width
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineGapWidthTransition;
 
   /// Expression
@@ -93,70 +124,151 @@ class LineLayerProperties extends LayerProperties {
   ///  ]
   final dynamic lineGradient;
 
-  /// Double
-  /// Expression
+  /// Used to automatically convert miter joins to bevel joins for sharp angles.
+  /// Accepted data type:
+  /// - double and
+  /// - Expression
+  /// default value is 2.0
   final dynamic lineMiterLimit;
 
-  /// Double
-  /// Expression
+  /// The line's offset. For linear features, a positive value offsets
+  /// the line to the right, relative to the direction of the line, and
+  /// a negative value to the left. For polygon features, a positive value
+  /// results in an inset, and a negative value results in an outset.
+  /// Accepted data type:
+  /// - double and
+  /// - Expression
+  /// default value is 0.0
   final dynamic lineOffset;
 
-  /// StyleTransition
+  /// StyleTransition for line offset
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineOffsetTransition;
 
-  /// Double
-  /// Expression
+  /// The opacity at which the line will be drawn.
+  /// Accepted data type:
+  /// - double and
+  /// - Expression
+  /// default value is 1.0
   final dynamic lineOpacity;
 
-  /// StyleTransition
+  /// StyleTransition for line opacity
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineOpacityTransition;
 
-  /// String
-  /// Expression
+  /// Name of image in sprite to use for drawing image lines.
+  /// For seamless patterns, image width must be a factor of two
+  /// (2, 4, 8, ..., 512). Note that zoom-dependent expressions will be
+  /// evaluated only at integer zoom levels.
+  /// Accepted data type:
+  /// - String and
+  /// - Expression
   final dynamic linePattern;
 
-  /// StyleTransition
+  /// StyleTransition for linePattern
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? linePatternTransition;
 
-  /// Double
-  /// Expression
+  /// Used to automatically convert round joins to miter joins
+  /// for shallow angles.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 1.05
   final dynamic lineRoundLimit;
 
-  /// Double
-  /// Expression
+  /// Sorts features in ascending order based on this value. Features with
+  /// a higher sort key will appear above features with a lower sort key.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
   final dynamic lineSortKey;
 
-  /// List<Double>
-  /// Expression
+  /// The geometry's offset. Values are x, y where negatives indicate
+  /// left and up, respectively
+  /// Accepted data type:
+  /// - List<Double> and
+  /// - Expression
+  /// default value is [0.0, 0.0]
   final dynamic lineTranslate;
 
-  /// StyleTransition
+  /// StyleTransition for lineTranslate
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? lineTranslateTransition;
 
-  /// LineTranslateAnchor
-  /// Expression
+  /// Controls the frame of reference for line-translate.
+  /// Accepted data type:
+  /// - LineTranslateAnchor
+  /// - Expression
+  /// default value is LineTranslateAnchor.map
   final dynamic lineTranslateAnchor;
 
-  /// List<Double>
-  /// Expression
+  /// The line part between trim-start, trim-end will be marked as transparent
+  /// to make a route vanishing effect. The line trim-off offset is based
+  /// on the whole line range 0.0, 1.0.
+  /// Accepted data type:
+  /// - List<Double> and
+  /// - Expression
+  /// default value is [0.0, 0.0]
   final dynamic lineTrimOffset;
 
-  /// LineCap
-  /// Expression
+  /// The display of line endings.
+  /// Accepted data type:
+  /// - LineCap and
+  /// - Expression
+  /// default value is LineCap.butt
   final dynamic lineCap;
 
-  /// LineJoin
-  /// Expression
+  /// The display of lines when joining.
+  /// Accepted data type:
+  /// - LineJoin and
+  /// - Expression
+  /// default value is LineJoin.miter
   final dynamic lineJoin;
 
-  /// String
+  /// A source layer is an individual layer of data within a vector source.
+  /// A vector source can have multiple source layers.
+  /// Accepted data type:
+  /// - String
   final String? sourceLayer;
+
+  /// A filter is a property at the layer level that determines which features
+  /// should be rendered in a style layer.
+  /// Filters are written as expressions, which give you fine-grained control
+  /// over which features to include: the style layer only displays the
+  /// features that match the filter condition that you define.
+  /// Note: Zoom expressions in filters are only evaluated at integer zoom
+  /// levels. The feature-state expression is not supported in filter
+  /// expressions.
+  /// Accepted data type - Expression
   final dynamic filter;
 
-  /// Double
-  final double? maxZoom;
-  final double? minZoom;
-  final bool? visibility;
+  /// Whether this layer is displayed.
+  /// Accepted data type - bool
+  /// default value is true
+  final dynamic visibility;
+
+  /// The minimum zoom level for the layer. At zoom levels less than
+  /// the min-zoom, the layer will be hidden.
+  /// Accepted data type - double
+  /// Range:
+  ///       minimum: 0
+  ///       maximum: 24
+  ///
+  final dynamic minZoom;
+
+  /// The maximum zoom level for the layer. At zoom levels equal to or
+  /// greater than the max-zoom, the layer will be hidden.
+  /// Accepted data type - double
+  /// Range:
+  ///       minimum: 0
+  ///       maximum: 24
+  ///
+  final dynamic maxZoom;
 
   /// Constructor
   LineLayerProperties({
@@ -343,7 +455,7 @@ class LineLayerProperties extends LayerProperties {
       args['sourceLayer'] = sourceLayer;
     }
 
-    if (filter != null) {
+    if (filter != null && filter is List) {
       args['filter'] = jsonEncode(filter);
     }
 

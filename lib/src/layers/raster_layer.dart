@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:mapbox_map_gl/src/layers/layer.dart';
-import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+import '../helper/style_transition.dart';
+import 'layer.dart';
+import 'layer_properties.dart';
 
-import '../../mapbox_map_gl.dart';
 
 /// RasterLayer class
 /// Created by Amit Chaudhary, 2022/10/4
@@ -224,7 +224,8 @@ class RasterLayerProperties extends LayerProperties {
       args['rasterOpacityTransition'] = rasterOpacityTransition?.toMap();
     }
 
-    if (rasterResampling != null) {
+    if (rasterResampling != null &&
+        (rasterResampling is RasterResampling || rasterResampling is List)) {
       args['rasterResampling'] = rasterResampling is RasterResampling
           ? (rasterResampling as RasterResampling).name
           : rasterResampling is List

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:mapbox_map_gl/src/layers/layer.dart';
-import 'package:mapbox_map_gl/src/layers/layer_properties.dart';
+import 'layer.dart';
+import 'layer_properties.dart';
 
 import '../helper/style_transition.dart';
 
@@ -38,86 +38,174 @@ class CircleLayer extends Layer<CircleLayerProperties> {
 ///                             circleColor: 'green',
 ///                         );
 class CircleLayerProperties extends LayerProperties {
-  /// String, Int
-  /// Expression
+  /// The fill color of the circle.
+  /// Accepted data type:
+  /// - String,
+  /// - Int and
+  /// - Expression
+  /// default value is '#0000'
   final dynamic circleColor;
 
-  /// StyleTransition
+  /// StyleTransition for circleColor
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleColorTransition;
 
-  /// Double
-  /// Expression
+  /// Circle radius.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 5.0
   final dynamic circleRadius;
 
-  /// StyleTransition
+  /// StyleTransition for circleRadius
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleRadiusTransition;
 
-  /// Double
-  /// Expression
+  /// Amount to blur the circle. 1 blurs the circle such that only the
+  /// center point is full opacity.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 0.0
   final dynamic circleBlur;
 
-  /// StyleTransition
+  /// StyleTransition for circleBlur
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleBlurTransition;
 
-  /// Double
-  /// Expression
+  /// The opacity at which the circle will be drawn.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 1.0
   final dynamic circleOpacity;
 
-  /// StyleTransition
+  /// StyleTransition for circleOpacity
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleOpacityTransition;
 
-  /// String, Int
-  /// Expression
+  /// The stroke color of the circle.
+  /// Accepted data type:
+  /// - String
+  /// - Int and
+  /// - Expression
+  /// default value is '#000'
   final dynamic circleStrokeColor;
 
-  /// StyleTransition
+  /// StyleTransition for circleStrokeColor
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleStrokeColorTransition;
 
-  /// Double
-  /// Expression
+  /// The width of the circle's stroke. Strokes are placed outside
+  /// of the circle-radius.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 0.0
   final dynamic circleStrokeWidth;
 
-  /// StyleTransition
+  /// StyleTransition for circleStrokeWidth
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleStrokeWidthTransition;
 
-  /// Double
-  /// Expression
+  /// The opacity of the circle's stroke
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
+  /// default value is 1.0
   final dynamic circleStrokeOpacity;
 
-  /// StyleTransition
+  /// StyleTransition for circleStrokeOpacity
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleStrokeOpacityTransition;
 
-  /// CirclePitchScale
-  /// Expression
+  /// Controls the scaling behavior of the circle when the map is pitched
+  /// Accepted data type:
+  /// - CirclePitchScale and
+  /// - Expression
+  /// default value is CirclePitchScale.map
   final dynamic circlePitchScale;
 
-  /// CirclePitchAlignment
-  /// Expression
+  /// Orientation of circle when map is pitched.
+  /// Accepted data type:
+  /// - CirclePitchAlignment and
+  /// - Expression
+  /// default value is CirclePitchAlignment.viewport
   final dynamic circlePitchAlignment;
 
-  /// Double
-  /// Expression
+  /// Sorts features in ascending order based on this value.
+  /// Features with a higher sort key will appear above features
+  /// with a lower sort key.
+  /// Accepted data type:
+  /// - Double and
+  /// - Expression
   final dynamic circleSortKey;
 
-  /// List<Double>
-  /// Expression
+  /// The geometry's offset. Values are x, y where negatives indicate
+  /// left and up, respectively.
+  /// Accepted data type:
+  /// - List<Double> and
+  /// - Expression
   final dynamic circleTranslate;
 
-  /// StyleTransition
+  /// StyleTransition for circleTranslate
+  /// Accepted data type:
+  /// - StyleTransition
   final StyleTransition? circleTranslateTransition;
 
-  /// CircleTranslateAnchor
-  /// Expression
+  /// Controls the frame of reference for circle-translate
+  /// Accepted data type:
+  /// - CircleTranslateAnchor and
+  /// - Expression
+  /// default value is CircleTranslateAnchor.map
   final dynamic circleTranslateAnchor;
 
-  /// String
+  /// A source layer is an individual layer of data within a vector source.
+  /// A vector source can have multiple source layers.
+  /// Accepted data type:
+  /// - String
   final String? sourceLayer;
+
+  /// A filter is a property at the layer level that determines which features
+  /// should be rendered in a style layer.
+  /// Filters are written as expressions, which give you fine-grained control
+  /// over which features to include: the style layer only displays the
+  /// features that match the filter condition that you define.
+  /// Note: Zoom expressions in filters are only evaluated at integer zoom
+  /// levels. The feature-state expression is not supported in filter
+  /// expressions.
+  /// Accepted data type - Expression
   final dynamic filter;
 
-  /// Double
-  final double? maxZoom;
-  final double? minZoom;
-  final bool? visibility;
+  /// Whether this layer is displayed.
+  /// Accepted data type - bool
+  /// default value is true
+  final dynamic visibility;
+
+  /// The minimum zoom level for the layer. At zoom levels less than
+  /// the min-zoom, the layer will be hidden.
+  /// Accepted data type - double
+  /// Range:
+  ///       minimum: 0
+  ///       maximum: 24
+  ///
+  final dynamic minZoom;
+
+  /// The maximum zoom level for the layer. At zoom levels equal to or
+  /// greater than the max-zoom, the layer will be hidden.
+  /// Accepted data type - double
+  /// Range:
+  ///       minimum: 0
+  ///       maximum: 24
+  ///
+  final dynamic maxZoom;
 
   /// Constructor
   CircleLayerProperties({
@@ -236,7 +324,8 @@ class CircleLayerProperties extends LayerProperties {
           circleStrokeOpacityTransition?.toMap();
     }
 
-    if (circlePitchScale != null) {
+    if (circlePitchScale != null &&
+        (circlePitchScale is CirclePitchScale || circlePitchScale is List)) {
       args['circlePitchScale'] = circlePitchScale is CirclePitchScale
           ? (circlePitchScale as CirclePitchScale).name
           : circlePitchScale is List
@@ -244,7 +333,9 @@ class CircleLayerProperties extends LayerProperties {
               : circlePitchScale;
     }
 
-    if (circlePitchAlignment != null) {
+    if (circlePitchAlignment != null &&
+        (circlePitchAlignment is CirclePitchAlignment ||
+            circlePitchAlignment is List)) {
       args['circlePitchAlignment'] =
           circlePitchAlignment is CirclePitchAlignment
               ? (circlePitchAlignment as CirclePitchAlignment).name
@@ -258,7 +349,7 @@ class CircleLayerProperties extends LayerProperties {
           circleSortKey is List ? jsonEncode(circleSortKey) : circleSortKey;
     }
 
-    if (circleTranslate != null) {
+    if (circleTranslate != null && circleTranslate is List) {
       args['circleTranslate'] = circleTranslate is List<double>
           ? circleTranslate
           : jsonEncode(circleTranslate);
@@ -268,7 +359,9 @@ class CircleLayerProperties extends LayerProperties {
       args['circleTranslateTransition.'] = circleTranslateTransition?.toMap();
     }
 
-    if (circleTranslateAnchor != null) {
+    if (circleTranslateAnchor != null &&
+        (circleTranslateAnchor is CircleTranslateAnchor ||
+            circleTranslateAnchor is List)) {
       args['circleTranslateAnchor'] =
           circleTranslateAnchor is CircleTranslateAnchor
               ? (circleTranslateAnchor as CircleTranslateAnchor).name
@@ -281,7 +374,7 @@ class CircleLayerProperties extends LayerProperties {
       args['sourceLayer'] = sourceLayer;
     }
 
-    if (filter != null) {
+    if (filter != null && filter is List) {
       args['filter'] = jsonEncode(filter);
     }
 
