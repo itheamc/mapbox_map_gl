@@ -345,7 +345,9 @@ class LineLayerProperties extends LayerProperties {
     }
 
     if (lineDashArray != null) {
-      args['lineDashArray'] = lineDashArray is List<double>
+      args['lineDashArray'] = lineDashArray is List<double> ||
+              lineDashArray is List<int> ||
+              lineDashArray is List<num>
           ? lineDashArray
           : jsonEncode(lineDashArray);
     }
@@ -410,7 +412,9 @@ class LineLayerProperties extends LayerProperties {
     }
 
     if (lineTranslate != null) {
-      args['lineTranslate'] = lineTranslate is List<double>
+      args['lineTranslate'] = lineTranslate is List<double> ||
+              lineTranslate is List<int> ||
+              lineTranslate is List<num>
           ? lineTranslate
           : jsonEncode(lineTranslate);
     }
@@ -430,7 +434,9 @@ class LineLayerProperties extends LayerProperties {
     }
 
     if (lineTrimOffset != null) {
-      args['lineTrimOffset'] = lineTrimOffset is List<double>
+      args['lineTrimOffset'] = lineTrimOffset is List<double> ||
+              lineTrimOffset is List<int> ||
+              lineTrimOffset is List<num>
           ? lineTrimOffset
           : jsonEncode(lineTrimOffset);
     }

@@ -9,7 +9,7 @@ import com.mapbox.geojson.BoundingBox
  *
  * BoundingBoxHelper to deal with bounding box related data
  */
-object BoundingBoxHelper {
+internal object BoundingBoxHelper {
 
     /**
      * Method to convert arguments to BoundingBox object

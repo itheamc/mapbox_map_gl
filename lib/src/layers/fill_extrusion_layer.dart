@@ -336,7 +336,9 @@ class FillExtrusionLayerProperties extends LayerProperties {
     }
 
     if (fillExtrusionTranslate != null && fillExtrusionTranslate is List) {
-      args['fillExtrusionTranslate'] = fillExtrusionTranslate is List<double>
+      args['fillExtrusionTranslate'] = fillExtrusionTranslate is List<double> ||
+              fillExtrusionTranslate is List<int> ||
+              fillExtrusionTranslate is List<num>
           ? fillExtrusionTranslate
           : jsonEncode(fillExtrusionTranslate);
     }

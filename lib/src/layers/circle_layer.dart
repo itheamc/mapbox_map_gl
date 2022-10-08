@@ -350,7 +350,9 @@ class CircleLayerProperties extends LayerProperties {
     }
 
     if (circleTranslate != null && circleTranslate is List) {
-      args['circleTranslate'] = circleTranslate is List<double>
+      args['circleTranslate'] = circleTranslate is List<double> ||
+              circleTranslate is List<int> ||
+              circleTranslate is List<num>
           ? circleTranslate
           : jsonEncode(circleTranslate);
     }

@@ -52,7 +52,7 @@ internal class MapboxMapGlNativeView(
             compass.enabled = false
             id = this@MapboxMapGlNativeView.id
         }.also {
-            MapboxMapGlController(
+            MapboxMapGlControllerImpl(
                 messenger = messenger,
                 mapboxMap = it.getMapboxMap(),
                 creationParams = creationParams

@@ -246,7 +246,9 @@ class FillLayerProperties extends LayerProperties {
     }
 
     if (fillTranslate != null) {
-      args['fillTranslate'] = fillTranslate is List<double>
+      args['fillTranslate'] = fillTranslate is List<double> ||
+              fillTranslate is List<int> ||
+              fillTranslate is List<num>
           ? fillTranslate
           : jsonEncode(fillTranslate);
     }

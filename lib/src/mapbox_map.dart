@@ -53,6 +53,10 @@ class MapboxMap extends StatefulWidget {
   /// whenever map is loaded
   final CameraPosition? initialCameraPosition;
 
+  /// [mapStyle] An initial map style whenever map loaded
+  /// default value is MapStyle.light
+  final MapStyle mapStyle;
+
   /// [onMapCreated] A callback that will be triggered whenever map is
   /// fully loaded/created
   final OnMapCreated? onMapCreated;
@@ -91,6 +95,7 @@ class MapboxMap extends StatefulWidget {
   const MapboxMap({
     Key? key,
     this.initialCameraPosition,
+    this.mapStyle = MapStyle.light,
     this.onMapCreated,
     this.onStyleLoaded,
     this.onStyleLoadError,
@@ -174,6 +179,7 @@ class _MapboxMapState extends State<MapboxMap> {
 
     creationParams['initialCameraPosition'] =
         widget.initialCameraPosition?.toMap();
+    creationParams['style'] = widget.mapStyle.name;
 
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,
@@ -181,4 +187,36 @@ class _MapboxMapState extends State<MapboxMap> {
       hyperComposition: widget.hyperComposition,
     );
   }
+}
+
+/// Enum for map style
+enum MapStyle {
+  /// A complete base map, perfect for incorporating your own data.
+  streets,
+
+  /// A general-purpose style tailored to outdoor activities.
+  outdoors,
+
+  /// Subtle light backdrop for data visualizations.
+  light,
+
+  /// Subtle dark backdrop for data visualizations.
+  dark,
+
+  /// A beautiful global satellite and aerial imagery layer.
+  satellite,
+
+  /// Global satellite and aerial imagery with unobtrusive labels.
+  satelliteStreets,
+
+  /// Color-coded roads based on live traffic congestion data.
+  /// Traffic data is currently available in [these selected countries]
+  /// (https://www.mapbox.com/help/how-directions-work/#traffic-data).
+  trafficDay,
+
+  /// Color-coded roads based on live traffic congestion data, designed to
+  /// maximize legibility in low-light situations.
+  /// Traffic data is currently available in [these selected countries]
+  /// (https://www.mapbox.com/help/how-directions-work/#traffic-data).
+  trafficNight,
 }

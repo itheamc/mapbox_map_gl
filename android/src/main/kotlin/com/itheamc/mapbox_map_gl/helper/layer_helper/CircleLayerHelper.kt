@@ -1,5 +1,6 @@
 package com.itheamc.mapbox_map_gl.helper.layer_helper
 
+import android.util.Log
 import com.mapbox.maps.extension.style.expressions.generated.Expression
 import com.mapbox.maps.extension.style.layers.generated.CircleLayerDsl
 import com.mapbox.maps.extension.style.layers.properties.generated.CirclePitchAlignment
@@ -7,6 +8,7 @@ import com.mapbox.maps.extension.style.layers.properties.generated.CirclePitchSc
 import com.mapbox.maps.extension.style.layers.properties.generated.CircleTranslateAnchor
 import com.mapbox.maps.extension.style.layers.properties.generated.Visibility
 import com.mapbox.maps.extension.style.types.StyleTransition
+import com.mapbox.maps.logD
 import java.util.*
 
 
@@ -15,7 +17,9 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/4
  */
-object CircleLayerHelper {
+internal object CircleLayerHelper {
+
+    private const val TAG = "CircleLayerHelper"
 
     /**
      * Method to set properties got from the flutter side to CircleLayerDsl block
@@ -207,13 +211,17 @@ object CircleLayerHelper {
 
             // circleTranslate
             if (args.containsKey("circleTranslate")) {
-                when (val circleTranslate = args["circleTranslate"]) {
-                    is String -> if (circleTranslate.contains("[") && circleTranslate.contains("]")) {
-                        circleTranslate(Expression.fromRaw(circleTranslate))
+                when (val translate = args["circleTranslate"]) {
+                    is String -> if (translate.contains("[") && translate.contains("]")) {
+                        try {
+                            circleTranslate(Expression.fromRaw(translate))
+                        } catch (e: Exception) {
+                            Log.d(TAG, "circleTranslate: ${e.message}")
+                        }
                     }
-                    is List<*> -> if (circleTranslate.first() is Double) circleTranslate(
-                        circleTranslate.map { it as Double }
-                    )
+                    is List<*> -> if (translate.first() is Double) circleTranslate(
+                        translate.map { it as Double }
+                    ) else circleTranslate(translate.map { (it as Int).toDouble() })
                 }
             }
 

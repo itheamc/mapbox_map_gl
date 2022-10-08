@@ -11,7 +11,7 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/6
  */
-object FillLayerHelper {
+internal object FillLayerHelper {
 
     /**
      * Method to set properties got from the flutter side to FillLayerDsl block
@@ -133,7 +133,7 @@ object FillLayerHelper {
                     }
                     is List<*> -> if (translate.first() is Double) fillTranslate(
                         translate.map { it as Double }
-                    )
+                    ) else fillTranslate(translate.map { (it as Int).toDouble() })
                 }
             }
 

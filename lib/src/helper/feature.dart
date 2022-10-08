@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:mapbox_map_gl/src/helper/bounding_box.dart';
+
 /// Feature Class
 class Feature {
   /// [type] It represents the feature type
   final String? type;
 
   /// [bbox] It is the bounding box object
-  final dynamic bbox;
+  final BoundingBox? bbox;
 
   /// [id] It represents the feature id
   final String? id;

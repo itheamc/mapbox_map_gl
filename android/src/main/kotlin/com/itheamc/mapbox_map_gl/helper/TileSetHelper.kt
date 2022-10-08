@@ -10,7 +10,7 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/5
  */
-object TileSetHelper {
+internal object TileSetHelper {
 
     /**
      * Method to set properties got from the flutter side to TileSet.Builder block

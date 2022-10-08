@@ -9,7 +9,7 @@ import com.mapbox.geojson.Point
  *
  * PointHelper to deal with point related data
  */
-object PointHelper {
+internal object PointHelper {
 
     /**
      * Method to convert arguments to Point object

@@ -215,7 +215,9 @@ class SkyLayerProperties extends LayerProperties {
     }
 
     if (skyAtmosphereSun != null && skyAtmosphereSun is List) {
-      args['skyAtmosphereSun'] = skyAtmosphereSun is List<double>
+      args['skyAtmosphereSun'] = skyAtmosphereSun is List<double> ||
+              skyAtmosphereSun is List<int> ||
+              skyAtmosphereSun is List<num>
           ? skyAtmosphereSun
           : jsonEncode(skyAtmosphereSun);
     }
@@ -230,10 +232,12 @@ class SkyLayerProperties extends LayerProperties {
       args['skyGradient'] = jsonEncode(skyGradient);
     }
 
-    if (skyGradientCenter != null) {
-      args['skyGradientCenter'] = skyGradientCenter is List
-          ? jsonEncode(skyGradientCenter)
-          : skyGradientCenter;
+    if (skyGradientCenter != null && skyGradientCenter is List) {
+      args['skyGradientCenter'] = skyGradientCenter is List<double> ||
+          skyGradientCenter is List<int> ||
+          skyGradientCenter is List<num>
+          ? skyGradientCenter
+          : jsonEncode(skyGradientCenter);
     }
 
     if (skyGradientRadius != null) {

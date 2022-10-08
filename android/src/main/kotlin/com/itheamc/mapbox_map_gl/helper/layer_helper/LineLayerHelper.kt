@@ -14,7 +14,7 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/6
  */
-object LineLayerHelper {
+internal object LineLayerHelper {
 
     /**
      * Method to set properties got from the flutter side to LineLayerDsl block
@@ -50,6 +50,8 @@ object LineLayerHelper {
                         lineWidth(Expression.fromRaw(width))
                     }
                     is Double -> lineWidth(width)
+                    is Int -> lineWidth(width.toDouble())
+                    is Long -> lineWidth(width.toDouble())
                 }
             }
             // lineWidthTransition
@@ -70,6 +72,8 @@ object LineLayerHelper {
                         lineBlur(Expression.fromRaw(blur))
                     }
                     is Double -> lineBlur(blur)
+                    is Int -> lineBlur(blur.toDouble())
+                    is Long -> lineBlur(blur.toDouble())
                 }
             }
             // lineBlurTransition
@@ -90,6 +94,8 @@ object LineLayerHelper {
                         lineOpacity(Expression.fromRaw(opacity))
                     }
                     is Double -> lineOpacity(opacity)
+                    is Int -> lineOpacity(opacity.toDouble())
+                    is Long -> lineOpacity(opacity.toDouble())
                 }
             }
             // lineOpacityTransition
@@ -111,7 +117,7 @@ object LineLayerHelper {
                     }
                     is List<*> -> if (dashArray.first() is Double) lineDasharray(
                         dashArray.map { it as Double }
-                    )
+                    ) else lineDasharray(dashArray.map { (it as Int).toDouble() })
                 }
             }
 
@@ -133,6 +139,8 @@ object LineLayerHelper {
                         lineGapWidth(Expression.fromRaw(gapWidth))
                     }
                     is Double -> lineGapWidth(gapWidth)
+                    is Int -> lineGapWidth(gapWidth.toDouble())
+                    is Long -> lineGapWidth(gapWidth.toDouble())
                 }
             }
 
@@ -162,6 +170,8 @@ object LineLayerHelper {
                         lineMiterLimit(Expression.fromRaw(miterLimit))
                     }
                     is Double -> lineMiterLimit(miterLimit)
+                    is Int -> lineMiterLimit(miterLimit.toDouble())
+                    is Long -> lineMiterLimit(miterLimit.toDouble())
                 }
             }
 
@@ -172,6 +182,8 @@ object LineLayerHelper {
                         lineOffset(Expression.fromRaw(offset))
                     }
                     is Double -> lineOffset(offset)
+                    is Int -> lineOffset(offset.toDouble())
+                    is Long -> lineOffset(offset.toDouble())
                 }
             }
 
@@ -215,6 +227,8 @@ object LineLayerHelper {
                         lineRoundLimit(Expression.fromRaw(roundLimit))
                     }
                     is Double -> lineRoundLimit(roundLimit)
+                    is Int -> lineRoundLimit(roundLimit.toDouble())
+                    is Long -> lineRoundLimit(roundLimit.toDouble())
                 }
             }
 
@@ -225,18 +239,20 @@ object LineLayerHelper {
                         lineSortKey(Expression.fromRaw(sortKey))
                     }
                     is Double -> lineSortKey(sortKey)
+                    is Int -> lineSortKey(sortKey.toDouble())
+                    is Long -> lineSortKey(sortKey.toDouble())
                 }
             }
 
             // lineTranslate
             if (args.containsKey("lineTranslate")) {
-                when (val lineTranslate = args["lineTranslate"]) {
-                    is String -> if (lineTranslate.contains("[") && lineTranslate.contains("]")) {
-                        lineTranslate(Expression.fromRaw(lineTranslate))
+                when (val translate = args["lineTranslate"]) {
+                    is String -> if (translate.contains("[") && translate.contains("]")) {
+                        lineTranslate(Expression.fromRaw(translate))
                     }
-                    is List<*> -> if (lineTranslate.first() is Double) lineTranslate(
-                        lineTranslate.map { it as Double }
-                    )
+                    is List<*> -> if (translate.first() is Double) lineTranslate(
+                        translate.map { it as Double }
+                    ) else lineTranslate(translate.map { (it as Int).toDouble() })
                 }
             }
 
@@ -276,7 +292,7 @@ object LineLayerHelper {
                     }
                     is List<*> -> if (trimOffset.first() is Double) lineTrimOffset(
                         trimOffset.map { it as Double }
-                    )
+                    ) else lineTrimOffset(trimOffset.map { (it as Int).toDouble() })
                 }
             }
 
@@ -330,14 +346,20 @@ object LineLayerHelper {
 
             // maxZoom
             if (args.containsKey("maxZoom")) {
-                val max = args["maxZoom"] as Double
-                maxZoom(max)
+                when (val zoom = args["maxZoom"]) {
+                    is Double -> maxZoom(zoom)
+                    is Int -> maxZoom(zoom.toDouble())
+                    is Long -> maxZoom(zoom.toDouble())
+                }
             }
 
             // minZoom
             if (args.containsKey("minZoom")) {
-                val min = args["minZoom"] as Double
-                minZoom(min)
+                when (val zoom = args["minZoom"]) {
+                    is Double -> minZoom(zoom)
+                    is Int -> minZoom(zoom.toDouble())
+                    is Long -> minZoom(zoom.toDouble())
+                }
             }
 
             // visibility

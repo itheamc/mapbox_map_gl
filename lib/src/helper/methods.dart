@@ -1,4 +1,3 @@
-
 /// A class to contains all the methods that are responsible for communicating
 /// with native platform
 class Methods {
@@ -13,8 +12,24 @@ class Methods {
   static const onFeatureLongClick = "onFeatureLongClick";
 
   /// Methods triggered from the flutter side
+  static const animateCameraPosition = "animateCameraPosition";
+  static const toggleBetween = "toggleBetween";
+  static const toggleAmong = "toggleAmong";
   static const isSourceExist = "isSourceExist";
   static const isLayerExist = "isLayerExist";
-  static const toggleMode = "toggleMode";
-  static const animateCameraPosition = "animateCameraPosition";
+  static const addGeoJsonSource = "addGeoJsonSource";
+  static const addVectorSource = "addVectorSource";
+  static const addRasterSource = "addRasterSource";
+  static const addRasterDemSource = "addRasterDemSource";
+  static const addImageSource = "addImageSource";
+  static const addVideoSource = "addVideoSource";
+  static const addCircleLayer = "addCircleLayer";
+  static const addFillLayer = "addFillLayer";
+  static const addLineLayer = "addLineLayer";
+  static const addSymbolLayer = "addSymbolLayer";
+  static const addRasterLayer = "addRasterLayer";
+  static const removeLayer = "removeLayer";
+  static const removeLayers = "removeLayers";
+  static const removeSource = "removeSource";
+  static const removeSources = "removeSources";
 }

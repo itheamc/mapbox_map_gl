@@ -31,12 +31,25 @@ object Methods {
     /**
      * These are the methods triggered from the flutter side
      */
+    const val animateCameraPosition = "animateCameraPosition"
+    const val toggleBetween = "toggleBetween"
+    const val toggleAmong = "toggleAmong"
     const val isSourceExist = "isSourceExist"
     const val isLayerExist = "isLayerExist"
-    const val toggleMode = "toggleMode"
-    const val animateCameraPosition = "animateCameraPosition"
-
     const val addGeoJsonSource = "addGeoJsonSource"
+    const val addVectorSource = "addVectorSource"
+    const val addRasterSource = "addRasterSource"
+    const val addRasterDemSource = "addRasterDemSource"
+    const val addImageSource = "addImageSource"
+    const val addVideoSource = "addVideoSource"
     const val addCircleLayer = "addCircleLayer"
+    const val addFillLayer = "addFillLayer"
+    const val addLineLayer = "addLineLayer"
+    const val addSymbolLayer = "addSymbolLayer"
+    const val addRasterLayer = "addRasterLayer"
+    const val removeLayer = "removeLayer"
+    const val removeLayers = "removeLayers"
+    const val removeSource = "removeSource"
+    const val removeSources = "removeSources"
 
 }

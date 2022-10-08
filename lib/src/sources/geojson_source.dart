@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:mapbox_map_gl/src/helper/feature.dart';
 import 'package:mapbox_map_gl/src/helper/feature_collection.dart';
 import 'package:mapbox_map_gl/src/helper/promoted_id.dart';
@@ -130,7 +132,7 @@ class GeoJsonSourceProperties extends SourceProperties {
   final FeatureCollection? featureCollection;
 
   /// Add a Geometry to the GeoJsonSource.
-  final Map<String, dynamic>? geometry;
+  // final Map<String, dynamic>? geometry;
 
   /// Constructor
   GeoJsonSourceProperties({
@@ -148,7 +150,6 @@ class GeoJsonSourceProperties extends SourceProperties {
     this.prefetchZoomDelta,
     this.feature,
     this.featureCollection,
-    this.geometry,
   });
 
   /// Getter for defaultGeoJonSourceProperties
@@ -214,16 +215,16 @@ class GeoJsonSourceProperties extends SourceProperties {
     }
 
     if (feature != null) {
-      args["feature"] = feature?.toMap();
+      args["feature"] = jsonEncode(feature?.toMap());
     }
 
     if (featureCollection != null) {
-      args["featureCollection"] = featureCollection?.toMap();
+      args["featureCollection"] = jsonEncode(featureCollection?.toMap());
     }
 
-    if (geometry != null) {
-      args["geometry"] = geometry;
-    }
+    // if (geometry != null) {
+    //   args["geometry"] = jsonEncode(geometry);
+    // }
 
     return args.isNotEmpty ? args : null;
   }

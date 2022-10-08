@@ -12,7 +12,7 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/6
  */
-object RasterLayerHelper {
+internal object RasterLayerHelper {
 
     /**
      * Method to set properties got from the flutter side to RasterLayerDsl block

@@ -577,8 +577,11 @@ class SymbolLayerProperties extends LayerProperties {
     }
 
     if (iconOffset != null && iconOffset is List) {
-      args['iconOffset'] =
-          iconOffset is List<double> ? iconOffset : jsonEncode(iconOffset);
+      args['iconOffset'] = iconOffset is List<double> ||
+              iconOffset is List<int> ||
+              iconOffset is List<num>
+          ? iconOffset
+          : jsonEncode(iconOffset);
     }
 
     if (iconOptional != null) {
@@ -631,7 +634,9 @@ class SymbolLayerProperties extends LayerProperties {
     }
 
     if (iconTextFitPadding != null && iconTextFitPadding is List) {
-      args['iconTextFitPadding'] = iconTextFitPadding is List<double>
+      args['iconTextFitPadding'] = iconTextFitPadding is List<double> ||
+              iconTextFitPadding is List<int> ||
+              iconTextFitPadding is List<num>
           ? iconTextFitPadding
           : jsonEncode(iconTextFitPadding);
     }
@@ -733,8 +738,11 @@ class SymbolLayerProperties extends LayerProperties {
     }
 
     if (textOffset != null && textOffset is List) {
-      args['textOffset'] =
-          textOffset is List<double> ? textOffset : jsonEncode(textOffset);
+      args['textOffset'] = textOffset is List<double> ||
+              textOffset is List<int> ||
+              textOffset is List<num>
+          ? textOffset
+          : jsonEncode(textOffset);
     }
 
     if (textOptional != null) {
@@ -849,7 +857,9 @@ class SymbolLayerProperties extends LayerProperties {
     }
 
     if (iconTranslate != null && iconTranslate is List) {
-      args['iconTranslate'] = iconTranslate is List<double>
+      args['iconTranslate'] = iconTranslate is List<double> ||
+              iconTranslate is List<int> ||
+              iconTranslate is List<num>
           ? iconTranslate
           : jsonEncode(iconTranslate);
     }
@@ -913,7 +923,9 @@ class SymbolLayerProperties extends LayerProperties {
     }
 
     if (textTranslate != null && textTranslate is List) {
-      args['textTranslate'] = textTranslate is List<double>
+      args['textTranslate'] = textTranslate is List<double> ||
+              textTranslate is List<int> ||
+              textTranslate is List<num>
           ? textTranslate
           : jsonEncode(textTranslate);
     }

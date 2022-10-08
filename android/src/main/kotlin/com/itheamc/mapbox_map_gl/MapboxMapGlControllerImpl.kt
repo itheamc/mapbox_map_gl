@@ -4,6 +4,12 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
+import com.itheamc.mapbox_map_gl.helper.layer_helper.CircleLayerHelper
+import com.itheamc.mapbox_map_gl.helper.layer_helper.FillLayerHelper
+import com.itheamc.mapbox_map_gl.helper.layer_helper.LineLayerHelper
+import com.itheamc.mapbox_map_gl.helper.layer_helper.RasterLayerHelper
+import com.itheamc.mapbox_map_gl.helper.source_helper.GeoJsonSourceHelper
+import com.itheamc.mapbox_map_gl.helper.source_helper.VectorSourceHelper
 import com.itheamc.mapbox_map_gl.utils.*
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
@@ -38,7 +44,7 @@ internal class MapboxMapGlControllerImpl(
     /**
      * Method channel to handle native method call
      */
-    var methodChannel: MethodChannel =
+    private val methodChannel: MethodChannel =
         MethodChannel(messenger, MapboxMapGlPlugin.METHOD_CHANNEL_NAME)
 
 
@@ -953,10 +959,72 @@ internal class MapboxMapGlControllerImpl(
             }
             Methods.addGeoJsonSource -> {
                 args = args as Map<*, *>
-                val sourceId = args["sourceId"]
-                val sourceProperties = args["sourceProperties"] as Map<*, *>?
+                val sourceId = args["sourceId"] as String
+                addGeoJsonSource(
+                    sourceId = sourceId,
+                    block = GeoJsonSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
+            Methods.addVectorSource -> {
+                args = args as Map<*, *>
+                val sourceId = args["sourceId"] as String
+                addVectorSource(
+                    sourceId = sourceId,
+                    block = VectorSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
+            Methods.addCircleLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
 
-                Log.d(TAG, "onMethodCall: ADD GeoJson")
+                addCircleLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = CircleLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addLineLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addLineLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = LineLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addFillLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addFillLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = FillLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addRasterLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addRasterLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = RasterLayerHelper.blockFromArgs(layerProperties)
+                )
                 return result.success(true)
             }
             else -> {

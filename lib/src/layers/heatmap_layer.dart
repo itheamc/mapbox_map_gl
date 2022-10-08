@@ -218,11 +218,3 @@ class HeatmapLayerProperties extends LayerProperties {
     return args.isNotEmpty ? args : null;
   }
 }
-
-enum HillShadeIlluminationAnchor {
-  /// The hill shade illumination is relative to the north direction.
-  map,
-
-  /// The hill shade illumination is relative to the top of the viewport.
-  viewport,
-}

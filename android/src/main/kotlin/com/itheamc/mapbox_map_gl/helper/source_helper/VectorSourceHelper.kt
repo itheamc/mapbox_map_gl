@@ -11,18 +11,20 @@ import java.util.*
  *
  * Created by Amit Chaudhary, 2022/10/6
  */
-object VectorSourceHelper {
+internal object VectorSourceHelper {
 
     /**
      * Method to set properties got from the flutter side to VectorSource block
      */
     fun blockFromArgs(args: Map<*, *>): VectorSource.Builder.() -> Unit {
 
+        val sourceProperties = args["sourceProperties"] as Map<*, *>
+
         return {
 
             // set url
             if (args.containsKey("url") && args["url"] is String) {
-                val value = args["url"] as String
+                val value = sourceProperties["url"] as String
                 url(value)
             }
 
@@ -33,8 +35,8 @@ object VectorSourceHelper {
             }
 
             // set bounds
-            if (args.containsKey("bounds") && args["bounds"] is List<*>) {
-                val value = args["bounds"] as List<*>
+            if (sourceProperties.containsKey("bounds") && sourceProperties["bounds"] is List<*>) {
+                val value = sourceProperties["bounds"] as List<*>
                 if (value.size == 4) {
                     val list = value.map { it as Double }
                     bounds(list)
@@ -42,32 +44,32 @@ object VectorSourceHelper {
             }
 
             // set scheme
-            if (args.containsKey("scheme") && args["scheme"] is String) {
-                val value = args["scheme"] as String
+            if (sourceProperties.containsKey("scheme") && sourceProperties["scheme"] is String) {
+                val value = sourceProperties["scheme"] as String
                 scheme(Scheme.valueOf(value.uppercase(Locale.ENGLISH)))
             }
 
             // set minZoom
-            if (args.containsKey("minZoom") && args["minZoom"] is Int) {
-                val value = args["minZoom"] as Int
+            if (sourceProperties.containsKey("minZoom") && sourceProperties["minZoom"] is Int) {
+                val value = sourceProperties["minZoom"] as Int
                 minzoom(value.toLong())
             }
 
             // set maxZoom
-            if (args.containsKey("maxZoom") && args["maxZoom"] is Int) {
-                val value = args["maxZoom"] as Int
+            if (sourceProperties.containsKey("maxZoom") && sourceProperties["maxZoom"] is Int) {
+                val value = sourceProperties["maxZoom"] as Int
                 maxzoom(value.toLong())
             }
 
             // set attribution
-            if (args.containsKey("attribution") && args["attribution"] is String) {
-                val value = args["attribution"] as String
+            if (sourceProperties.containsKey("attribution") && sourceProperties["attribution"] is String) {
+                val value = sourceProperties["attribution"] as String
                 attribution(value)
             }
 
             // set promoteId
-            if (args.containsKey("promoteId") && args["promoteId"] is Map<*, *>) {
-                val value = args["promoteId"] as Map<*, *>
+            if (sourceProperties.containsKey("promoteId") && sourceProperties["promoteId"] is Map<*, *>) {
+                val value = sourceProperties["promoteId"] as Map<*, *>
 
                 val propertyName = value["propertyName"] as String
                 val sourceId = value["sourceId"] as String?
@@ -81,38 +83,38 @@ object VectorSourceHelper {
             }
 
             // set volatile
-            if (args.containsKey("volatile") && args["volatile"] is Boolean) {
-                val value = args["volatile"] as Boolean
+            if (sourceProperties.containsKey("volatile") && sourceProperties["volatile"] is Boolean) {
+                val value = sourceProperties["volatile"] as Boolean
                 volatile(value)
             }
 
             // set prefetchZoomDelta
-            if (args.containsKey("prefetchZoomDelta") && args["prefetchZoomDelta"] is Int) {
-                val value = args["prefetchZoomDelta"] as Int
+            if (sourceProperties.containsKey("prefetchZoomDelta") && sourceProperties["prefetchZoomDelta"] is Int) {
+                val value = sourceProperties["prefetchZoomDelta"] as Int
                 prefetchZoomDelta(value.toLong())
             }
 
             // set minimumTileUpdateInterval
-            if (args.containsKey("minimumTileUpdateInterval") && args["minimumTileUpdateInterval"] is Double) {
-                val value = args["minimumTileUpdateInterval"] as Double
+            if (sourceProperties.containsKey("minimumTileUpdateInterval") && sourceProperties["minimumTileUpdateInterval"] is Double) {
+                val value = sourceProperties["minimumTileUpdateInterval"] as Double
                 minimumTileUpdateInterval(value)
             }
 
             // set maxOverScaleFactorForParentTiles
-            if (args.containsKey("maxOverScaleFactorForParentTiles") && args["maxOverScaleFactorForParentTiles"] is Int) {
-                val value = args["maxOverScaleFactorForParentTiles"] as Int
+            if (sourceProperties.containsKey("maxOverScaleFactorForParentTiles") && sourceProperties["maxOverScaleFactorForParentTiles"] is Int) {
+                val value = sourceProperties["maxOverScaleFactorForParentTiles"] as Int
                 maxOverscaleFactorForParentTiles(value.toLong())
             }
 
             // set tileRequestsDelay
-            if (args.containsKey("tileRequestsDelay") && args["tileRequestsDelay"] is Double) {
-                val value = args["tileRequestsDelay"] as Double
+            if (sourceProperties.containsKey("tileRequestsDelay") && sourceProperties["tileRequestsDelay"] is Double) {
+                val value = sourceProperties["tileRequestsDelay"] as Double
                 tileRequestsDelay(value)
             }
 
             // set tileNetworkRequestsDelay
-            if (args.containsKey("tileNetworkRequestsDelay") && args["tileNetworkRequestsDelay"] is Double) {
-                val value = args["tileNetworkRequestsDelay"] as Double
+            if (sourceProperties.containsKey("tileNetworkRequestsDelay") && sourceProperties["tileNetworkRequestsDelay"] is Double) {
+                val value = sourceProperties["tileNetworkRequestsDelay"] as Double
                 tileNetworkRequestsDelay(value)
             }
         }
