@@ -16,46 +16,60 @@ class MethodChannelMapboxMapGl extends MapboxMapGlPlatform {
   /// The method channel used to interact with the native platform.
   final _methodChannel = const MethodChannel(_channelName);
 
+  /// Method to build platform view
   @override
   Widget buildMapView({
     required Map<String, dynamic> creationParams,
     void Function(int id)? onPlatformViewCreated,
     bool hyperComposition = false,
   }) {
-    if (hyperComposition) {
-      return PlatformViewLink(
-        viewType: _viewType,
-        surfaceFactory: (context, controller) {
-          return AndroidViewSurface(
-            controller: controller as AndroidViewController,
-            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
-            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-          );
-        },
-        onCreatePlatformView: (params) {
-          return PlatformViewsService.initSurfaceAndroidView(
-            id: params.id,
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        if (hyperComposition) {
+          return PlatformViewLink(
             viewType: _viewType,
-            layoutDirection: TextDirection.ltr,
-            creationParams: creationParams,
-            creationParamsCodec: const StandardMessageCodec(),
-            onFocus: () {
-              params.onFocusChanged(true);
+            surfaceFactory: (context, controller) {
+              return AndroidViewSurface(
+                controller: controller as AndroidViewController,
+                gestureRecognizers: const <
+                    Factory<OneSequenceGestureRecognizer>>{},
+                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+              );
             },
-          )
-            ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-            ..create();
-        },
-      );
-    }
+            onCreatePlatformView: (params) {
+              return PlatformViewsService.initSurfaceAndroidView(
+                id: params.id,
+                viewType: _viewType,
+                layoutDirection: TextDirection.ltr,
+                creationParams: creationParams,
+                creationParamsCodec: const StandardMessageCodec(),
+                onFocus: () {
+                  params.onFocusChanged(true);
+                },
+              )
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..create();
+            },
+          );
+        }
 
-    return AndroidView(
-      viewType: _viewType,
-      layoutDirection: TextDirection.ltr,
-      creationParams: creationParams,
-      creationParamsCodec: const StandardMessageCodec(),
-      onPlatformViewCreated: onPlatformViewCreated,
-    );
+        return AndroidView(
+          viewType: _viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: const StandardMessageCodec(),
+          onPlatformViewCreated: onPlatformViewCreated,
+        );
+      case TargetPlatform.iOS:
+        return UiKitView(
+          viewType: _viewType,
+          layoutDirection: TextDirection.ltr,
+          creationParams: creationParams,
+          creationParamsCodec: const StandardMessageCodec(),
+        );
+      default:
+        throw UnsupportedError('Unsupported platform view');
+    }
   }
 
   /// Method to attached method call handler to handle the method call
