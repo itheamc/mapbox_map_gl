@@ -1,5 +1,6 @@
 package com.itheamc.mapbox_map_gl.helper.source_helper
 
+import com.itheamc.mapbox_map_gl.helper.TileSetHelper
 import com.mapbox.maps.extension.style.sources.generated.Scheme
 import com.mapbox.maps.extension.style.sources.generated.VectorSource
 import com.mapbox.maps.extension.style.types.PromoteId
@@ -32,6 +33,18 @@ internal object VectorSourceHelper {
             if (args.containsKey("tiles") && args["tiles"] is List<*>) {
                 val value = args["tiles"] as List<*>
                 tiles(value.map { if (it is String) it else it.toString() })
+            }
+
+            // set tiles
+            if (args.containsKey("tileSet") && args["tileSet"] is Map<*, *>) {
+                val value = args["tileSet"] as Map<*, *>
+                val tileJson = value["tileJson"] as String
+                val tileList = value["tiles"] as List<*>
+                tileSet(
+                    tilejson = tileJson,
+                    tiles = tileList.map { it.toString() },
+                    block = TileSetHelper.blockFromArgs(if (value.containsKey("properties")) value["properties"] as Map<*, *> else null)
+                )
             }
 
             // set bounds

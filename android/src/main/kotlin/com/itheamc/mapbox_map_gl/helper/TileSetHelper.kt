@@ -15,7 +15,15 @@ internal object TileSetHelper {
     /**
      * Method to set properties got from the flutter side to TileSet.Builder block
      */
-    fun blockFromArgs(args: Map<*, *>): TileSet.Builder.() -> Unit {
+    fun blockFromArgs(args: Map<*, *>?): TileSet.Builder.() -> Unit {
+
+        if (args == null) {
+            return {
+                maxZoom(30)
+                scheme(Scheme.XYZ)
+            }
+        }
+
         return {
             // set name
             if (args.containsKey("name") && args["name"] is String) {
@@ -113,7 +121,16 @@ internal object TileSetHelper {
     /**
      * Method to set properties got from the flutter side to TileSet.RasterDemBuilder block
      */
-    fun rasterDemBuilderBlockFromArgs(args: Map<*, *>): TileSet.RasterDemBuilder.() -> Unit {
+    fun rasterDemBuilderBlockFromArgs(args: Map<*, *>?): TileSet.RasterDemBuilder.() -> Unit {
+
+        if (args == null) {
+            return {
+                maxZoom(30)
+                scheme(Scheme.XYZ)
+                encoding(Encoding.MAPBOX)
+            }
+        }
+
         return {
             // set name
             if (args.containsKey("name") && args["name"] is String) {
