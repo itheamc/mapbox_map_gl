@@ -27,6 +27,12 @@ class Methods {
   static const addLineLayer = "addLineLayer";
   static const addSymbolLayer = "addSymbolLayer";
   static const addRasterLayer = "addRasterLayer";
+  static const addSkyLayer = "addSkyLayer";
+  static const addLocationIndicatorLayer = "addLocationIndicatorLayer";
+  static const addFillExtrusionLayer = "addFillExtrusionLayer";
+  static const addHeatmapLayer = "addHeatmapLayer";
+  static const addHillShadeLayer = "addHillShadeLayer";
+  static const addBackgroundLayer = "addBackgroundLayer";
   static const removeLayer = "removeLayer";
   static const removeLayers = "removeLayers";
   static const removeSource = "removeSource";
