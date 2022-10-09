@@ -55,6 +55,5 @@ object Methods {
     const val removeLayer = "removeLayer"
     const val removeLayers = "removeLayers"
     const val removeSource = "removeSource"
-    const val removeSources = "removeSources"
 
 }

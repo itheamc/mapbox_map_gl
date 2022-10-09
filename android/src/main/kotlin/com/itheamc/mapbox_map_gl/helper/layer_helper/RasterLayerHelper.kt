@@ -186,7 +186,7 @@ internal object RasterLayerHelper {
             }
 
             // sourceLayer
-            if (args.containsKey("sourceLayer")) {
+            if (args.containsKey("sourceLayer") && args["sourceLayer"] is String) {
                 val sourceLayer = args["sourceLayer"] as String
                 sourceLayer(sourceLayer)
             }

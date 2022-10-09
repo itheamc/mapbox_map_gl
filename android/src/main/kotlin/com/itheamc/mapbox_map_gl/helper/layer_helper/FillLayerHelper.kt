@@ -170,13 +170,13 @@ internal object FillLayerHelper {
             }
 
             // sourceLayer
-            if (args.containsKey("sourceLayer")) {
+            if (args.containsKey("sourceLayer") && args["sourceLayer"] is String) {
                 val sourceLayer = args["sourceLayer"] as String
                 sourceLayer(sourceLayer)
             }
 
             // filter
-            if (args.containsKey("filter")) {
+            if (args.containsKey("filter") && args["filter"] is String) {
                 val filter = args["filter"] as String
                 if (filter.contains("[") && filter.contains("]")) {
                     filter(Expression.fromRaw(filter))
