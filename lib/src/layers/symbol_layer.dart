@@ -128,7 +128,7 @@ class SymbolLayerProperties extends LayerProperties {
   /// enabling this property is not needed to prevent clipped
   /// labels at tile boundaries.
   /// Boolean or Expression
-  /// Default i false
+  /// Default is false
   final dynamic symbolAvoidEdges;
 
   /// Label placement relative to its geometry.

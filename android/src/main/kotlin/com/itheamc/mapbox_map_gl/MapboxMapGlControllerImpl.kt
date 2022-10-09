@@ -1010,6 +1010,15 @@ internal class MapboxMapGlControllerImpl(
                 )
                 return result.success(true)
             }
+            Methods.addVideoSource -> {
+                args = args as Map<*, *>
+                val sourceId = args["sourceId"] as String
+                addImageSource(
+                    sourceId = sourceId,
+                    block = VideoSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
             Methods.addCircleLayer -> {
                 args = args as Map<*, *>
                 val layerId = args["layerId"] as String
@@ -1049,6 +1058,19 @@ internal class MapboxMapGlControllerImpl(
                 )
                 return result.success(true)
             }
+            Methods.addSymbolLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addSymbolLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = SymbolLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
             Methods.addRasterLayer -> {
                 args = args as Map<*, *>
                 val layerId = args["layerId"] as String
@@ -1071,6 +1093,39 @@ internal class MapboxMapGlControllerImpl(
                     block = SkyLayerHelper.blockFromArgs(layerProperties)
                 )
                 return result.success(true)
+            }
+            Methods.removeLayer -> {
+                val layerId = args as String
+                removeLayerIfAny(layerId)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.removeLayers -> {
+                val layersId = args as List<*>
+                removeLayers(layersId.map { if (it is String) it else it.toString() })
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.removeSource -> {
+                val sourceId = args as String
+                removeStyleSourceIfAny(sourceId)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
             }
             else -> {
                 Log.d(TAG, "onMethodCall: NOT Implemented")
