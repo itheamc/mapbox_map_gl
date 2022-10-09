@@ -37,12 +37,12 @@ class MapboxMapControllerImpl extends MapboxMapController {
   @override
   Future<void> toggleBetween(MapStyle style1, MapStyle style2) async {
     try {
-      final args = <String, dynamic>{
-        "style1": style1.name,
-        "style2": style2.name,
-      };
+      final args = <String>[
+        style1.name,
+        style2.name,
+      ];
 
-      await _channel.invokeMethod<bool>(Methods.toggleAmong, args);
+      await _channel.invokeMethod<bool>(Methods.toggleStyle, args);
     } on Exception catch (e, _) {
       if (kDebugMode) {
         print("[MapboxMapController.toggleBetween] -----> $e");
@@ -56,7 +56,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
   Future<void> toggleAmong(List<MapStyle> styles) async {
     try {
       await _channel.invokeMethod<bool>(
-          Methods.toggleAmong, styles.map((e) => e.name).toList());
+          Methods.toggleStyle, styles.map((e) => e.name).toList());
     } on Exception catch (e, _) {
       if (kDebugMode) {
         print("[MapboxMapController.toggleAmong] -----> $e");

@@ -21,15 +21,10 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     fun animateToInitialCameraPosition()
 
     /**
-     * Method to toggle between two map style
+     * Method to toggle map style
      */
-    fun toggleBetween(args: Map<*, *>)
+    fun toggleStyle(list: List<*>)
 
-
-    /**
-     * Method to toggle among map styles
-     */
-    fun toggleAmong(args: List<*>)
 
     /**
      * Method to animate camera

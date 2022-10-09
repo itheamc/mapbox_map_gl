@@ -38,7 +38,7 @@ private const val TAG = "MapboxMapGlController"
  * Created by Amit Chaudhary, 2022/10/3
  */
 internal class MapboxMapGlControllerImpl(
-    private val messenger: BinaryMessenger,
+    messenger: BinaryMessenger,
     private val mapboxMap: MapboxMap,
     private val creationParams: Map<*, *>?,
 ) : MapboxMapGlController {
@@ -135,29 +135,40 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
-     * Method to toggle between map style
+     * Method to toggle map style
      */
-    override fun toggleBetween(args: Map<*, *>) {
+    override fun toggleStyle(list: List<*>) {
         if (!mapboxMap.isValid()) return
 
-        mapboxMap.getStyle()?.let {
+        val styleUris = list.map { StyleHelper.fromArgs(if (it is String) it else it.toString()) }
+
+        if (styleUris.isNotEmpty() && styleUris.size <= 2) {
+            style?.let {
+                mapboxMap.loadStyleUri(
+                    if (it.styleURI == styleUris.first()) {
+                        styleUris.last()
+                    } else {
+                        styleUris.first()
+                    }
+                )
+            }
+            return
+        }
+
+        style?.let {
+
+            // Current applied style index
+            val i = styleUris.indexOf(it.styleURI)
+
             mapboxMap.loadStyleUri(
-                Style.DARK
+                if (i != -1) {
+                    styleUris[(i + 1) % styleUris.size]
+                } else {
+                    styleUris.first()
+                }
             )
         }
-    }
 
-    /**
-     * Method to toggle among map styles
-     */
-    override fun toggleAmong(args: List<*>) {
-        if (!mapboxMap.isValid()) return
-
-        mapboxMap.getStyle()?.let {
-            mapboxMap.loadStyleUri(
-                Style.LIGHT
-            )
-        }
     }
 
     /**
@@ -949,8 +960,9 @@ internal class MapboxMapGlControllerImpl(
                 }
                 return result.success(layerInfo != null)
             }
-            Methods.toggleBetween -> {
-                toggleBetween(args as Map<*, *>)
+            Methods.toggleStyle -> {
+                args = args as List<*>
+                toggleStyle(args)
                 return result.success(true)
             }
             Methods.animateCameraPosition -> {
