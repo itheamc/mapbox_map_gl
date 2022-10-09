@@ -157,9 +157,9 @@ internal object LineLayerHelper {
 
             // lineGradient
             if (args.containsKey("lineGradient")) {
-                val gapWidth = args["lineGradient"] as String
-                if (gapWidth.contains("[") && gapWidth.contains("]")) {
-                    lineGradient(Expression.fromRaw(gapWidth))
+                val gradient = args["lineGradient"] as String
+                if (gradient.contains("[") && gradient.contains("]")) {
+                    lineGradient(Expression.fromRaw(gradient))
                 }
             }
 
