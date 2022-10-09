@@ -9,6 +9,8 @@ import com.itheamc.mapbox_map_gl.helper.layer_helper.FillLayerHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.LineLayerHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.RasterLayerHelper
 import com.itheamc.mapbox_map_gl.helper.source_helper.GeoJsonSourceHelper
+import com.itheamc.mapbox_map_gl.helper.source_helper.RasterDemSourceHelper
+import com.itheamc.mapbox_map_gl.helper.source_helper.RasterSourceHelper
 import com.itheamc.mapbox_map_gl.helper.source_helper.VectorSourceHelper
 import com.itheamc.mapbox_map_gl.utils.*
 import com.mapbox.bindgen.Expected
@@ -108,7 +110,7 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun animateToInitialCameraPosition() {
 
-        if (!mapboxMap.isValid()) return;
+        if (!mapboxMap.isValid()) return
 
         val hasInitialCameraPosition =
             creationParams?.containsKey("initialCameraPosition") ?: false
@@ -972,6 +974,24 @@ internal class MapboxMapGlControllerImpl(
                 addVectorSource(
                     sourceId = sourceId,
                     block = VectorSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
+            Methods.addRasterSource -> {
+                args = args as Map<*, *>
+                val sourceId = args["sourceId"] as String
+                addRasterSource(
+                    sourceId = sourceId,
+                    block = RasterSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
+            Methods.addRasterDemSource -> {
+                args = args as Map<*, *>
+                val sourceId = args["sourceId"] as String
+                addRasterDemSource(
+                    sourceId = sourceId,
+                    block = RasterDemSourceHelper.blockFromArgs(args)
                 )
                 return result.success(true)
             }
