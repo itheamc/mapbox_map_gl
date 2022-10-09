@@ -4,15 +4,8 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
-import com.itheamc.mapbox_map_gl.helper.layer_helper.CircleLayerHelper
-import com.itheamc.mapbox_map_gl.helper.layer_helper.FillLayerHelper
-import com.itheamc.mapbox_map_gl.helper.layer_helper.LineLayerHelper
-import com.itheamc.mapbox_map_gl.helper.layer_helper.RasterLayerHelper
+import com.itheamc.mapbox_map_gl.helper.layer_helper.*
 import com.itheamc.mapbox_map_gl.helper.source_helper.*
-import com.itheamc.mapbox_map_gl.helper.source_helper.GeoJsonSourceHelper
-import com.itheamc.mapbox_map_gl.helper.source_helper.RasterDemSourceHelper
-import com.itheamc.mapbox_map_gl.helper.source_helper.RasterSourceHelper
-import com.itheamc.mapbox_map_gl.helper.source_helper.VectorSourceHelper
 import com.itheamc.mapbox_map_gl.utils.*
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
@@ -867,6 +860,8 @@ internal class MapboxMapGlControllerImpl(
                 _interactiveLayers.addAll(_interactiveLayers.filter { it.layerId != layerId })
             }
             style!!.removeStyleLayer(layerId)
+        } else if (style?.styleLayerExists(layerId) == true) {
+            style!!.removeStyleLayer(layerId)
         } else {
             ExpectedFactory.createValue(None.getInstance())
         }
@@ -888,6 +883,8 @@ internal class MapboxMapGlControllerImpl(
                 _interactiveLayerSources.addAll(_interactiveLayerSources.filter { it.sourceId == sourceId })
             }
 
+            style!!.removeStyleSource(sourceId)
+        } else if (style?.styleSourceExists(sourceId) == true) {
             style!!.removeStyleSource(sourceId)
         } else {
             ExpectedFactory.createValue(None.getInstance())
@@ -948,18 +945,14 @@ internal class MapboxMapGlControllerImpl(
 
         when (call.method) {
             Methods.isSourceExist -> {
-                val sourceInfo = _interactiveLayerSources.firstOrNull {
-                    it.sourceId == args as String
-                }
-                return result.success(sourceInfo != null)
+                val sourceId = args as String
+                val isExist = style?.styleSourceExists(sourceId) ?: false
+                return result.success(isExist)
             }
             Methods.isLayerExist -> {
-                args = args as Map<*, *>
-                val layerId = args["layerId"]
-                val layerInfo = interactiveLayers.firstOrNull {
-                    it.layerId == layerId
-                }
-                return result.success(layerInfo != null)
+                val layerId = args as String
+                val isExist = style?.styleLayerExists(layerId) ?: false
+                return result.success(isExist)
             }
             Methods.toggleStyle -> {
                 args = args as List<*>
@@ -1066,6 +1059,16 @@ internal class MapboxMapGlControllerImpl(
                     layerId = layerId,
                     sourceId = sourceId,
                     block = RasterLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addSkyLayer -> {
+                args = args as Map<*, *>
+                val layerId = args["layerId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+                addSkyLayer(
+                    layerId = layerId,
+                    block = SkyLayerHelper.blockFromArgs(layerProperties)
                 )
                 return result.success(true)
             }
