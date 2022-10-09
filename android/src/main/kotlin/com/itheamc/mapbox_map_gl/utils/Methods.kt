@@ -32,8 +32,7 @@ object Methods {
      * These are the methods triggered from the flutter side
      */
     const val animateCameraPosition = "animateCameraPosition"
-    const val toggleBetween = "toggleBetween"
-    const val toggleAmong = "toggleAmong"
+    const val toggleStyle = "toggleStyle"
     const val isSourceExist = "isSourceExist"
     const val isLayerExist = "isLayerExist"
     const val addGeoJsonSource = "addGeoJsonSource"

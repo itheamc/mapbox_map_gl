@@ -13,8 +13,7 @@ class Methods {
 
   /// Methods triggered from the flutter side
   static const animateCameraPosition = "animateCameraPosition";
-  static const toggleBetween = "toggleBetween";
-  static const toggleAmong = "toggleAmong";
+  static const toggleStyle = "toggleStyle";
   static const isSourceExist = "isSourceExist";
   static const isLayerExist = "isLayerExist";
   static const addGeoJsonSource = "addGeoJsonSource";
