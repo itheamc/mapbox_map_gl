@@ -11,6 +11,19 @@ class VectorSourceExampleScreen extends StatefulWidget {
 }
 
 class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
+  /// List of color
+  final _colors = [
+    "#ff69b4",
+    "red",
+    "blue",
+    "green",
+    "orange",
+  ];
+
+  /// Color Index
+  int _i = 0;
+
+  /// Map controller
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
@@ -19,13 +32,12 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   }
 
   Future<void> _addVectorSource() async {
+    _i = (_i + 1) % _colors.length;
     _controller
         ?.addSource<VectorSource>(
       source: VectorSource(
-        sourceId: "my-line-data-source",
-        tiles: [
-          "https://cleanup.naxa.com.np/api/v1/core/maps/vector_layer/{z}/{x}/{y}/?layer_id=3"
-        ],
+        sourceId: "mapbox-terrain",
+        url: 'mapbox://mapbox.mapbox-terrain-v2',
       ),
     )
         .then((value) {
@@ -36,14 +48,15 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   Future<void> _addLineLayer() async {
     await _controller?.addLayer<LineLayer>(
       layer: LineLayer(
-          layerId: "line-layer-id",
-          sourceId: "my-line-data-source",
-          layerProperties: LineLayerProperties(
-              lineColor: "purple",
-              lineWidth: 3.5,
-              lineJoin: LineJoin.round,
-              lineCap: LineCap.round,
-              sourceLayer: "routes")),
+        layerId: "line-layer-id",
+        sourceId: "mapbox-terrain",
+        layerProperties: LineLayerProperties(
+            lineColor: _colors[_i],
+            lineWidth: 1.5,
+            lineJoin: LineJoin.round,
+            lineCap: LineCap.round,
+            sourceLayer: "contour"),
+      ),
     );
   }
 
@@ -65,8 +78,8 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
-            center: Point.fromLatLng(27.837785, 82.538961),
-            zoom: 5.0,
+            center: Point.fromLatLng(37.283499, -122.158085),
+            zoom: 15.0,
             // anchor: ScreenCoordinate(120.0, 200.0),
             animationOptions: AnimationOptions.mapAnimationOptions(
               startDelay: 300,
