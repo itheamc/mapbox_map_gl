@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mapbox_map_gl_example/screens/geojson_source_example_screen.dart';
+import 'package:mapbox_map_gl_example/screens/image_source_example.dart';
 import 'package:mapbox_map_gl_example/screens/raster_source_example.dart';
 import 'package:mapbox_map_gl_example/screens/toggle_style_example_screen.dart';
 import 'package:mapbox_map_gl_example/screens/vector_source_example.dart';
@@ -23,23 +24,28 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
     ExamplePage(
       title: "Animate Camera",
-      subtitle: "You can see here how animate camera position works!",
+      subtitle: "See here how animate camera position works!",
       page: const AnimateCameraExampleScreen(),
     ),
     ExamplePage(
       title: "GeoJson Source",
-      subtitle: "You can see circle layer added using geo-son source!",
+      subtitle: "Circle layer added using geo-son source!",
       page: const GeoJsonSourceExampleScreen(),
     ),
     ExamplePage(
       title: "Vector Source",
-      subtitle: "You can see vector layer added using vector source!",
+      subtitle: "Vector layer added using vector source!",
       page: const VectorSourceExampleScreen(),
     ),
     ExamplePage(
       title: "Raster Source",
-      subtitle: "You can see raster layer added using raster source!",
+      subtitle: "Raster layer added using raster source!",
       page: const RasterSourceExampleScreen(),
+    ),
+    ExamplePage(
+      title: "Image Source",
+      subtitle: "Raster layer added using image source!",
+      page: const ImageSourceExampleScreen(),
     ),
   ];
 
