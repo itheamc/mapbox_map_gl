@@ -705,9 +705,13 @@ class SymbolLayerProperties extends LayerProperties {
           : textIgnorePlacement;
     }
 
-    if (textJustify != null) {
-      args['textJustify'] =
-          textJustify is List ? jsonEncode(textJustify) : textJustify;
+    if (textJustify != null &&
+        (textJustify is TextJustify || textJustify is List)) {
+      args['textJustify'] = textJustify is TextJustify
+          ? (textJustify as TextJustify).name
+          : textJustify is List
+              ? jsonEncode(textJustify)
+              : textJustify;
     }
 
     if (textKeepUpright != null) {
