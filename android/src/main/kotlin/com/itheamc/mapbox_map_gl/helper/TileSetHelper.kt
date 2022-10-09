@@ -72,15 +72,21 @@ internal object TileSetHelper {
             }
 
             // set minZoom
-            if (args.containsKey("minZoom") && args["minZoom"] is Int) {
-                val value = args["minZoom"] as Int
-                minZoom(value)
+            if (args.containsKey("minZoom")) {
+                when (val value = args["minZoom"]) {
+                    is Double -> minZoom(value.toInt())
+                    is Int -> minZoom(value)
+                    is Long -> minZoom(value.toInt())
+                }
             }
 
             // set maxZoom
-            if (args.containsKey("maxZoom") && args["maxZoom"] is Int) {
-                val value = args["maxZoom"] as Int
-                maxZoom(value)
+            if (args.containsKey("maxZoom")) {
+                when (val value = args["maxZoom"]) {
+                    is Double -> maxZoom(value.toInt())
+                    is Int -> maxZoom(value)
+                    is Long -> maxZoom(value.toInt())
+                }
             }
 
             // set bounds
@@ -164,15 +170,21 @@ internal object TileSetHelper {
             }
 
             // set minZoom
-            if (args.containsKey("minZoom") && args["minZoom"] is Int) {
-                val value = args["minZoom"] as Int
-                minZoom(value)
+            if (args.containsKey("minZoom")) {
+                when (val value = args["minZoom"]) {
+                    is Double -> minZoom(value.toInt())
+                    is Int -> minZoom(value)
+                    is Long -> minZoom(value.toInt())
+                }
             }
 
             // set maxZoom
-            if (args.containsKey("maxZoom") && args["maxZoom"] is Int) {
-                val value = args["maxZoom"] as Int
-                maxZoom(value)
+            if (args.containsKey("maxZoom")) {
+                when (val value = args["maxZoom"]) {
+                    is Double -> maxZoom(value.toInt())
+                    is Int -> maxZoom(value)
+                    is Long -> maxZoom(value.toInt())
+                }
             }
 
             // set bounds

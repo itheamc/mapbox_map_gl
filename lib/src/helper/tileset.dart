@@ -13,29 +13,34 @@ class TileSet {
   /// "http:localhost:8888/admin/1.0.0/world-light,broadband/{z}/{x}/{y}.png"
   final List<String> tiles;
 
-  /// [options] - An options for the tileset
-  final TileSetOptions? options;
+  /// [properties] - An properties for the tileset
+  final TileSetProperties? properties;
 
   /// Constructor
   TileSet({
     required this.tileJson,
     required this.tiles,
-    this.options,
-  });
+    this.properties,
+  }) : assert(tiles.isNotEmpty, "Tiles can't be empty!!");
 
   /// Method to convert TileSet object to Map
   /// It is basically for passing to the native platform
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      "tileJson": tileJson,
-      "tiles": tiles,
-      "options": options,
-    };
+    final args = <String, dynamic>{};
+
+    args["tileJson"] = tileJson;
+    args["tiles"] = tiles;
+
+    if (properties != null) {
+      args["properties"] = properties?.toMap();
+    }
+
+    return args;
   }
 }
 
-/// TileSetOptions class
-class TileSetOptions {
+/// TileSetProperties class
+class TileSetProperties {
   /// A name describing the tileset. The name can contain any legal character.
   /// Implementations SHOULD NOT interpret the name as HTML.
   final String? name;
@@ -134,7 +139,7 @@ class TileSetOptions {
   final Encoding? encoding;
 
   /// Constructor
-  TileSetOptions({
+  TileSetProperties({
     this.name,
     this.description,
     this.version,
