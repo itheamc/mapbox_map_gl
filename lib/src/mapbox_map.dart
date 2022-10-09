@@ -53,9 +53,9 @@ class MapboxMap extends StatefulWidget {
   /// whenever map is loaded
   final CameraPosition? initialCameraPosition;
 
-  /// [mapStyle] An initial map style whenever map loaded
+  /// [style] An initial map style whenever map loaded
   /// default value is MapStyle.light
-  final MapStyle mapStyle;
+  final MapStyle style;
 
   /// [onMapCreated] A callback that will be triggered whenever map is
   /// fully loaded/created
@@ -95,7 +95,7 @@ class MapboxMap extends StatefulWidget {
   const MapboxMap({
     Key? key,
     this.initialCameraPosition,
-    this.mapStyle = MapStyle.light,
+    this.style = MapStyle.light,
     this.onMapCreated,
     this.onStyleLoaded,
     this.onStyleLoadError,
@@ -179,7 +179,7 @@ class _MapboxMapState extends State<MapboxMap> {
 
     creationParams['initialCameraPosition'] =
         widget.initialCameraPosition?.toMap();
-    creationParams['style'] = widget.mapStyle.name;
+    creationParams['style'] = widget.style.name;
 
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,
