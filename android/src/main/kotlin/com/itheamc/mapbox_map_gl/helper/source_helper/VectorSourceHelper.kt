@@ -24,7 +24,7 @@ internal object VectorSourceHelper {
 
             // set url
             if (args.containsKey("url") && args["url"] is String) {
-                val value = sourceProperties["url"] as String
+                val value = args["url"] as String
                 url(value)
             }
 
@@ -50,15 +50,21 @@ internal object VectorSourceHelper {
             }
 
             // set minZoom
-            if (sourceProperties.containsKey("minZoom") && sourceProperties["minZoom"] is Int) {
-                val value = sourceProperties["minZoom"] as Int
-                minzoom(value.toLong())
+            if (sourceProperties.containsKey("minZoom")) {
+                when (val value = sourceProperties["minZoom"]) {
+                    is Double -> minzoom(value.toLong())
+                    is Int -> minzoom(value.toLong())
+                    is Long -> minzoom(value)
+                }
             }
 
             // set maxZoom
-            if (sourceProperties.containsKey("maxZoom") && sourceProperties["maxZoom"] is Int) {
-                val value = sourceProperties["maxZoom"] as Int
-                maxzoom(value.toLong())
+            if (sourceProperties.containsKey("maxZoom")) {
+                when (val value = sourceProperties["maxZoom"]) {
+                    is Double -> maxzoom(value.toLong())
+                    is Int -> maxzoom(value.toLong())
+                    is Long -> maxzoom(value)
+                }
             }
 
             // set attribution
@@ -89,33 +95,48 @@ internal object VectorSourceHelper {
             }
 
             // set prefetchZoomDelta
-            if (sourceProperties.containsKey("prefetchZoomDelta") && sourceProperties["prefetchZoomDelta"] is Int) {
-                val value = sourceProperties["prefetchZoomDelta"] as Int
-                prefetchZoomDelta(value.toLong())
+            if (sourceProperties.containsKey("prefetchZoomDelta")) {
+                when (val value = sourceProperties["prefetchZoomDelta"]) {
+                    is Double -> prefetchZoomDelta(value.toLong())
+                    is Int -> prefetchZoomDelta(value.toLong())
+                    is Long -> prefetchZoomDelta(value)
+                }
             }
 
             // set minimumTileUpdateInterval
-            if (sourceProperties.containsKey("minimumTileUpdateInterval") && sourceProperties["minimumTileUpdateInterval"] is Double) {
-                val value = sourceProperties["minimumTileUpdateInterval"] as Double
-                minimumTileUpdateInterval(value)
+            if (sourceProperties.containsKey("minimumTileUpdateInterval")) {
+                when (val value = sourceProperties["minimumTileUpdateInterval"]) {
+                    is Double -> minimumTileUpdateInterval(value)
+                    is Int -> minimumTileUpdateInterval(value.toDouble())
+                    is Long -> minimumTileUpdateInterval(value.toDouble())
+                }
             }
 
             // set maxOverScaleFactorForParentTiles
-            if (sourceProperties.containsKey("maxOverScaleFactorForParentTiles") && sourceProperties["maxOverScaleFactorForParentTiles"] is Int) {
-                val value = sourceProperties["maxOverScaleFactorForParentTiles"] as Int
-                maxOverscaleFactorForParentTiles(value.toLong())
+            if (sourceProperties.containsKey("maxOverScaleFactorForParentTiles")) {
+                when (val value = sourceProperties["maxOverScaleFactorForParentTiles"]) {
+                    is Double -> maxOverscaleFactorForParentTiles(value.toLong())
+                    is Int -> maxOverscaleFactorForParentTiles(value.toLong())
+                    is Long -> maxOverscaleFactorForParentTiles(value)
+                }
             }
 
             // set tileRequestsDelay
-            if (sourceProperties.containsKey("tileRequestsDelay") && sourceProperties["tileRequestsDelay"] is Double) {
-                val value = sourceProperties["tileRequestsDelay"] as Double
-                tileRequestsDelay(value)
+            if (sourceProperties.containsKey("tileRequestsDelay")) {
+                when (val value = sourceProperties["tileRequestsDelay"]) {
+                    is Double -> tileRequestsDelay(value)
+                    is Int -> tileRequestsDelay(value.toDouble())
+                    is Long -> tileRequestsDelay(value.toDouble())
+                }
             }
 
             // set tileNetworkRequestsDelay
-            if (sourceProperties.containsKey("tileNetworkRequestsDelay") && sourceProperties["tileNetworkRequestsDelay"] is Double) {
-                val value = sourceProperties["tileNetworkRequestsDelay"] as Double
-                tileNetworkRequestsDelay(value)
+            if (sourceProperties.containsKey("tileNetworkRequestsDelay")) {
+                when (val value = sourceProperties["tileNetworkRequestsDelay"]) {
+                    is Double -> tileNetworkRequestsDelay(value)
+                    is Int -> tileNetworkRequestsDelay(value.toDouble())
+                    is Long -> tileNetworkRequestsDelay(value.toDouble())
+                }
             }
         }
     }
