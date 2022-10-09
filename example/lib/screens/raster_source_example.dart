@@ -2,66 +2,75 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
 
-import 'example3_screen.dart';
-
-class Example1Screen extends StatefulWidget {
-  const Example1Screen({Key? key}) : super(key: key);
+class RasterSourceExampleScreen extends StatefulWidget {
+  const RasterSourceExampleScreen({Key? key}) : super(key: key);
 
   @override
-  State<Example1Screen> createState() => _Example1ScreenState();
+  State<RasterSourceExampleScreen> createState() =>
+      _RasterSourceExampleScreenState();
 }
 
-class _Example1ScreenState extends State<Example1Screen> {
+class _RasterSourceExampleScreenState extends State<RasterSourceExampleScreen> {
+  /// Map controller
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
   void _onMapCreated(MapboxMapController controller) {
     _controller = controller;
-    if (kDebugMode) {
-      print("[ON MAP CREATED]------->");
-    }
   }
 
-  /// Method to toggle theme mode
-  /// Satellite and Street
-  Future<void> _toggleMode() async {
-    // await _controller?.toggleBetween(dark: true);
+  Future<void> _addRasterSource() async {
+    _controller
+        ?.addSource<RasterSource>(
+      source: RasterSource(
+          sourceId: "example-raster-tiles",
+          tiles: [
+            "https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"
+          ],
+          sourceProperties: RasterSourceProperties(
+              tileSize: 256, attribution: "By Stamen Design")),
+    )
+        .then((value) {
+      _addRasterLayer();
+    });
+  }
+
+  Future<void> _addRasterLayer() async {
+    await _controller?.addLayer<RasterLayer>(
+      layer: RasterLayer(
+        layerId: "raster-layer-id",
+        sourceId: "example-raster-tiles",
+        layerProperties: RasterLayerProperties(
+          minZoom: 0,
+          maxZoom: 22,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton.small(
-              child: const Icon(
-                Icons.alt_route,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const Example3Screen(),
-                  ),
-                );
-              },
+        floatingActionButton: SizedBox(
+          height: 38.0,
+          child: FloatingActionButton.extended(
+            onPressed: _addRasterSource,
+            label: const Text(
+              "Add Raster Source & Layer",
+              textScaleFactor: 0.75,
             ),
-            FloatingActionButton.small(
-              onPressed: _toggleMode,
-              child: const Icon(
-                Icons.toggle_off_outlined,
-                color: Colors.white,
-              ),
+            icon: const Icon(
+              Icons.layers,
+              color: Colors.white,
+              size: 14.0,
             ),
-          ],
+          ),
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
-            center: Point.fromLatLng(27.837785, 82.538961),
-            zoom: 15.0,
-            // anchor: ScreenCoordinate(120.0, 200.0),
+            center: Point.fromLngLat(-74.5, 40.0),
+            zoom: 2.0,
             animationOptions: AnimationOptions.mapAnimationOptions(
               startDelay: 300,
               duration: const Duration(milliseconds: 750),

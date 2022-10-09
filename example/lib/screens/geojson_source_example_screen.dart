@@ -2,16 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
 
-import 'example1_screen.dart';
-
-class Example3Screen extends StatefulWidget {
-  const Example3Screen({Key? key}) : super(key: key);
+class GeoJsonSourceExampleScreen extends StatefulWidget {
+  const GeoJsonSourceExampleScreen({Key? key}) : super(key: key);
 
   @override
-  State<Example3Screen> createState() => _Example3ScreenState();
+  State<GeoJsonSourceExampleScreen> createState() => _GeoJsonSourceExampleScreenState();
 }
 
-class _Example3ScreenState extends State<Example3Screen> {
+class _GeoJsonSourceExampleScreenState extends State<GeoJsonSourceExampleScreen> {
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
@@ -88,30 +86,20 @@ class _Example3ScreenState extends State<Example3Screen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton.small(
-              child: const Icon(
-                Icons.alt_route,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const Example1Screen(),
-                  ),
-                );
-              },
+        floatingActionButton: SizedBox(
+          height: 38.0,
+          child: FloatingActionButton.extended(
+            onPressed: _addGeoJson,
+            label: const Text(
+              "Add GeoJson Source & Circle Layer",
+              textScaleFactor: 0.75,
             ),
-            FloatingActionButton.small(
-              onPressed: _addGeoJson,
-              child: const Icon(
-                Icons.layers,
-                color: Colors.white,
-              ),
+            icon: const Icon(
+              Icons.layers,
+              color: Colors.white,
+              size: 14.0,
             ),
-          ],
+          ),
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(

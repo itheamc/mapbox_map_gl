@@ -64,17 +64,20 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton.small(
-              onPressed: _addVectorSource,
-              child: const Icon(
-                Icons.layers,
-                color: Colors.white,
-              ),
+        floatingActionButton: SizedBox(
+          height: 38.0,
+          child: FloatingActionButton.extended(
+            onPressed: _addVectorSource,
+            label: const Text(
+              "Add Vector Source & Layer",
+              textScaleFactor: 0.75,
             ),
-          ],
+            icon: const Icon(
+              Icons.layers,
+              color: Colors.white,
+              size: 14.0,
+            ),
+          ),
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
