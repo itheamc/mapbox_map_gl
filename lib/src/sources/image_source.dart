@@ -21,7 +21,7 @@ class ImageSource extends Source<ImageSourceProperties> {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       "sourceId": sourceId,
-      "url": "url",
+      "url": url,
       "coordinates": coordinates,
       "sourceProperties":
           (sourceProperties ?? ImageSourceProperties.defaultProperties).toMap()

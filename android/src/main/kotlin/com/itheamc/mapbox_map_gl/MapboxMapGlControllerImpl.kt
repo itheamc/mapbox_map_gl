@@ -8,6 +8,7 @@ import com.itheamc.mapbox_map_gl.helper.layer_helper.CircleLayerHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.FillLayerHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.LineLayerHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.RasterLayerHelper
+import com.itheamc.mapbox_map_gl.helper.source_helper.*
 import com.itheamc.mapbox_map_gl.helper.source_helper.GeoJsonSourceHelper
 import com.itheamc.mapbox_map_gl.helper.source_helper.RasterDemSourceHelper
 import com.itheamc.mapbox_map_gl.helper.source_helper.RasterSourceHelper
@@ -1004,6 +1005,15 @@ internal class MapboxMapGlControllerImpl(
                 addRasterDemSource(
                     sourceId = sourceId,
                     block = RasterDemSourceHelper.blockFromArgs(args)
+                )
+                return result.success(true)
+            }
+            Methods.addImageSource -> {
+                args = args as Map<*, *>
+                val sourceId = args["sourceId"] as String
+                addImageSource(
+                    sourceId = sourceId,
+                    block = ImageSourceHelper.blockFromArgs(args)
                 )
                 return result.success(true)
             }
