@@ -35,8 +35,11 @@ internal object GeoJsonSourceHelper {
 
             // maxZoom
             if (sourceProperties.containsKey("maxZoom")) {
-                val max = sourceProperties["maxZoom"] as Int
-                maxzoom(max.toLong())
+                when (val max = sourceProperties["maxZoom"]) {
+                    is Double -> maxzoom(max.toLong())
+                    is Int -> maxzoom(max.toLong())
+                    is Long -> maxzoom(max)
+                }
             }
 
             // attribution
@@ -47,14 +50,20 @@ internal object GeoJsonSourceHelper {
 
             // buffer
             if (sourceProperties.containsKey("buffer")) {
-                val bfr = sourceProperties["buffer"] as Int
-                buffer(bfr.toLong())
+                when (val bfr = sourceProperties["buffer"]) {
+                    is Double -> buffer(bfr.toLong())
+                    is Int -> buffer(bfr.toLong())
+                    is Long -> buffer(bfr)
+                }
             }
 
             // tolerance
             if (sourceProperties.containsKey("tolerance")) {
-                val tol = sourceProperties["tolerance"] as Double
-                tolerance(tol)
+                when (val tol = sourceProperties["tolerance"]) {
+                    is Double -> tolerance(tol)
+                    is Int -> tolerance(tol.toDouble())
+                    is Long -> tolerance(tol.toDouble())
+                }
             }
 
             // cluster
@@ -65,14 +74,20 @@ internal object GeoJsonSourceHelper {
 
             // clusterRadius
             if (sourceProperties.containsKey("clusterRadius")) {
-                val radius = sourceProperties["clusterRadius"] as Int
-                clusterRadius(radius.toLong())
+                when (val radius = sourceProperties["clusterRadius"]) {
+                    is Double -> clusterRadius(radius.toLong())
+                    is Int -> clusterRadius(radius.toLong())
+                    is Long -> clusterRadius(radius)
+                }
             }
 
             // clusterMaxZoom
             if (sourceProperties.containsKey("clusterMaxZoom")) {
-                val cMaxZoom = sourceProperties["clusterMaxZoom"] as Int
-                clusterMaxZoom(cMaxZoom.toLong())
+                when (val cMaxZoom = sourceProperties["clusterMaxZoom"]) {
+                    is Double -> clusterMaxZoom(cMaxZoom.toLong())
+                    is Int -> clusterMaxZoom(cMaxZoom.toLong())
+                    is Long -> clusterMaxZoom(cMaxZoom)
+                }
             }
 
             // clusterProperties
@@ -116,8 +131,11 @@ internal object GeoJsonSourceHelper {
 
             // prefetchZoomDelta
             if (sourceProperties.containsKey("prefetchZoomDelta")) {
-                val zoomDelta = sourceProperties["prefetchZoomDelta"] as Int
-                prefetchZoomDelta(zoomDelta.toLong())
+                when (val zoomDelta = sourceProperties["prefetchZoomDelta"]) {
+                    is Double -> prefetchZoomDelta(zoomDelta.toLong())
+                    is Int -> prefetchZoomDelta(zoomDelta.toLong())
+                    is Long -> prefetchZoomDelta(zoomDelta)
+                }
             }
 
             // feature
@@ -139,16 +157,6 @@ internal object GeoJsonSourceHelper {
                     Log.i(TAG, "blockFromArgs: - feature --> ${e.message}")
                 }
             }
-
-//             geometry
-//            if (sourceProperties.containsKey("geometry")) {
-//                try {
-//                    val g = sourceProperties["geometry"] as String
-//                    geometry()
-//                } catch (e: Exception) {
-//                    Log.i(TAG, "blockFromArgs: - feature --> ${e.message}")
-//                }
-//            }
 
         }
 

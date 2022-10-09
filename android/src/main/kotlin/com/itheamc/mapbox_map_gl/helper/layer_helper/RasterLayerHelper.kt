@@ -27,6 +27,8 @@ internal object RasterLayerHelper {
                         rasterBrightnessMax(Expression.fromRaw(brightness))
                     }
                     is Double -> rasterBrightnessMax(brightness)
+                    is Int -> rasterBrightnessMax(brightness.toDouble())
+                    is Long -> rasterBrightnessMax(brightness.toDouble())
                 }
             }
             // rasterBrightnessMaxTransition
@@ -47,6 +49,8 @@ internal object RasterLayerHelper {
                         rasterBrightnessMin(Expression.fromRaw(brightness))
                     }
                     is Double -> rasterBrightnessMin(brightness)
+                    is Int -> rasterBrightnessMin(brightness.toDouble())
+                    is Long -> rasterBrightnessMin(brightness.toDouble())
                 }
             }
             // rasterBrightnessMinTransition
@@ -67,6 +71,8 @@ internal object RasterLayerHelper {
                         rasterContrast(Expression.fromRaw(contrast))
                     }
                     is Double -> rasterContrast(contrast)
+                    is Int -> rasterContrast(contrast.toDouble())
+                    is Long -> rasterContrast(contrast.toDouble())
                 }
             }
 
@@ -88,6 +94,8 @@ internal object RasterLayerHelper {
                         rasterFadeDuration(Expression.fromRaw(fadeDuration))
                     }
                     is Double -> rasterFadeDuration(fadeDuration)
+                    is Int -> rasterFadeDuration(fadeDuration.toDouble())
+                    is Long -> rasterFadeDuration(fadeDuration.toDouble())
                 }
             }
 
@@ -98,6 +106,8 @@ internal object RasterLayerHelper {
                         rasterHueRotate(Expression.fromRaw(hueRotate))
                     }
                     is Double -> rasterHueRotate(hueRotate)
+                    is Int -> rasterHueRotate(hueRotate.toDouble())
+                    is Long -> rasterHueRotate(hueRotate.toDouble())
                 }
             }
 
@@ -119,6 +129,8 @@ internal object RasterLayerHelper {
                         rasterOpacity(Expression.fromRaw(opacity))
                     }
                     is Double -> rasterOpacity(opacity)
+                    is Int -> rasterOpacity(opacity.toDouble())
+                    is Long -> rasterOpacity(opacity.toDouble())
                 }
             }
 
@@ -157,6 +169,8 @@ internal object RasterLayerHelper {
                         rasterSaturation(Expression.fromRaw(saturation))
                     }
                     is Double -> rasterSaturation(saturation)
+                    is Int -> rasterSaturation(saturation.toDouble())
+                    is Long -> rasterSaturation(saturation.toDouble())
                 }
             }
 
@@ -179,14 +193,20 @@ internal object RasterLayerHelper {
 
             // maxZoom
             if (args.containsKey("maxZoom")) {
-                val max = args["maxZoom"] as Double
-                maxZoom(max)
+                when (val max = args["maxZoom"]) {
+                    is Double -> maxZoom(max)
+                    is Int -> maxZoom(max.toDouble())
+                    is Long -> maxZoom(max.toDouble())
+                }
             }
 
             // minZoom
             if (args.containsKey("minZoom")) {
-                val min = args["minZoom"] as Double
-                minZoom(min)
+                when (val min = args["minZoom"]) {
+                    is Double -> minZoom(min)
+                    is Int -> minZoom(min.toDouble())
+                    is Long -> minZoom(min.toDouble())
+                }
             }
 
             // visibility

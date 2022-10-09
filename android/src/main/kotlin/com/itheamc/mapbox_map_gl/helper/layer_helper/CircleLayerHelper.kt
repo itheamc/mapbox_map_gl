@@ -8,7 +8,6 @@ import com.mapbox.maps.extension.style.layers.properties.generated.CirclePitchSc
 import com.mapbox.maps.extension.style.layers.properties.generated.CircleTranslateAnchor
 import com.mapbox.maps.extension.style.layers.properties.generated.Visibility
 import com.mapbox.maps.extension.style.types.StyleTransition
-import com.mapbox.maps.logD
 import java.util.*
 
 
@@ -55,6 +54,8 @@ internal object CircleLayerHelper {
                         circleRadius(Expression.fromRaw(radius))
                     }
                     is Double -> circleRadius(radius)
+                    is Int -> circleRadius(radius.toDouble())
+                    is Long -> circleRadius(radius.toDouble())
                 }
             }
             // circleRadiusTransition
@@ -75,6 +76,8 @@ internal object CircleLayerHelper {
                         circleBlur(Expression.fromRaw(blur))
                     }
                     is Double -> circleBlur(blur)
+                    is Int -> circleBlur(blur.toDouble())
+                    is Long -> circleBlur(blur.toDouble())
                 }
             }
             // circleBlurTransition
@@ -95,6 +98,8 @@ internal object CircleLayerHelper {
                         circleOpacity(Expression.fromRaw(opacity))
                     }
                     is Double -> circleOpacity(opacity)
+                    is Int -> circleOpacity(opacity.toDouble())
+                    is Long -> circleOpacity(opacity.toDouble())
                 }
             }
             // circleOpacityTransition
@@ -138,6 +143,8 @@ internal object CircleLayerHelper {
                         circleStrokeWidth(Expression.fromRaw(strokeWidth))
                     }
                     is Double -> circleStrokeWidth(strokeWidth)
+                    is Int -> circleStrokeWidth(strokeWidth.toDouble())
+                    is Long -> circleStrokeWidth(strokeWidth.toDouble())
                 }
             }
             // circleStrokeWidthTransition
@@ -158,6 +165,8 @@ internal object CircleLayerHelper {
                         circleStrokeOpacity(Expression.fromRaw(opacity))
                     }
                     is Double -> circleStrokeOpacity(opacity)
+                    is Int -> circleStrokeOpacity(opacity.toDouble())
+                    is Long -> circleStrokeOpacity(opacity.toDouble())
                 }
             }
             // circleStrokeOpacityTransition
@@ -206,6 +215,8 @@ internal object CircleLayerHelper {
                         circleSortKey(Expression.fromRaw(sortKey))
                     }
                     is Double -> circleSortKey(sortKey)
+                    is Int -> circleSortKey(sortKey.toDouble())
+                    is Long -> circleSortKey(sortKey.toDouble())
                 }
             }
 
@@ -269,14 +280,20 @@ internal object CircleLayerHelper {
 
             // maxZoom
             if (args.containsKey("maxZoom")) {
-                val max = args["maxZoom"] as Double
-                maxZoom(max)
+                when (val max = args["maxZoom"]) {
+                    is Double -> maxZoom(max)
+                    is Int -> maxZoom(max.toDouble())
+                    is Long -> maxZoom(max.toDouble())
+                }
             }
 
             // minZoom
             if (args.containsKey("minZoom")) {
-                val min = args["minZoom"] as Double
-                minZoom(min)
+                when (val min = args["minZoom"]) {
+                    is Double -> minZoom(min)
+                    is Int -> minZoom(min.toDouble())
+                    is Long -> minZoom(min.toDouble())
+                }
             }
 
             // visibility

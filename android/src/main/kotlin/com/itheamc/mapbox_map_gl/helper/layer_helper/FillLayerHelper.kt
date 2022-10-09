@@ -57,6 +57,8 @@ internal object FillLayerHelper {
                         fillOpacity(Expression.fromRaw(opacity))
                     }
                     is Double -> fillOpacity(opacity)
+                    is Int -> fillOpacity(opacity.toDouble())
+                    is Long -> fillOpacity(opacity.toDouble())
                 }
             }
             // fillOpacityTransition
@@ -122,6 +124,8 @@ internal object FillLayerHelper {
                         fillSortKey(Expression.fromRaw(sortKey))
                     }
                     is Double -> fillSortKey(sortKey)
+                    is Int -> fillSortKey(sortKey.toDouble())
+                    is Long -> fillSortKey(sortKey.toDouble())
                 }
             }
 
@@ -181,14 +185,20 @@ internal object FillLayerHelper {
 
             // maxZoom
             if (args.containsKey("maxZoom")) {
-                val max = args["maxZoom"] as Double
-                maxZoom(max)
+                when (val max = args["maxZoom"]) {
+                    is Double -> maxZoom(max)
+                    is Int -> maxZoom(max.toDouble())
+                    is Long -> maxZoom(max.toDouble())
+                }
             }
 
             // minZoom
             if (args.containsKey("minZoom")) {
-                val min = args["minZoom"] as Double
-                minZoom(min)
+                when (val min = args["minZoom"]) {
+                    is Double -> minZoom(min)
+                    is Int -> minZoom(min.toDouble())
+                    is Long -> minZoom(min.toDouble())
+                }
             }
 
             // visibility
