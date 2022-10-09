@@ -6,10 +6,12 @@ class GeoJsonSourceExampleScreen extends StatefulWidget {
   const GeoJsonSourceExampleScreen({Key? key}) : super(key: key);
 
   @override
-  State<GeoJsonSourceExampleScreen> createState() => _GeoJsonSourceExampleScreenState();
+  State<GeoJsonSourceExampleScreen> createState() =>
+      _GeoJsonSourceExampleScreenState();
 }
 
-class _GeoJsonSourceExampleScreenState extends State<GeoJsonSourceExampleScreen> {
+class _GeoJsonSourceExampleScreenState
+    extends State<GeoJsonSourceExampleScreen> {
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
@@ -18,7 +20,8 @@ class _GeoJsonSourceExampleScreenState extends State<GeoJsonSourceExampleScreen>
   }
 
   Future<void> _addGeoJson() async {
-    _controller?.addSource<GeoJsonSource>(
+    _controller
+        ?.addSource<GeoJsonSource>(
       source: GeoJsonSource(
         sourceId: "my-data-source",
         url:
@@ -26,7 +29,8 @@ class _GeoJsonSourceExampleScreenState extends State<GeoJsonSourceExampleScreen>
         sourceProperties: GeoJsonSourceProperties(
             cluster: true, clusterRadius: 50, clusterMaxZoom: 14, maxZoom: 20),
       ),
-    ).then((value) {
+    )
+        .then((value) {
       _addCircleLayer();
     });
   }
@@ -72,11 +76,25 @@ class _GeoJsonSourceExampleScreenState extends State<GeoJsonSourceExampleScreen>
             2
           ],
           circleStrokeColor: "#fff",
-          circleTranslate: [-5, -5],
           circleTranslateTransition: StyleTransition.build(
             delay: 0,
             duration: const Duration(milliseconds: 1000),
           ),
+        ),
+      ),
+    );
+    await _addSymbolLayer();
+  }
+
+  Future<void> _addSymbolLayer() async {
+    await _controller?.addLayer<SymbolLayer>(
+      layer: SymbolLayer(
+        layerId: "symbol-layer-example",
+        sourceId: "my-data-source",
+        layerProperties: SymbolLayerProperties(
+          textField: ['get', 'point_count_abbreviated'],
+          textSize: 12,
+          textColor: '#fff',
         ),
       ),
     );
