@@ -2,16 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
 
-class GeoJsonSourceExampleScreen extends StatefulWidget {
-  const GeoJsonSourceExampleScreen({Key? key}) : super(key: key);
+class GeoJsonSourceExample2Screen extends StatefulWidget {
+  const GeoJsonSourceExample2Screen({Key? key}) : super(key: key);
 
   @override
-  State<GeoJsonSourceExampleScreen> createState() =>
-      _GeoJsonSourceExampleScreenState();
+  State<GeoJsonSourceExample2Screen> createState() =>
+      _GeoJsonSourceExample2ScreenState();
 }
 
-class _GeoJsonSourceExampleScreenState
-    extends State<GeoJsonSourceExampleScreen> {
+class _GeoJsonSourceExample2ScreenState
+    extends State<GeoJsonSourceExample2Screen> {
   MapboxMapController? _controller;
 
   /// Method to handle onMapCreated callback
@@ -19,18 +19,40 @@ class _GeoJsonSourceExampleScreenState
     _controller = controller;
   }
 
+  /// Method to add local style image
+  Future<void> _addLocalStyleImage() async {
+    await _controller?.addStyleImage<LocalStyleImage>(
+      image: LocalStyleImage(
+        imageId: "icon",
+        imageName: "assets/images/composting.png",
+        sdf: false,
+      ),
+    );
+  }
+
+  /// Method to add network style image
+  // Future<void> _addNetworkStyleImage() async {
+  //   await _controller?.addStyleImage<NetworkStyleImage>(
+  //     image: NetworkStyleImage(
+  //       imageId: "icon",
+  //       url:
+  //           "",
+  //       sdf: true,
+  //     ),
+  //   );
+  // }
+
   Future<void> _addGeoJson() async {
+    await _addLocalStyleImage();
+    // await _addNetworkStyleImage();
     await _controller
         ?.addSource<GeoJsonSource>(
       source: GeoJsonSource(
         sourceId: "my-data-source",
         url:
-            "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_land_ocean_label_points.geojson",
+            "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_geography_regions_points.geojson",
         sourceProperties: GeoJsonSourceProperties(
-          cluster: true,
-          clusterRadius: 50,
-          clusterMaxZoom: 14,
-          maxZoom: 20,
+          cluster: false,
         ),
       ),
     )
@@ -45,40 +67,13 @@ class _GeoJsonSourceExampleScreenState
         layerId: "my-layer-id",
         sourceId: "my-data-source",
         layerProperties: CircleLayerProperties(
-          circleColor: [
-            'case',
-            [
-              'boolean',
-              ['has', 'point_count'],
-              true
-            ],
-            'red',
-            'blue'
-          ],
+          circleColor: 'red',
           circleColorTransition: StyleTransition.build(
             delay: 500,
             duration: const Duration(milliseconds: 1000),
           ),
-          circleRadius: [
-            'case',
-            [
-              'boolean',
-              ['has', 'point_count'],
-              true
-            ],
-            15,
-            10
-          ],
-          circleStrokeWidth: [
-            'case',
-            [
-              'boolean',
-              ['has', 'point_count'],
-              true
-            ],
-            3,
-            2
-          ],
+          circleRadius: 12,
+          circleStrokeWidth: 2.5,
           circleStrokeColor: "#fff",
           circleTranslateTransition: StyleTransition.build(
             delay: 0,
@@ -96,10 +91,9 @@ class _GeoJsonSourceExampleScreenState
         layerId: "symbol-layer-example",
         sourceId: "my-data-source",
         layerProperties: SymbolLayerProperties(
-          textField: ['get', 'point_count_abbreviated'],
-          textSize: 12,
-          textColor: '#fff',
-          iconSize: 1,
+          iconImage: "icon",
+          iconColor: "#fff", // Only work if sdf is true
+          iconSize: 0.75,
           iconAllowOverlap: true,
         ),
       ),
@@ -115,7 +109,7 @@ class _GeoJsonSourceExampleScreenState
           child: FloatingActionButton.extended(
             onPressed: _addGeoJson,
             label: const Text(
-              "Add GeoJson Source & Circle Layer",
+              "Add GeoJson Source, Circle & Symbol Layer",
               textScaleFactor: 0.75,
             ),
             icon: const Icon(

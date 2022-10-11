@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:mapbox_map_gl_example/screens/geojson_source_example_screen.dart';
 import 'package:mapbox_map_gl_example/screens/image_source_example.dart';
 import 'package:mapbox_map_gl_example/screens/raster_source_example.dart';
@@ -7,6 +6,7 @@ import 'package:mapbox_map_gl_example/screens/toggle_style_example_screen.dart';
 import 'package:mapbox_map_gl_example/screens/vector_source_example.dart';
 
 import 'animate_camera_example_screen.dart';
+import 'geojson_source_example2_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,9 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
       page: const AnimateCameraExampleScreen(),
     ),
     ExamplePage(
-      title: "GeoJson Source",
-      subtitle: "Circle layer added using geo-son source!",
+      title: "Geojson Clustering",
+      subtitle: "Geojson clustering example",
       page: const GeoJsonSourceExampleScreen(),
+    ),
+    ExamplePage(
+      title: "Symbol Layer",
+      subtitle: "Circle & Symbol layer added using geo-son source!",
+      page: const GeoJsonSourceExample2Screen(),
     ),
     ExamplePage(
       title: "Vector Source",
@@ -60,8 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: _examples.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text(_examples[index].title, style: theme.textTheme.titleMedium,),
-            subtitle: Text(_examples[index].subtitle ?? "", style: theme.textTheme.caption,),
+            title: Text(
+              _examples[index].title,
+              style: theme.textTheme.titleMedium,
+            ),
+            subtitle: Text(
+              _examples[index].subtitle ?? "",
+              style: theme.textTheme.caption,
+            ),
             onTap: () => _examples[index].go(context),
           );
         },
