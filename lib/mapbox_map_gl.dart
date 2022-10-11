@@ -17,6 +17,8 @@ export 'src/layers/sky_layer.dart';
 export 'src/layers/fill_extrusion_layer.dart';
 export 'src/layers/background_layer.dart';
 export 'src/layers/location_indicator_layer.dart';
+export 'src/style_images/local_style_image.dart';
+export 'src/style_images/network_style_image.dart';
 export 'src/helper/screen_coordinate.dart';
 export 'src/helper/point.dart';
 export 'src/helper/bounding_box.dart';
