@@ -80,11 +80,7 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to add style image
      * It is basically used on symbol layer
      */
-    fun addStyleImage(
-        imageId: String,
-        bitmap: Bitmap,
-        sdf: Boolean = false
-    )
+    fun addStyleImage(args: Map<*, *>)
 
     /**
      * Method to add line layer

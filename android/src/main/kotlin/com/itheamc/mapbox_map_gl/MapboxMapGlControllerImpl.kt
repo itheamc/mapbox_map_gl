@@ -1,6 +1,7 @@
 package com.itheamc.mapbox_map_gl
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
@@ -330,18 +331,23 @@ internal class MapboxMapGlControllerImpl(
      * Method to add style image
      * It is basically used on symbol layer
      */
-    override fun addStyleImage(
-        imageId: String,
-        bitmap: Bitmap,
-        sdf: Boolean
-    ) {
+    override fun addStyleImage(args: Map<*, *>) {
+        val imageId = args["imageId"] as String
+        val byteArray = args["byteArray"] as ByteArray
+        val sdf = args["sdf"] as Boolean
+
         style?.let {
-            removeStyleImageIfAny(imageId)
-                .onValue {
-                    style!!.addImage(imageId, bitmap, sdf).onValue {
-                        _styleImages.add(StyleImageInfo(imageId, "ImageSource"))
+            try {
+                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                removeStyleImageIfAny(imageId)
+                    .onValue {
+                        style!!.addImage(imageId, bitmap, sdf).onValue {
+                            _styleImages.add(StyleImageInfo(imageId, "ImageSource"))
+                        }
                     }
-                }
+            } catch (e: Exception) {
+                Log.e(TAG, "addStyleImage: ${e.message}", e)
+            }
         }
 
     }
@@ -1126,6 +1132,10 @@ internal class MapboxMapGlControllerImpl(
                         result.success(false)
                     }
 
+            }
+            Methods.addStyleImage -> {
+                addStyleImage(args as Map<*, *>)
+                result.success(true)
             }
             else -> {
                 Log.d(TAG, "onMethodCall: NOT Implemented")

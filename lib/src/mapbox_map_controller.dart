@@ -1,4 +1,5 @@
-import 'package:mapbox_map_gl/src/mapbox_map.dart';
+import 'mapbox_map.dart';
+import 'style_images/style_image.dart';
 
 import 'layers/layer.dart';
 import 'sources/source.dart';
@@ -67,4 +68,9 @@ abstract class MapboxMapController {
   /// Method to remove list of added style layers
   /// [layersId] - List of layers id that you want to remove
   Future<bool> removeLayers(List<String> layersId);
+
+  /// Method to add style image from assets
+  /// [image] - Image
+  /// i.e. - NetworkStyleImage or LocalStyleImage
+  Future<bool> addStyleImage<T extends StyleImage>({required T image});
 }

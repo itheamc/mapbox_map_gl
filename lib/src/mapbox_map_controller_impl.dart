@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_map_gl/src/mapbox_map.dart';
+import 'package:mapbox_map_gl/src/style_images/local_style_image.dart';
+import 'package:mapbox_map_gl/src/style_images/network_style_image.dart';
+import 'package:mapbox_map_gl/src/style_images/style_image.dart';
 import 'layers/layer.dart';
 import 'sources/image_source.dart';
 import 'sources/raster_dem_source.dart';
@@ -228,6 +231,45 @@ class MapboxMapControllerImpl extends MapboxMapController {
     } on Exception catch (e, _) {
       if (kDebugMode) {
         print("[MapboxMapController.removeSources] -----> $e");
+      }
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> addStyleImage<T extends StyleImage>({required T image}) async {
+    try {
+      if (image is LocalStyleImage) {
+        final byteArray = await image.getByteArray();
+
+        if (byteArray != null) {
+          final args = <String, dynamic>{};
+
+          args["imageId"] = image.imageId;
+          args["byteArray"] = byteArray;
+          args["sdf"] = image.sdf;
+
+          final isAdded =
+              await _channel.invokeMethod<bool>(Methods.addStyleImage, args);
+          return isAdded ?? false;
+        }
+        return false;
+      }
+
+      final byteArray = await (image as NetworkStyleImage).getByteArray();
+
+      final args = <String, dynamic>{};
+
+      args["imageId"] = image.imageId;
+      args["byteArray"] = byteArray;
+      args["sdf"] = image.sdf;
+
+      final isAdded =
+          await _channel.invokeMethod<bool>(Methods.addStyleImage, args);
+      return isAdded ?? false;
+    } on Exception catch (e, _) {
+      if (kDebugMode) {
+        print("[MapboxMapController.addStyleImage] -----> $e");
       }
     }
     return false;
