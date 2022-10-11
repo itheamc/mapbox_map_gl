@@ -30,7 +30,9 @@ class NetworkStyleImage extends StyleImage {
   @override
   Future<Uint8List?> getByteArray() async {
     try {
-      final uri = Uri.tryParse(url);
+      if (url.trim().isEmpty || !url.contains("http")) return null;
+
+      final uri = Uri.tryParse(url.trim());
 
       if (uri == null) return null;
 
@@ -43,7 +45,7 @@ class NetworkStyleImage extends StyleImage {
       return Uint8List.fromList(list);
     } on Exception catch (e, _) {
       if (kDebugMode) {
-        print("[LocalStyleImage.getByteArray] -----> $e");
+        print("[NetworkStyleImage.getByteArray] -----> $e");
       }
     }
     return null;

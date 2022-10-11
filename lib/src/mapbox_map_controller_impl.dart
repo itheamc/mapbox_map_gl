@@ -258,15 +258,18 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
       final byteArray = await (image as NetworkStyleImage).getByteArray();
 
-      final args = <String, dynamic>{};
+      if (byteArray != null) {
+        final args = <String, dynamic>{};
 
-      args["imageId"] = image.imageId;
-      args["byteArray"] = byteArray;
-      args["sdf"] = image.sdf;
+        args["imageId"] = image.imageId;
+        args["byteArray"] = byteArray;
+        args["sdf"] = image.sdf;
 
-      final isAdded =
-          await _channel.invokeMethod<bool>(Methods.addStyleImage, args);
-      return isAdded ?? false;
+        final isAdded =
+            await _channel.invokeMethod<bool>(Methods.addStyleImage, args);
+        return isAdded ?? false;
+      }
+      return false;
     } on Exception catch (e, _) {
       if (kDebugMode) {
         print("[MapboxMapController.addStyleImage] -----> $e");

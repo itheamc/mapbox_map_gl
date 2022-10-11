@@ -32,7 +32,9 @@ class LocalStyleImage extends StyleImage {
   @override
   Future<Uint8List?> getByteArray() async {
     try {
-      final bytes = await rootBundle.load(imageName);
+      if (imageName.trim().isEmpty) return null;
+
+      final bytes = await rootBundle.load(imageName.trim());
       final list = bytes.buffer.asUint8List();
       return list;
     } on Exception catch (e, _) {
