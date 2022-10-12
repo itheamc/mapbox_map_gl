@@ -1,4 +1,7 @@
 # Mapbox Map GL
+[![Pub](https://img.shields.io/pub/v/mapbox_map_gl)](https://pub.dev/packages/mapbox_map_gl)
+[![License](https://img.shields.io/github/license/itheamc/mapbox_map_gl)](https://github.com/itheamc/mapbox_map_gl/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/itheamc/mapbox_map_gl.svg?style=social)](https://github.com/itheamc/mapbox_map_gl)
 
 ## Introduction
 
@@ -57,6 +60,116 @@ directory of android section It starts with ```pk.```
 ### IOS
 
 This plugin not available in IOS yet.
+
+
+### How to add style source?
+ This api supports all the style sources that is supported by the Mapbox Map Android Sdk. 
+ You can add the style source like this.
+```
+    await _controller.addSource<GeoJsonSource>(
+          source: GeoJsonSource(
+            sourceId: "geojson-source-id",
+            url: "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_land_ocean_label_points.geojson",
+            sourceProperties: GeoJsonSourceProperties(
+              cluster: true,
+              clusterRadius: 50,
+              clusterMaxZoom: 14,
+              maxZoom: 20,
+            ),
+          ),
+        )
+```
+
+### How to add style layer?
+Like sources, this api also supports all the style layers that is supported by the Mapbox Map Android Sdk.
+You can add the style layer like this.
+```
+    // Circle Layer
+    await _controller.addLayer<CircleLayer>(
+          layer: CircleLayer(
+            layerId: "my-layer-id",
+            sourceId: "geojson-source-id",
+            layerProperties: CircleLayerProperties(
+              circleColor: [
+                'case',
+                [
+                  'boolean',
+                  ['has', 'point_count'],
+                  true
+                ],
+                'red',
+                'blue'
+              ],
+              circleColorTransition: StyleTransition.build(
+                delay: 500,
+                duration: const Duration(milliseconds: 1000),
+              ),
+              circleRadius: [
+                'case',
+                [
+                  'boolean',
+                  ['has', 'point_count'],
+                  true
+                ],
+                15,
+                10
+              ],
+              circleStrokeWidth: [
+                'case',
+                [
+                  'boolean',
+                  ['has', 'point_count'],
+                  true
+                ],
+                3,
+                2
+              ],
+              circleStrokeColor: "#fff",
+              circleTranslateTransition: StyleTransition.build(
+                delay: 0,
+                duration: const Duration(milliseconds: 1000),
+              ),
+            ),
+          ),
+        );
+        
+    // Symbol Layer
+    await _controller.addLayer<SymbolLayer>(
+      layer: SymbolLayer(
+        layerId: "symbol-layer-example",
+        sourceId: "geojson-source-id",
+        layerProperties: SymbolLayerProperties(
+          textField: ['get', 'point_count_abbreviated'],
+          textSize: 12,
+          textColor: '#fff',
+          iconSize: 1,
+          iconAllowOverlap: true,
+        ),
+      ),
+    );
+```
+
+### How to add style image?
+You can add style image from your assets or from the url. Svg image is not supported yet.
+```
+    // Add image stored on assets
+    await _controller.addStyleImage<LocalStyleImage>(
+          image: LocalStyleImage(
+            imageId: "icon",
+            imageName: "assets/images/your-image.png",
+          ),
+        );
+    
+    
+    // Add image from url
+    await _controller.addStyleImage<NetworkStyleImage>(
+      image: NetworkStyleImage(
+        imageId: "icon",
+        url: "https://example.com/icon.png",
+        sdf: true,
+      ),
+    );
+```
 
 ### Supported Mapbox Api
 
