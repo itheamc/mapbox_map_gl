@@ -1,5 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:mapbox_map_gl/src/layers/background_layer.dart';
+import 'package:mapbox_map_gl/src/layers/fill_extrusion_layer.dart';
+import 'package:mapbox_map_gl/src/layers/heatmap_layer.dart';
+import 'package:mapbox_map_gl/src/layers/hill_shade_layer.dart';
+import 'package:mapbox_map_gl/src/layers/location_indicator_layer.dart';
+import 'package:mapbox_map_gl/src/layers/sky_layer.dart';
 import 'package:mapbox_map_gl/src/mapbox_map.dart';
 import 'package:mapbox_map_gl/src/style_images/local_style_image.dart';
 import 'package:mapbox_map_gl/src/style_images/network_style_image.dart';
@@ -157,7 +163,21 @@ class MapboxMapControllerImpl extends MapboxMapController {
                       ? Methods.addRasterLayer
                       : layer.runtimeType == SymbolLayer
                           ? Methods.addSymbolLayer
-                          : null;
+                          : layer.runtimeType == HeatmapLayer
+                              ? Methods.addHeatmapLayer
+                              : layer.runtimeType == HillShadeLayer
+                                  ? Methods.addHillShadeLayer
+                                  : layer.runtimeType == FillExtrusionLayer
+                                      ? Methods.addFillExtrusionLayer
+                                      : layer.runtimeType == SkyLayer
+                                          ? Methods.addSkyLayer
+                                          : layer.runtimeType == BackgroundLayer
+                                              ? Methods.addBackgroundLayer
+                                              : layer.runtimeType ==
+                                                      LocationIndicatorLayer
+                                                  ? Methods
+                                                      .addLocationIndicatorLayer
+                                                  : null;
       if (method == null) {
         if (kDebugMode) {
           print("[MapboxMapController.addLayer<T>] -----> Unspecified Layer!");

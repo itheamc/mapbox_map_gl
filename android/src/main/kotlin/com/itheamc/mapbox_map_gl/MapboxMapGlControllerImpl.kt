@@ -1153,6 +1153,18 @@ internal class MapboxMapGlControllerImpl(
                 )
                 return result.success(true)
             }
+            Methods.addLocationIndicatorLayer -> {
+                args = args as Map<*, *>
+
+                val layerId = args["layerId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addLocationIndicatorLayer(
+                    layerId = layerId,
+                    block = LocationIndicatorLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
             Methods.removeLayer -> {
                 val layerId = args as String
                 removeLayerIfAny(layerId)

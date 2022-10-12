@@ -48,7 +48,7 @@ object Methods {
     const val addRasterLayer = "addRasterLayer"
     const val addSkyLayer = "addSkyLayer"
 
-    //    const val addLocationIndicatorLayer = "addLocationIndicatorLayer"
+    const val addLocationIndicatorLayer = "addLocationIndicatorLayer"
     const val addFillExtrusionLayer = "addFillExtrusionLayer"
     const val addHeatmapLayer = "addHeatmapLayer"
     const val addHillShadeLayer = "addHillShadeLayer"
