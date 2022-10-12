@@ -8,7 +8,7 @@
 This flutter plugin allow you to embed Mapbox Map to your flutter app. This plugin uses the latest
 version of the Mapbox Map SDK so that you can experience all the latest feature introduced.
 Currently this plugin only support android platform. It is based on Mapbox Android
-SDK ```com.mapbox.maps:android:10.8.1```
+SDK version```v10.8.1```
 
 ## Setting up
 
@@ -59,7 +59,7 @@ directory of android section It starts with ```pk.```
 
 ### IOS
 
-This plugin not available in IOS yet.
+This plugin is not available in IOS yet.
 
 
 ### How to add style source?
