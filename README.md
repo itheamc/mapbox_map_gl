@@ -173,25 +173,27 @@ You can add style image from your assets or from the url. Svg image is not suppo
 
 ### Supported Mapbox Api
 
-| Feature              | Android             | iOS | 
-|----------------------|---------------------| --- | 
-| Style                | :white_check_mark:  | :x: | 
-| Camera               | :white_check_mark:  | :x: | 
-| Circle Layer         | :white_check_mark:  | :x: | 
-| Line Layer           | :white_check_mark:  | :x: | 
-| Fill Layer           | :white_check_mark:  | :x: | 
-| Symbol Layer         | :white_check_mark:  | :x: | 
-| Raster Layer         | :white_check_mark:  | :x: | 
-| Hillshade Layer      | :white_check_mark:  | :x: | 
-| Heatmap Layer        | :white_check_mark:  | :x: | 
-| Fill Extrusion Layer | :white_check_mark:  | :x: | 
-| Sky Layer            | :white_check_mark:  | :x: | 
-| Background Layer     | :white_check_mark:  | :x: | 
-| Vector Source        | :white_check_mark:  | :x: | 
-| Raster Source        | :white_check_mark:  | :x: | 
-| RasterDem Source     | :white_check_mark:  | :x: | 
-| GeoJson Source       | :white_check_mark:  | :x: | 
-| Image Source         | :white_check_mark:  | :x: | 
-| Expressions          | :white_check_mark:  | :x: |
+| Feature                  | Android             | iOS | 
+|--------------------------|---------------------| --- | 
+| Style                    | :white_check_mark:  | :x: | 
+| Camera                   | :white_check_mark:  | :x: | 
+| StyleDsl                 | :white_check_mark:  | :x: | 
+| Circle Layer             | :white_check_mark:  | :x: | 
+| Line Layer               | :white_check_mark:  | :x: | 
+| Fill Layer               | :white_check_mark:  | :x: | 
+| Symbol Layer             | :white_check_mark:  | :x: | 
+| Raster Layer             | :white_check_mark:  | :x: | 
+| Hillshade Layer          | :white_check_mark:  | :x: | 
+| Heatmap Layer            | :white_check_mark:  | :x: | 
+| Fill Extrusion Layer     | :white_check_mark:  | :x: | 
+| Sky Layer                | :white_check_mark:  | :x: | 
+| Background Layer         | :white_check_mark:  | :x: | 
+| Location Indicator Layer | :white_check_mark:  | :x: | 
+| Vector Source            | :white_check_mark:  | :x: | 
+| Raster Source            | :white_check_mark:  | :x: | 
+| RasterDem Source         | :white_check_mark:  | :x: | 
+| GeoJson Source           | :white_check_mark:  | :x: | 
+| Image Source             | :white_check_mark:  | :x: | 
+| Expressions              | :white_check_mark:  | :x: |
 
 
