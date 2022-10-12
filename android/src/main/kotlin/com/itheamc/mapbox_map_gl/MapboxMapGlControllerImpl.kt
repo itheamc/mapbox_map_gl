@@ -1,7 +1,5 @@
 package com.itheamc.mapbox_map_gl
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
@@ -333,23 +331,24 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun addStyleImage(args: Map<*, *>) {
         val imageId = args["imageId"] as String
-        val byteArray = args["byteArray"] as ByteArray
         val sdf = args["sdf"] as Boolean
 
+        val bitmap = StyleImageHelper.bitmapFromArgs(args)
+
         style?.let {
-            try {
-                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-                removeStyleImageIfAny(imageId)
-                    .onValue {
-                        style!!.addImage(imageId, bitmap, sdf).onValue {
-                            _styleImages.add(StyleImageInfo(imageId, "ImageSource"))
+            bitmap?.let { b ->
+                try {
+                    removeStyleImageIfAny(imageId)
+                        .onValue {
+                            style!!.addImage(imageId, b, sdf).onValue {
+                                _styleImages.add(StyleImageInfo(imageId, "ImageSource"))
+                            }
                         }
-                    }
-            } catch (e: Exception) {
-                Log.e(TAG, "addStyleImage: ${e.message}", e)
+                } catch (e: Exception) {
+                    Log.e(TAG, "addStyleImage: ${e.message}", e)
+                }
             }
         }
-
     }
 
     /**
@@ -1097,6 +1096,60 @@ internal class MapboxMapGlControllerImpl(
                 addSkyLayer(
                     layerId = layerId,
                     block = SkyLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addFillExtrusionLayer -> {
+                args = args as Map<*, *>
+
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addFillExtrusionLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = FillExtrusionLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addHeatmapLayer -> {
+                args = args as Map<*, *>
+
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addHeatmapLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = HeatmapLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addHillShadeLayer -> {
+                args = args as Map<*, *>
+
+                val layerId = args["layerId"] as String
+                val sourceId = args["sourceId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addHillShadeLayer(
+                    layerId = layerId,
+                    sourceId = sourceId,
+                    block = HillShadeLayerHelper.blockFromArgs(layerProperties)
+                )
+                return result.success(true)
+            }
+            Methods.addBackgroundLayer -> {
+                args = args as Map<*, *>
+
+                val layerId = args["layerId"] as String
+                val layerProperties = args["layerProperties"] as Map<*, *>
+
+                addBackgroundLayer(
+                    layerId = layerId,
+                    block = BackgroundLayerHelper.blockFromArgs(layerProperties)
                 )
                 return result.success(true)
             }

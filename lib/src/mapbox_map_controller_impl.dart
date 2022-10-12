@@ -225,9 +225,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
   @override
   Future<bool> removeSources(List<String> sourcesId) async {
     try {
-      return await _channel.invokeMethod<bool>(
-              Methods.removeSources, sourcesId) ??
-          false;
+      for (final id in sourcesId) {
+        await _channel.invokeMethod<bool>(Methods.removeSource, id);
+      }
+
+      return true;
     } on Exception catch (e, _) {
       if (kDebugMode) {
         print("[MapboxMapController.removeSources] -----> $e");

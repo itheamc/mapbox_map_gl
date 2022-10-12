@@ -202,7 +202,7 @@ internal object FillLayerHelper {
             }
 
             // visibility
-            if (args.containsKey("visibility")) {
+            if (args.containsKey("visibility") && args["visibility"] is Boolean) {
                 val visible = args["visibility"] as Boolean
                 visibility(if (visible) Visibility.VISIBLE else Visibility.NONE)
             }

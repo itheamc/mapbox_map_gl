@@ -47,7 +47,8 @@ object Methods {
     const val addSymbolLayer = "addSymbolLayer"
     const val addRasterLayer = "addRasterLayer"
     const val addSkyLayer = "addSkyLayer"
-    const val addLocationIndicatorLayer = "addLocationIndicatorLayer"
+
+    //    const val addLocationIndicatorLayer = "addLocationIndicatorLayer"
     const val addFillExtrusionLayer = "addFillExtrusionLayer"
     const val addHeatmapLayer = "addHeatmapLayer"
     const val addHillShadeLayer = "addHillShadeLayer"
@@ -55,5 +56,5 @@ object Methods {
     const val removeLayer = "removeLayer"
     const val removeLayers = "removeLayers"
     const val removeSource = "removeSource"
-
+    const val addStyleImage = "addStyleImage"
 }

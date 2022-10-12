@@ -36,5 +36,5 @@ class Methods {
   static const removeLayer = "removeLayer";
   static const removeLayers = "removeLayers";
   static const removeSource = "removeSource";
-  static const removeSources = "removeSources";
+  static const addStyleImage = "addStyleImage";
 }
