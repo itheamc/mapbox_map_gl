@@ -1,6 +1,6 @@
 name: mapbox_map_gl
 description: This is a flutter plugin that helps you to embed Mapbox Map in your flutter app.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/itheamc/mapbox_map_gl
 
 environment:
