@@ -98,6 +98,11 @@ class _ToggleStyleExampleScreenState extends State<ToggleStyleExampleScreen> {
             ),
           ),
           onMapCreated: _onMapCreated,
+          onMapLoaded: () {
+            if (kDebugMode) {
+              print("[ON MAP LOADED]------->MAP LOADED");
+            }
+          },
           onStyleLoaded: () {
             if (kDebugMode) {
               print("[ON STYLE LOADED]------->STYLE LOADED");
