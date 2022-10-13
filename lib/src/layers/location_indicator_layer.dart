@@ -10,9 +10,8 @@ class LocationIndicatorLayer extends Layer<LocationIndicatorLayerProperties> {
   /// Constructor for LocationIndicatorLayer
   LocationIndicatorLayer({
     required super.layerId,
-    super.sourceId = "",
     super.layerProperties,
-  });
+  }) : super(sourceId: "");
 
   /// Method to convert the LocationIndicatorLayer Object to the
   /// Map data to pass to the native platform through args

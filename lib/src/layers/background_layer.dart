@@ -9,9 +9,8 @@ class BackgroundLayer extends Layer<BackgroundLayerProperties> {
   /// Constructor for BackgroundLayer
   BackgroundLayer({
     required super.layerId,
-    super.sourceId = "",
     super.layerProperties,
-  });
+  }) : super(sourceId: "");
 
   /// Method to convert the BackgroundLayer Object to the
   /// Map data to pass to the native platform through args

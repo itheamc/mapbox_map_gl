@@ -9,9 +9,8 @@ class SkyLayer extends Layer<SkyLayerProperties> {
   /// Constructor for BackgroundLayer
   SkyLayer({
     required super.layerId,
-    super.sourceId = "",
     super.layerProperties,
-  });
+  }) : super(sourceId: "");
 
   /// Method to convert the BackgroundLayer Object to the
   /// Map data to pass to the native platform through args
@@ -234,8 +233,8 @@ class SkyLayerProperties extends LayerProperties {
 
     if (skyGradientCenter != null && skyGradientCenter is List) {
       args['skyGradientCenter'] = skyGradientCenter is List<double> ||
-          skyGradientCenter is List<int> ||
-          skyGradientCenter is List<num>
+              skyGradientCenter is List<int> ||
+              skyGradientCenter is List<num>
           ? skyGradientCenter
           : jsonEncode(skyGradientCenter);
     }
