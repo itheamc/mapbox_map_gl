@@ -65,7 +65,7 @@ internal class MapboxMapGlControllerImpl(
     private val _interactiveLayerSources = mutableListOf<StyleSourceInfo>()
 
     /**
-     * List of style image that was added on symbol layer
+     * List of style image that was added
      */
     private val _styleImages = mutableListOf<StyleImageInfo>()
 
@@ -682,6 +682,18 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to add style model
+     */
+    @OptIn(MapboxExperimental::class)
+    override fun addStyleModel(modelId: String, modelUri: String): Expected<String, None> {
+        return if (style != null) {
+            style!!.addStyleModel(modelId, modelUri)
+        } else {
+            ExpectedFactory.createError("Style is null!")
+        }
+    }
+
+    /**
      * Method to add map related listeners
      * --------------------------------------------------------------------------------------
      */
@@ -916,6 +928,8 @@ internal class MapboxMapGlControllerImpl(
             }
 
             style!!.removeStyleImage(imageId)
+        } else if (style?.hasStyleImage(imageId) == true) {
+            style!!.removeStyleImage(imageId)
         } else {
             ExpectedFactory.createValue(None.getInstance())
         }
@@ -963,6 +977,11 @@ internal class MapboxMapGlControllerImpl(
             Methods.isLayerExist -> {
                 val layerId = args as String
                 val isExist = style?.styleLayerExists(layerId) ?: false
+                return result.success(isExist)
+            }
+            Methods.isStyleImageExist -> {
+                val imageId = args as String
+                val isExist = style?.hasStyleImage(imageId) ?: false
                 return result.success(isExist)
             }
             Methods.toggleStyle -> {
@@ -1171,6 +1190,10 @@ internal class MapboxMapGlControllerImpl(
                 )
                 return result.success(true)
             }
+            Methods.addStyleImage -> {
+                addStyleImage(args as Map<*, *>)
+                result.success(true)
+            }
             Methods.removeLayer -> {
                 val layerId = args as String
                 removeLayerIfAny(layerId)
@@ -1204,9 +1227,31 @@ internal class MapboxMapGlControllerImpl(
                     }
 
             }
-            Methods.addStyleImage -> {
-                addStyleImage(args as Map<*, *>)
-                result.success(true)
+            Methods.removeStyleImage -> {
+                val imageId = args as String
+                removeStyleImageIfAny(imageId)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.addStyleModel -> {
+                args = args as Map<*, *>
+
+                val modelId = args["modelId"] as String
+                val modelUri = args["modelUri"] as String
+
+                addStyleModel(modelId = modelId, modelUri = modelUri)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
             }
             else -> {
                 Log.d(TAG, "onMethodCall: NOT Implemented")

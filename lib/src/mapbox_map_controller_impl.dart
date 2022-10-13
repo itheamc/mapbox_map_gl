@@ -139,6 +139,23 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return false;
   }
 
+  /// Method to check if style image is already existed
+  @override
+  Future<bool> isStyleImageExist(String imageId) async {
+    try {
+      final isExist =
+          await _channel.invokeMethod<bool>(Methods.isStyleImageExist, imageId);
+      return isExist ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "isStyleImageExist",
+        message: e,
+      );
+    }
+    return false;
+  }
+
   /// Generic method to add style source to the map
   @override
   Future<void> addSource<T extends Source>({required T source}) async {
@@ -334,6 +351,53 @@ class MapboxMapControllerImpl extends MapboxMapController {
       LogUtil.log(
         className: "MapboxMapController",
         function: "addStyleImage",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to remove style image
+  /// [imageId] - An id of the style image that you want to remove
+  @override
+  Future<bool> removeStyleImage(String imageId) async {
+    try {
+      return await _channel.invokeMethod<bool>(
+              Methods.removeStyleImage, imageId) ??
+          false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeStyleImage",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to add style model to be used in the style.
+  /// This API can also be used for updating a model as well.
+  /// If the model for a given modelId was already added, it gets replaced by
+  /// the new model. The model can be used in model-id property in model layer.
+  /// Params:
+  /// modelId - An identifier of the model.
+  /// modelUri - A URI for the model.
+  @override
+  Future<bool> addStyleModel(String modelId, String modelUri) async {
+    try {
+      final args = <String, dynamic>{
+        "modelId": modelId,
+        "modelUri": modelUri,
+      };
+
+      final isAdded =
+          await _channel.invokeMethod<bool>(Methods.addStyleModel, args);
+
+      return isAdded ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "addSource",
         message: e,
       );
     }

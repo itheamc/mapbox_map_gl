@@ -46,6 +46,9 @@ abstract class MapboxMapController {
   /// Method to check if layer is already existed
   Future<bool> isLayerExist(String layerId);
 
+  /// Method to check if style image is already existed
+  Future<bool> isStyleImageExist(String imageId);
+
   /// Generic method to add style source
   /// You can add:
   /// - GeoJsonSource
@@ -85,4 +88,17 @@ abstract class MapboxMapController {
   /// [image] - Image
   /// i.e. - NetworkStyleImage or LocalStyleImage
   Future<bool> addStyleImage<T extends StyleImage>({required T image});
+
+  /// Method to remove style image
+  /// [imageId] - An id of style image that you want to remove
+  Future<bool> removeStyleImage(String imageId);
+
+  /// Method to add style model to be used in the style.
+  /// This API can also be used for updating a model as well.
+  /// If the model for a given modelId was already added, it gets replaced by
+  /// the new model. The model can be used in model-id property in model layer.
+  /// Params:
+  /// modelId - An identifier of the model.
+  /// modelUri - A URI for the model.
+  Future<bool> addStyleModel(String modelId, String modelUri);
 }

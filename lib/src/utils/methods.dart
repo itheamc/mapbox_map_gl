@@ -16,6 +16,7 @@ class Methods {
   static const toggleStyle = "toggleStyle";
   static const isSourceExist = "isSourceExist";
   static const isLayerExist = "isLayerExist";
+  static const isStyleImageExist = "isStyleImageExist";
   static const addGeoJsonSource = "addGeoJsonSource";
   static const addVectorSource = "addVectorSource";
   static const addRasterSource = "addRasterSource";
@@ -37,4 +38,11 @@ class Methods {
   static const removeLayers = "removeLayers";
   static const removeSource = "removeSource";
   static const addStyleImage = "addStyleImage";
+  static const removeStyleImage = "removeStyleImage";
+
+  static const setStyleLayerProperty = "setStyleLayerProperty";
+  static const setStyleLayerProperties = "setStyleLayerProperties";
+  static const setStyleSourceProperty = "setStyleSourceProperty";
+  static const setStyleSourceProperties = "setStyleSourceProperties";
+  static const addStyleModel = "addStyleModel";
 }

@@ -35,6 +35,7 @@ object Methods {
     const val toggleStyle = "toggleStyle"
     const val isSourceExist = "isSourceExist"
     const val isLayerExist = "isLayerExist"
+    const val isStyleImageExist = "isStyleImageExist"
     const val addGeoJsonSource = "addGeoJsonSource"
     const val addVectorSource = "addVectorSource"
     const val addRasterSource = "addRasterSource"
@@ -57,4 +58,11 @@ object Methods {
     const val removeLayers = "removeLayers"
     const val removeSource = "removeSource"
     const val addStyleImage = "addStyleImage"
+    const val removeStyleImage = "removeStyleImage"
+
+    const val setStyleLayerProperty = "setStyleLayerProperty"
+    const val setStyleLayerProperties = "setStyleLayerProperties"
+    const val setStyleSourceProperty = "setStyleSourceProperty"
+    const val setStyleSourceProperties = "setStyleSourceProperties"
+    const val addStyleModel = "addStyleModel"
 }

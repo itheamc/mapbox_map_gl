@@ -178,6 +178,11 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     )
 
     /**
+     * Method to add style model
+     */
+    fun addStyleModel(modelId: String, modelUri: String): Expected<String, None>
+
+    /**
      * Method to add map related listeners
      */
     fun addMapRelatedListeners()
