@@ -1,15 +1,15 @@
 import 'package:flutter/services.dart';
-import 'package:mapbox_map_gl/src/helper/log_util.dart';
-import 'package:mapbox_map_gl/src/layers/background_layer.dart';
-import 'package:mapbox_map_gl/src/layers/fill_extrusion_layer.dart';
-import 'package:mapbox_map_gl/src/layers/heatmap_layer.dart';
-import 'package:mapbox_map_gl/src/layers/hill_shade_layer.dart';
-import 'package:mapbox_map_gl/src/layers/location_indicator_layer.dart';
-import 'package:mapbox_map_gl/src/layers/sky_layer.dart';
-import 'package:mapbox_map_gl/src/mapbox_map.dart';
-import 'package:mapbox_map_gl/src/style_images/local_style_image.dart';
-import 'package:mapbox_map_gl/src/style_images/network_style_image.dart';
-import 'package:mapbox_map_gl/src/style_images/style_image.dart';
+import 'utils/log_util.dart';
+import 'layers/background_layer.dart';
+import 'layers/fill_extrusion_layer.dart';
+import 'layers/heatmap_layer.dart';
+import 'layers/hill_shade_layer.dart';
+import 'layers/location_indicator_layer.dart';
+import 'layers/sky_layer.dart';
+import 'mapbox_map.dart';
+import 'style_images/local_style_image.dart';
+import 'style_images/network_style_image.dart';
+import 'style_images/style_image.dart';
 import 'layers/layer.dart';
 import 'sources/image_source.dart';
 import 'sources/raster_dem_source.dart';
@@ -23,8 +23,8 @@ import 'layers/line_layer.dart';
 import 'layers/symbol_layer.dart';
 import 'layers/raster_layer.dart';
 import 'sources/geojson_source.dart';
-import 'helper/camera_position.dart';
-import 'helper/methods.dart';
+import 'utils/camera_position.dart';
+import 'utils/methods.dart';
 
 import 'mapbox_map_controller.dart';
 

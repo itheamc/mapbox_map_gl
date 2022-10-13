@@ -1,4 +1,5 @@
-import '../../mapbox_map_gl.dart';
+import 'bounding_box.dart';
+import 'feature.dart';
 
 /// FeatureCollection Class
 /// Created by Amit Chaudhary, 2022/10/6

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:mapbox_map_gl/src/helper/feature.dart';
-import 'package:mapbox_map_gl/src/helper/feature_collection.dart';
-import 'package:mapbox_map_gl/src/helper/promoted_id.dart';
-import 'package:mapbox_map_gl/src/sources/source.dart';
-import 'package:mapbox_map_gl/src/sources/source_properties.dart';
+import '../utils/feature.dart';
+import '../utils/feature_collection.dart';
+import '../utils/promoted_id.dart';
+import '../sources/source.dart';
+import '../sources/source_properties.dart';
 
 /// GeoJsonSource Class
 /// Created by Amit Chaudhary, 2022/10/6

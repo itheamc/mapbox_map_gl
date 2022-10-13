@@ -1,6 +1,6 @@
-import 'package:mapbox_map_gl/src/helper/tileset.dart';
-import 'package:mapbox_map_gl/src/sources/source.dart';
-import 'package:mapbox_map_gl/src/sources/source_properties.dart';
+import '../utils/tileset.dart';
+import '../sources/source.dart';
+import '../sources/source_properties.dart';
 
 /// RasterSource Class
 /// Created by Amit Chaudhary, 2022/10/6

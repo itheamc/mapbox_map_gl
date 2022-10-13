@@ -3,7 +3,7 @@ import 'style_images/style_image.dart';
 
 import 'layers/layer.dart';
 import 'sources/source.dart';
-import 'helper/camera_position.dart';
+import 'utils/camera_position.dart';
 
 /// Type definition for style toggled callback
 typedef OnStyleToggled = void Function(MapStyle style);

@@ -1,5 +1,5 @@
-import 'package:mapbox_map_gl/src/sources/source.dart';
-import 'package:mapbox_map_gl/src/sources/source_properties.dart';
+import '../sources/source.dart';
+import '../sources/source_properties.dart';
 
 /// ImageSource Class
 /// Created by Amit Chaudhary, 2022/10/6

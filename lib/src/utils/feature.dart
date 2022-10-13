@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:mapbox_map_gl/src/helper/bounding_box.dart';
+import 'bounding_box.dart';
 
 /// Feature Class
 class Feature {

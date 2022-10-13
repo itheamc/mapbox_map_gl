@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'layer.dart';
 import 'layer_properties.dart';
 
-import '../helper/style_transition.dart';
+import '../utils/style_transition.dart';
 
 /// FillLayer class
 /// Created by Amit Chaudhary, 2022/10/3

@@ -1,8 +1,7 @@
 import 'dart:convert';
-import '../helper/style_transition.dart';
+import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
-
 
 /// RasterLayer class
 /// Created by Amit Chaudhary, 2022/10/4

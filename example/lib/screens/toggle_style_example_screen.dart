@@ -24,12 +24,24 @@ class _ToggleStyleExampleScreenState extends State<ToggleStyleExampleScreen> {
   /// Method to toggle theme mode
   /// Satellite and Street
   Future<void> _toggleBetween() async {
-    await _controller?.toggleBetween(MapStyle.light, MapStyle.satellite);
+    await _controller?.toggleBetween(
+      MapStyle.light,
+      MapStyle.satellite,
+      onStyleToggled: (style) {
+        if (kDebugMode) {
+          print("[ON STYLE TOGGLED]------->${style.name}");
+        }
+      },
+    );
   }
 
   /// Method to toggle theme mode among styles
   Future<void> _toggleAmong() async {
-    await _controller?.toggleAmong(MapStyle.values);
+    await _controller?.toggleAmong(MapStyle.values, onStyleToggled: (style) {
+      if (kDebugMode) {
+        print("[ON STYLE TOGGLED]------->${style.name}");
+      }
+    });
   }
 
   @override
@@ -86,6 +98,11 @@ class _ToggleStyleExampleScreenState extends State<ToggleStyleExampleScreen> {
             ),
           ),
           onMapCreated: _onMapCreated,
+          onStyleLoaded: () {
+            if (kDebugMode) {
+              print("[ON STYLE LOADED]------->STYLE LOADED");
+            }
+          },
         ),
       ),
     );

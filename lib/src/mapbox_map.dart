@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mapbox_map_gl/mapbox_map_gl.dart';
-import 'package:mapbox_map_gl/src/mapbox_map_controller_impl.dart';
-import 'helper/methods.dart';
+import 'mapbox_map_controller.dart';
+import 'utils/camera_position.dart';
+import 'utils/feature.dart';
+import 'utils/log_util.dart';
+import 'mapbox_map_controller_impl.dart';
+import 'utils/methods.dart';
+import 'utils/point.dart';
+import 'utils/screen_coordinate.dart';
 import 'mapbox_map_gl_platform_interface.dart';
 
 /// Method to handle onMapCreated callback
@@ -183,7 +188,12 @@ class _MapboxMapState extends State<MapboxMap> {
 
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,
-      onPlatformViewCreated: (id) {},
+      onPlatformViewCreated: (id) {
+        LogUtil.log(
+            className: "_MapboxMapState",
+            function: "onPlatformViewCreated",
+            message: id);
+      },
       hyperComposition: widget.hyperComposition,
     );
   }

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../helper/style_transition.dart';
+import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
 
