@@ -11,7 +11,7 @@ object Methods {
     /**
      * These are the methods triggered from the native side
      */
-    const val onMapCreated = "onMapCreated"
+    const val onMapLoaded = "onMapLoaded"
     const val onStyleLoaded = "onStyleLoaded"
     const val onMapLoadError = "onMapLoadError"
 

@@ -692,7 +692,7 @@ internal class MapboxMapGlControllerImpl(
          * On Map Loaded Listener
          */
         mapboxMap.addOnMapLoadedListener {
-            methodChannel.invokeMethod(Methods.onMapCreated, null)
+            methodChannel.invokeMethod(Methods.onMapLoaded, null)
         }
 
         /**

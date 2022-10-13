@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'mapbox_map_controller.dart';
 import 'utils/camera_position.dart';
 import 'utils/feature.dart';
-import 'utils/log_util.dart';
 import 'mapbox_map_controller_impl.dart';
 import 'utils/methods.dart';
 import 'utils/point.dart';
@@ -13,6 +12,9 @@ import 'mapbox_map_gl_platform_interface.dart';
 /// Method to handle onMapCreated callback
 /// [MapboxMapController] Instance of the MapboxMapController
 typedef OnMapCreated = void Function(MapboxMapController);
+
+/// Method to handle onMapLoaded callback
+typedef OnMapLoaded = VoidCallback;
 
 /// Method to handle onStyleLoaded callback
 typedef OnStyleLoaded = VoidCallback;
@@ -62,9 +64,13 @@ class MapboxMap extends StatefulWidget {
   /// default value is MapStyle.light
   final MapStyle style;
 
-  /// [onMapCreated] A callback that will be triggered whenever map is
-  /// fully loaded/created
+  /// [onMapCreated] A callback that will be triggered whenever platform view
+  /// for mapbox map is created
   final OnMapCreated? onMapCreated;
+
+  /// [onMapLoaded] A callback that will be triggered whenever map is
+  /// fully loaded/created
+  final OnMapLoaded? onMapLoaded;
 
   /// [onStyleLoaded] A callback that will be triggered whenever style is loaded
   final OnStyleLoaded? onStyleLoaded;
@@ -102,6 +108,7 @@ class MapboxMap extends StatefulWidget {
     this.initialCameraPosition,
     this.style = MapStyle.light,
     this.onMapCreated,
+    this.onMapLoaded,
     this.onStyleLoaded,
     this.onStyleLoadError,
     this.onMapClick,
@@ -134,8 +141,8 @@ class _MapboxMapState extends State<MapboxMap> {
   /// contains method name and argument
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     switch (call.method) {
-      case Methods.onMapCreated:
-        widget.onMapCreated?.call(MapboxMapControllerImpl(_glPlatform));
+      case Methods.onMapLoaded:
+        widget.onMapLoaded?.call();
         break;
       case Methods.onStyleLoaded:
         widget.onStyleLoaded?.call();
@@ -189,10 +196,7 @@ class _MapboxMapState extends State<MapboxMap> {
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,
       onPlatformViewCreated: (id) {
-        LogUtil.log(
-            className: "_MapboxMapState",
-            function: "onPlatformViewCreated",
-            message: id);
+        widget.onMapCreated?.call(MapboxMapControllerImpl(_glPlatform));
       },
       hyperComposition: widget.hyperComposition,
     );

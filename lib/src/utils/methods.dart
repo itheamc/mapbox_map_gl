@@ -2,7 +2,7 @@
 /// with native platform
 class Methods {
   /// Methods triggered from the native side
-  static const onMapCreated = "onMapCreated";
+  static const onMapLoaded = "onMapLoaded";
   static const onStyleLoaded = "onStyleLoaded";
   static const onMapLoadError = "onMapLoadError";
   static const onMapClick = "onMapClick";
