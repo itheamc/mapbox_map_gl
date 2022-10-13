@@ -5,15 +5,27 @@ import 'layers/layer.dart';
 import 'sources/source.dart';
 import 'helper/camera_position.dart';
 
+/// Type definition for style toggled callback
+typedef OnStyleToggled = void Function(MapStyle style);
+
 abstract class MapboxMapController {
   /// Method to toggle the map style between two styles
   /// [style1] - the first style (MapStyle)
   /// [style2] - the second style (MapStyle)
-  Future<void> toggleBetween(MapStyle style1, MapStyle style2);
+  /// [onStyleToggled] - callback for style toggled
+  Future<void> toggleBetween(
+    MapStyle style1,
+    MapStyle style2, {
+    OnStyleToggled? onStyleToggled,
+  });
 
   /// Method to toggle the map style among given styles
   /// [styles] - the list of styles (List<MapStyle>)
-  Future<void> toggleAmong(List<MapStyle> styles);
+  /// [onStyleToggled] - callback for style toggled
+  Future<void> toggleAmong(
+    List<MapStyle> styles, {
+    OnStyleToggled? onStyleToggled,
+  });
 
   /// Method to animate camera position
   /// [cameraPosition] New camera position to move camera

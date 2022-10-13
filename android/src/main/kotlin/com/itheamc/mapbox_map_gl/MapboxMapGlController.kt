@@ -1,6 +1,5 @@
 package com.itheamc.mapbox_map_gl
 
-import android.graphics.Bitmap
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
@@ -23,7 +22,7 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     /**
      * Method to toggle map style
      */
-    fun toggleStyle(list: List<*>)
+    fun toggleStyle(list: List<*>): String?
 
 
     /**

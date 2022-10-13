@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:mapbox_map_gl/src/helper/log_util.dart';
 import 'package:mapbox_map_gl/src/layers/background_layer.dart';
 import 'package:mapbox_map_gl/src/layers/fill_extrusion_layer.dart';
 import 'package:mapbox_map_gl/src/layers/heatmap_layer.dart';
@@ -43,33 +43,50 @@ class MapboxMapControllerImpl extends MapboxMapController {
   /// Method to toggle the map style between two styles
   /// [style1] - the first style (MapStyle)
   /// [style2] - the second style (MapStyle)
+  /// [onStyleToggled] - callback for style toggled
   @override
-  Future<void> toggleBetween(MapStyle style1, MapStyle style2) async {
+  Future<void> toggleBetween(MapStyle style1, MapStyle style2,
+      {OnStyleToggled? onStyleToggled}) async {
     try {
       final args = <String>[
         style1.name,
         style2.name,
       ];
 
-      await _channel.invokeMethod<bool>(Methods.toggleStyle, args);
-    } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.toggleBetween] -----> $e");
+      final response =
+          await _channel.invokeMethod<String?>(Methods.toggleStyle, args);
+
+      if (response != null) {
+        onStyleToggled?.call(MapStyle.values.byName(response));
       }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "toggleBetween",
+        message: e,
+      );
     }
   }
 
   /// Method to toggle the map style among given styles
   /// [styles] - the list of styles (List<MapStyle>)
+  /// [onStyleToggled] - callback for style toggled
   @override
-  Future<void> toggleAmong(List<MapStyle> styles) async {
+  Future<void> toggleAmong(List<MapStyle> styles,
+      {OnStyleToggled? onStyleToggled}) async {
     try {
-      await _channel.invokeMethod<bool>(
+      final response = await _channel.invokeMethod<String>(
           Methods.toggleStyle, styles.map((e) => e.name).toList());
-    } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.toggleAmong] -----> $e");
+
+      if (response != null) {
+        onStyleToggled?.call(MapStyle.values.byName(response));
       }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "toggleAmong",
+        message: e,
+      );
     }
   }
 
@@ -80,9 +97,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
       await _channel.invokeMethod(
           Methods.animateCameraPosition, cameraPosition.toMap());
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.animateCameraPosition] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "animateCameraPosition",
+        message: e,
+      );
     }
   }
 
@@ -94,9 +113,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
           await _channel.invokeMethod<bool>(Methods.isLayerExist, layerId);
       return isExist ?? false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.isLayerExist] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "isLayerExist",
+        message: e,
+      );
     }
     return false;
   }
@@ -109,9 +130,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
           await _channel.invokeMethod<bool>(Methods.isSourceExist, sourceId);
       return isExist ?? false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.isSourceExist] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "isSourceExist",
+        message: e,
+      );
     }
     return false;
   }
@@ -134,18 +157,21 @@ class MapboxMapControllerImpl extends MapboxMapController {
                               ? Methods.addVideoSource
                               : null;
       if (method == null) {
-        if (kDebugMode) {
-          print(
-              "[MapboxMapController.addSource<T>] -----> Unspecified Source!");
-        }
+        LogUtil.log(
+          className: "MapboxMapController",
+          function: "addSource<T>",
+          message: "Unspecified Source!",
+        );
         return;
       }
 
       await _channel.invokeMethod(method, source.toMap());
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.addSource] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "addSource",
+        message: e,
+      );
     }
   }
 
@@ -179,17 +205,21 @@ class MapboxMapControllerImpl extends MapboxMapController {
                                                       .addLocationIndicatorLayer
                                                   : null;
       if (method == null) {
-        if (kDebugMode) {
-          print("[MapboxMapController.addLayer<T>] -----> Unspecified Layer!");
-        }
+        LogUtil.log(
+          className: "MapboxMapController",
+          function: "addLayer<T>",
+          message: "Unspecified Layer!",
+        );
         return;
       }
 
       await _channel.invokeMethod(method, layer.toMap());
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.addLayer] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "addLayer",
+        message: e,
+      );
     }
   }
 
@@ -201,9 +231,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
       return await _channel.invokeMethod<bool>(Methods.removeLayer, layerId) ??
           false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.removeLayer] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeLayer",
+        message: e,
+      );
     }
     return false;
   }
@@ -217,9 +249,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
               Methods.removeLayers, layersId) ??
           false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.removeLayers] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeLayers",
+        message: e,
+      );
     }
     return false;
   }
@@ -233,9 +267,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
               Methods.removeSource, sourceId) ??
           false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.removeSource] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeSource",
+        message: e,
+      );
     }
     return false;
   }
@@ -251,9 +287,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
       return true;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.removeSources] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeSources",
+        message: e,
+      );
     }
     return false;
   }
@@ -293,9 +331,11 @@ class MapboxMapControllerImpl extends MapboxMapController {
       }
       return false;
     } on Exception catch (e, _) {
-      if (kDebugMode) {
-        print("[MapboxMapController.addStyleImage] -----> $e");
-      }
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "addStyleImage",
+        message: e,
+      );
     }
     return false;
   }

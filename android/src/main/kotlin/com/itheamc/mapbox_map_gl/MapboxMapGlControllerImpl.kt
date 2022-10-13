@@ -130,37 +130,43 @@ internal class MapboxMapGlControllerImpl(
     /**
      * Method to toggle map style
      */
-    override fun toggleStyle(list: List<*>) {
-        if (!mapboxMap.isValid()) return
+    override fun toggleStyle(list: List<*>): String? {
 
+        // If mapbox is null
+        if (!mapboxMap.isValid()) return null
+
+        // return value
+        var returnStr: String? = null
+
+        // style uris as per the list args
         val styleUris = list.map { StyleHelper.fromArgs(if (it is String) it else it.toString()) }
 
+        // If toggle between 2 style
         if (styleUris.isNotEmpty() && styleUris.size <= 2) {
             style?.let {
                 mapboxMap.loadStyleUri(
-                    if (it.styleURI == styleUris.first()) {
-                        styleUris.last()
-                    } else {
-                        styleUris.first()
-                    }
+                    if (it.styleURI == styleUris.first()) styleUris.last() else styleUris.first()
                 )
+                returnStr =
+                    if (it.styleURI == styleUris.first()) list.first() as String else list.last() as String
             }
-            return
+            return returnStr
         }
 
+        // If toggle among the styles
         style?.let {
 
             // Current applied style index
             val i = styleUris.indexOf(it.styleURI)
 
             mapboxMap.loadStyleUri(
-                if (i != -1) {
-                    styleUris[(i + 1) % styleUris.size]
-                } else {
-                    styleUris.first()
-                }
+                if (i != -1) styleUris[(i + 1) % styleUris.size] else styleUris.first()
             )
+
+            returnStr = if (i != -1) list[(i + 1) % list.size] as String else list.first() as String
         }
+
+        return returnStr
 
     }
 
@@ -961,8 +967,8 @@ internal class MapboxMapGlControllerImpl(
             }
             Methods.toggleStyle -> {
                 args = args as List<*>
-                toggleStyle(args)
-                return result.success(true)
+                val selectedStyle = toggleStyle(args)
+                return result.success(selectedStyle)
             }
             Methods.animateCameraPosition -> {
                 val cameraPosition: CameraPosition = CameraPosition
