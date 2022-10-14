@@ -183,6 +183,46 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     fun addStyleModel(modelId: String, modelUri: String): Expected<String, None>
 
     /**
+     * Method to check if style model with particular id is already added or not
+     */
+    fun hasStyleModel(modelId: String): Boolean
+
+    /**
+     * Method to set style source property to the already added source with given id
+     */
+    fun setStyleSourceProperty(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to set style source properties to the already added source with given id
+     */
+    fun setStyleSourceProperties(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to set style layer property to the already added layer with given id
+     */
+    fun setStyleLayerProperty(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to set style layer properties to the already added layer with given id
+     */
+    fun setStyleLayerProperties(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to move style layer above given layer
+     */
+    fun moveStyleLayerAbove(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to move style layer below given layer
+     */
+    fun moveStyleLayerBelow(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to move style layer at specific position
+     */
+    fun moveStyleLayerAt(args: Map<*, *>): Expected<String, None>
+
+    /**
      * Method to add map related listeners
      */
     fun addMapRelatedListeners()

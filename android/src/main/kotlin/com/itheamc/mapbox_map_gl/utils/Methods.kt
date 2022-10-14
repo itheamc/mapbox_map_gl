@@ -36,6 +36,7 @@ object Methods {
     const val isSourceExist = "isSourceExist"
     const val isLayerExist = "isLayerExist"
     const val isStyleImageExist = "isStyleImageExist"
+    const val isStyleModelExist = "isStyleModelExist"
     const val addGeoJsonSource = "addGeoJsonSource"
     const val addVectorSource = "addVectorSource"
     const val addRasterSource = "addRasterSource"
@@ -48,6 +49,7 @@ object Methods {
     const val addSymbolLayer = "addSymbolLayer"
     const val addRasterLayer = "addRasterLayer"
     const val addSkyLayer = "addSkyLayer"
+    const val addStyleModel = "addStyleModel"
 
     const val addLocationIndicatorLayer = "addLocationIndicatorLayer"
     const val addFillExtrusionLayer = "addFillExtrusionLayer"
@@ -64,5 +66,8 @@ object Methods {
     const val setStyleLayerProperties = "setStyleLayerProperties"
     const val setStyleSourceProperty = "setStyleSourceProperty"
     const val setStyleSourceProperties = "setStyleSourceProperties"
-    const val addStyleModel = "addStyleModel"
+    const val moveStyleLayerAbove = "moveStyleLayerAbove"
+    const val moveStyleLayerBelow = "moveStyleLayerBelow"
+    const val moveStyleLayerAt = "moveStyleLayerAt"
+
 }

@@ -17,6 +17,8 @@ class Methods {
   static const isSourceExist = "isSourceExist";
   static const isLayerExist = "isLayerExist";
   static const isStyleImageExist = "isStyleImageExist";
+  static const isStyleModelExist = "isStyleModelExist";
+
   static const addGeoJsonSource = "addGeoJsonSource";
   static const addVectorSource = "addVectorSource";
   static const addRasterSource = "addRasterSource";
@@ -34,6 +36,8 @@ class Methods {
   static const addHeatmapLayer = "addHeatmapLayer";
   static const addHillShadeLayer = "addHillShadeLayer";
   static const addBackgroundLayer = "addBackgroundLayer";
+  static const addStyleModel = "addStyleModel";
+
   static const removeLayer = "removeLayer";
   static const removeLayers = "removeLayers";
   static const removeSource = "removeSource";
@@ -44,5 +48,7 @@ class Methods {
   static const setStyleLayerProperties = "setStyleLayerProperties";
   static const setStyleSourceProperty = "setStyleSourceProperty";
   static const setStyleSourceProperties = "setStyleSourceProperties";
-  static const addStyleModel = "addStyleModel";
+  static const moveStyleLayerAbove = "moveStyleLayerAbove";
+  static const moveStyleLayerBelow = "moveStyleLayerBelow";
+  static const moveStyleLayerAt = "moveStyleLayerAt";
 }

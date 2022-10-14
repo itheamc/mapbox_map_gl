@@ -156,6 +156,23 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return false;
   }
 
+  /// Method to check if style model is already existed
+  @override
+  Future<bool> isStyleModelExist(String modelId) async {
+    try {
+      final isExist =
+          await _channel.invokeMethod<bool>(Methods.isStyleModelExist, modelId);
+      return isExist ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "isStyleModelExist",
+        message: e,
+      );
+    }
+    return false;
+  }
+
   /// Generic method to add style source to the map
   @override
   Future<void> addSource<T extends Source>({required T source}) async {
@@ -397,7 +414,211 @@ class MapboxMapControllerImpl extends MapboxMapController {
     } on Exception catch (e, _) {
       LogUtil.log(
         className: "MapboxMapController",
-        function: "addSource",
+        function: "addStyleModel",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to set style source property for given id
+  /// [sourceId] - An id of the style source
+  /// [property] - Name of the property
+  /// [value] - Value for that property
+  @override
+  Future<bool> setStyleSourceProperty({
+    required String sourceId,
+    required String property,
+    required dynamic value,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "property": property,
+        "value": value,
+      };
+
+      final result = await _channel.invokeMethod<bool>(
+          Methods.setStyleSourceProperty, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setStyleSourceProperty",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to set style source properties for given id
+  /// [sourceId] - An id of the style source
+  /// [properties] - properties with key and value
+  @override
+  Future<bool> setStyleSourceProperties({
+    required String sourceId,
+    required Map<String, dynamic> properties,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "properties": properties,
+      };
+
+      final result = await _channel.invokeMethod<bool>(
+          Methods.setStyleSourceProperties, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setStyleSourceProperties",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to set style layer property for given id
+  /// [layerId] - An id of the style layer
+  /// [property] - Name of the property
+  /// [value] - Value for that property
+  @override
+  Future<bool> setStyleLayerProperty({
+    required String layerId,
+    required String property,
+    required dynamic value,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "layerId": layerId,
+        "property": property,
+        "value": value,
+      };
+
+      final result = await _channel.invokeMethod<bool>(
+          Methods.setStyleLayerProperty, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setStyleLayerProperty",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to set style layer properties for given id
+  /// [layerId] - An id of the style layer
+  /// [properties] - properties with key and value
+  @override
+  Future<bool> setStyleLayerProperties({
+    required String layerId,
+    required Map<String, dynamic> properties,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "layerId": layerId,
+        "properties": properties,
+      };
+
+      final result = await _channel.invokeMethod<bool>(
+          Methods.setStyleLayerProperties, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setStyleLayerProperties",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to move style layer above of given layer
+  /// [layerId] - An id of the style layer to move above
+  /// [belowLayerId] - id of style layer which above the given layer
+  /// will be move
+  @override
+  Future<bool> moveStyleLayerAbove({
+    required String layerId,
+    required String belowLayerId,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "layerId": layerId,
+        "belowLayerId": belowLayerId,
+      };
+
+      final result =
+          await _channel.invokeMethod<bool>(Methods.moveStyleLayerAbove, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "moveStyleLayerAbove",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to move style layer below of given layer
+  /// [layerId] - An id of the style layer to move below
+  /// [aboveLayerId] - id of style layer which below the given layer
+  /// will be move
+  @override
+  Future<bool> moveStyleLayerBelow({
+    required String layerId,
+    required String aboveLayerId,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "layerId": layerId,
+        "aboveLayerId": aboveLayerId,
+      };
+
+      final result =
+          await _channel.invokeMethod<bool>(Methods.moveStyleLayerBelow, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "moveStyleLayerBelow",
+        message: e,
+      );
+    }
+    return false;
+  }
+
+  /// Method to move style layer at given position
+  /// [layerId] - An id of the style layer to move at given position
+  /// [at] - position to move layer
+  @override
+  Future<bool> moveStyleLayerAt({
+    required String layerId,
+    required int at,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "layerId": layerId,
+        "at": at,
+      };
+
+      final result =
+          await _channel.invokeMethod<bool>(Methods.moveStyleLayerAt, args);
+
+      return result ?? false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "moveStyleLayerAt",
         message: e,
       );
     }

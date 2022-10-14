@@ -49,6 +49,9 @@ abstract class MapboxMapController {
   /// Method to check if style image is already existed
   Future<bool> isStyleImageExist(String imageId);
 
+  /// Method to check if style model is already existed
+  Future<bool> isStyleModelExist(String modelId);
+
   /// Generic method to add style source
   /// You can add:
   /// - GeoJsonSource
@@ -101,4 +104,66 @@ abstract class MapboxMapController {
   /// modelId - An identifier of the model.
   /// modelUri - A URI for the model.
   Future<bool> addStyleModel(String modelId, String modelUri);
+
+  /// Method to set style source property for given id
+  /// [sourceId] - An id of the style source
+  /// [property] - Name of the property
+  /// [value] - Value for that property
+  Future<bool> setStyleSourceProperty({
+    required String sourceId,
+    required String property,
+    required dynamic value,
+  });
+
+  /// Method to set style source properties for given id
+  /// [sourceId] - An id of the style source
+  /// [properties] - properties with key and value
+  Future<bool> setStyleSourceProperties({
+    required String sourceId,
+    required Map<String, dynamic> properties,
+  });
+
+  /// Method to set style layer property for given id
+  /// [layerId] - An id of the style layer
+  /// [property] - Name of the property
+  /// [value] - Value for that property
+  Future<bool> setStyleLayerProperty({
+    required String layerId,
+    required String property,
+    required dynamic value,
+  });
+
+  /// Method to set style layer properties for given id
+  /// [layerId] - An id of the style layer
+  /// [properties] - properties with key and value
+  Future<bool> setStyleLayerProperties({
+    required String layerId,
+    required Map<String, dynamic> properties,
+  });
+
+  /// Method to move style layer above of given layer
+  /// [layerId] - An id of the style layer to move above
+  /// [belowLayerId] - id of style layer which above the given layer
+  /// will be move
+  Future<bool> moveStyleLayerAbove({
+    required String layerId,
+    required String belowLayerId,
+  });
+
+  /// Method to move style layer below of given layer
+  /// [layerId] - An id of the style layer to move below
+  /// [aboveLayerId] - id of style layer which below the given layer
+  /// will be move
+  Future<bool> moveStyleLayerBelow({
+    required String layerId,
+    required String aboveLayerId,
+  });
+
+  /// Method to move style layer at given position
+  /// [layerId] - An id of the style layer to move at given position
+  /// [at] - position to move layer
+  Future<bool> moveStyleLayerAt({
+    required String layerId,
+    required int at,
+  });
 }

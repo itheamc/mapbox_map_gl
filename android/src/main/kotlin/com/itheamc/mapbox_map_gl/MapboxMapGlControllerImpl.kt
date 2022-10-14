@@ -3,6 +3,7 @@ package com.itheamc.mapbox_map_gl
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
+import com.itheamc.mapbox_map_gl.helper.ValueHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.*
 import com.itheamc.mapbox_map_gl.helper.source_helper.*
 import com.itheamc.mapbox_map_gl.utils.*
@@ -694,6 +695,168 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to check if style model with particular id is already added or not
+     */
+    @OptIn(MapboxExperimental::class)
+    override fun hasStyleModel(modelId: String): Boolean {
+        return if (style != null) {
+            style!!.hasStyleModel(modelId)
+        } else {
+            false
+        }
+    }
+
+    /**
+     * Method to set style source property to the already added source with given id
+     */
+    override fun setStyleSourceProperty(args: Map<*, *>): Expected<String, None> {
+
+        return if (style != null) {
+            val sourceId = args["sourceId"] as String
+            val property = args["property"] as String
+            val value = ValueHelper.toValue(args["value"])
+
+            style!!.setStyleSourceProperty(
+                sourceId = sourceId,
+                property = property,
+                value = value
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to set style source properties to the already added source with given id
+     */
+    override fun setStyleSourceProperties(args: Map<*, *>): Expected<String, None> {
+
+        return if (style != null) {
+            val sourceId = args["sourceId"] as String
+            val properties = args["properties"] as Map<*, *>
+
+            val propertiesAsValue = ValueHelper.toValue(properties)
+
+            style!!.setStyleSourceProperties(
+                sourceId = sourceId,
+                properties = propertiesAsValue,
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to set style layer property to the already added layer with given id
+     */
+    override fun setStyleLayerProperty(args: Map<*, *>): Expected<String, None> {
+
+        return if (style != null) {
+            val layerId = args["layerId"] as String
+            val property = args["property"] as String
+            val value = ValueHelper.toValue(args["value"])
+
+            style!!.setStyleLayerProperty(
+                layerId = layerId,
+                property = property,
+                value = value
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to set style layer properties to the already added layer with given id
+     */
+    override fun setStyleLayerProperties(args: Map<*, *>): Expected<String, None> {
+
+        return if (style != null) {
+            val layerId = args["layerId"] as String
+            val properties = args["properties"] as Map<*, *>
+
+            val propertiesAsValue = ValueHelper.toValue(properties)
+
+            style!!.setStyleLayerProperties(
+                layerId = layerId,
+                properties = propertiesAsValue,
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to move style layer above given layer
+     */
+    override fun moveStyleLayerAbove(args: Map<*, *>): Expected<String, None> {
+        return if (style != null) {
+            val layerId = args["layerId"] as String
+            val belowLayerId = args["belowLayerId"] as String
+
+            style!!.moveStyleLayer(
+                layerId = layerId,
+                layerPosition = LayerPosition(
+                    null,
+                    belowLayerId,
+                    null
+                )
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to move style layer below given layer
+     */
+    override fun moveStyleLayerBelow(args: Map<*, *>): Expected<String, None> {
+        return if (style != null) {
+            val layerId = args["layerId"] as String
+            val aboveLayerId = args["aboveLayerId"] as String
+
+            style!!.moveStyleLayer(
+                layerId = layerId,
+                layerPosition = LayerPosition(
+                    aboveLayerId,
+                    null,
+                    null
+                )
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
+     * Method to move style layer at specific position
+     */
+    override fun moveStyleLayerAt(args: Map<*, *>): Expected<String, None> {
+        return if (style != null) {
+            val layerId = args["layerId"] as String
+            val at = args["at"] as Int
+
+            style!!.moveStyleLayer(
+                layerId = layerId,
+                layerPosition = LayerPosition(
+                    null,
+                    null,
+                    at
+                )
+            )
+
+        } else {
+            ExpectedFactory.createError("Style is Null!")
+        }
+    }
+
+    /**
      * Method to add map related listeners
      * --------------------------------------------------------------------------------------
      */
@@ -764,7 +927,6 @@ internal class MapboxMapGlControllerImpl(
         mapboxMap.addOnSourceRemovedListener {
             methodChannel.invokeMethod(Methods.onSourceRemoved, it.id)
         }
-
 
         /**
          * On Map Click Listener
@@ -982,6 +1144,11 @@ internal class MapboxMapGlControllerImpl(
             Methods.isStyleImageExist -> {
                 val imageId = args as String
                 val isExist = style?.hasStyleImage(imageId) ?: false
+                return result.success(isExist)
+            }
+            Methods.isStyleModelExist -> {
+                val modelId = args as String
+                val isExist = hasStyleModel(modelId)
                 return result.success(isExist)
             }
             Methods.toggleStyle -> {
@@ -1245,6 +1412,83 @@ internal class MapboxMapGlControllerImpl(
                 val modelUri = args["modelUri"] as String
 
                 addStyleModel(modelId = modelId, modelUri = modelUri)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.setStyleSourceProperty -> {
+                args = args as Map<*, *>
+                setStyleSourceProperty(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.setStyleSourceProperties -> {
+                args = args as Map<*, *>
+                setStyleSourceProperties(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.setStyleLayerProperty -> {
+                args = args as Map<*, *>
+                setStyleLayerProperty(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.setStyleLayerProperties -> {
+                args = args as Map<*, *>
+                setStyleLayerProperties(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.moveStyleLayerAbove -> {
+                args = args as Map<*, *>
+                moveStyleLayerAbove(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.moveStyleLayerBelow -> {
+                args = args as Map<*, *>
+                moveStyleLayerBelow(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.moveStyleLayerAt -> {
+                args = args as Map<*, *>
+                moveStyleLayerAt(args)
                     .onValue {
                         result.success(true)
                     }
