@@ -11,18 +11,6 @@ class VectorSourceExampleScreen extends StatefulWidget {
 }
 
 class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
-  /// List of color
-  final _colors = [
-    "#ff69b4",
-    "red",
-    "blue",
-    "green",
-    "orange",
-  ];
-
-  /// Color Index
-  int _i = 0;
-
   /// Map controller
   MapboxMapController? _controller;
 
@@ -32,7 +20,6 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   }
 
   Future<void> _addVectorSource() async {
-    _i = (_i + 1) % _colors.length;
     _controller
         ?.addSource<VectorSource>(
       source: VectorSource(
@@ -51,7 +38,7 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
         layerId: "line-layer-id",
         sourceId: "mapbox-terrain",
         layerProperties: LineLayerProperties(
-            lineColor: _colors[_i],
+            lineColor: "#ff69b4",
             lineWidth: 1.5,
             lineJoin: LineJoin.round,
             lineCap: LineCap.round,
@@ -60,24 +47,109 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
     );
   }
 
+  /// Method to change property
+  Future<void> _changeProperty({String? color, double? lineWidth}) async {
+    if (color != null || lineWidth != null) {
+      final res = await _controller?.setStyleLayerProperty(
+          layerId: "line-layer-id",
+          property: color != null ? "line-color" : "line-width",
+          value: color ?? lineWidth);
+
+      if (kDebugMode) {
+        print("[_VectorSourceExampleScreenState -> _changeProperty] ---> $res");
+      }
+    }
+  }
+
+  /// Method to change more than one properties at once
+  Future<void> _changeProperties() async {
+    await _controller?.setStyleLayerProperties(
+      layerId: "line-layer-id",
+      properties: <String, dynamic>{
+        'line-color': 'green',
+        'line-width': 1.0,
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: SizedBox(
-          height: 38.0,
-          child: FloatingActionButton.extended(
-            onPressed: _addVectorSource,
-            label: const Text(
-              "Add Vector Source & Layer",
-              textScaleFactor: 0.75,
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: () => _changeProperty(color: 'red'),
+                label: const Text(
+                  "Change Color (Red)",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
             ),
-            icon: const Icon(
-              Icons.layers,
-              color: Colors.white,
-              size: 14.0,
+            const SizedBox(
+              height: 8.0,
             ),
-          ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: () => _changeProperty(color: 'blue'),
+                label: const Text(
+                  "Change Color (Blue)",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: () => _changeProperty(lineWidth: 4.0),
+                label: const Text(
+                  "Line Width (4.0)",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: _changeProperties,
+                label: const Text(
+                  "Change Properties",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+          ],
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
@@ -90,39 +162,41 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
             ),
           ),
           onMapCreated: _onMapCreated,
-          onStyleLoaded: () {
-            if (kDebugMode) {
-              print("[Method Call -> onStyleLoaded] ---> From _MyAppState");
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("mapbox-terrain") ?? false;
+            if (!isAlreadyAdded) {
+              _addVectorSource();
             }
           },
           onStyleLoadError: (err) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onStyleLoadError] ---> From _MyAppState -> $err");
+                  "[_VectorSourceExampleScreenState -> onStyleLoadError] ---> From _MyAppState -> $err");
             }
           },
           onMapClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
+                  "[_VectorSourceExampleScreenState -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
           onMapLongClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
+                  "[_VectorSourceExampleScreenState -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
           onFeatureClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.properties}");
+                  "[_VectorSourceExampleScreenState -> onFeatureClick] ---> $source, ${feature.properties}");
             }
           },
           onFeatureLongClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
+                  "[_VectorSourceExampleScreenState -> onFeatureClick] ---> $source, ${feature.toString()}");
             }
           },
         ),

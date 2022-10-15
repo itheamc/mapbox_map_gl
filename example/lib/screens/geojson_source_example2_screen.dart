@@ -25,7 +25,7 @@ class _GeoJsonSourceExample2ScreenState
       image: LocalStyleImage(
         imageId: "icon",
         imageName: "assets/images/composting.png",
-        sdf: false,
+        sdf: true,
       ),
     );
   }
@@ -69,12 +69,24 @@ class _GeoJsonSourceExample2ScreenState
         layerProperties: CircleLayerProperties(
           circleColor: 'red',
           circleColorTransition: StyleTransition.build(
-            delay: 500,
+            delay: 0,
             duration: const Duration(milliseconds: 1000),
           ),
           circleRadius: 12,
+          circleRadiusTransition: StyleTransition.build(
+            delay: 0,
+            duration: const Duration(milliseconds: 1000),
+          ),
           circleStrokeWidth: 2.5,
+          circleStrokeWidthTransition: StyleTransition.build(
+            delay: 0,
+            duration: const Duration(milliseconds: 1000),
+          ),
           circleStrokeColor: "#fff",
+          circleStrokeColorTransition: StyleTransition.build(
+            delay: 0,
+            duration: const Duration(milliseconds: 1000),
+          ),
           circleTranslateTransition: StyleTransition.build(
             delay: 0,
             duration: const Duration(milliseconds: 1000),
@@ -100,24 +112,118 @@ class _GeoJsonSourceExample2ScreenState
     );
   }
 
+  /// Method to change radius property
+  Future<void> _changeRadius(double radius) async {
+    // For Circle Layer
+    await _controller?.setStyleLayerProperty(
+        layerId: "my-layer-id", property: "circle-radius", value: radius);
+  }
+
+  /// Method to change radius property
+  Future<void> _changeColor(String color) async {
+    // For Circle Layer
+    await _controller?.setStyleLayerProperty(
+        layerId: "my-layer-id", property: "circle-color", value: color);
+
+    // For Symbol Layer
+    await _controller?.setStyleLayerProperty(
+        layerId: "symbol-layer-example",
+        property: "icon-color",
+        value: "yellow");
+  }
+
+  /// Method to change color and radius both
+  Future<void> _changeColorNRadius() async {
+    // For Circle Layer
+    await _controller?.setStyleLayerProperties(
+      layerId: "my-layer-id",
+      properties: <String, dynamic>{
+        "circle-color": "purple",
+        "circle-radius": 20,
+        "circle-stroke-width": 4.0,
+        "circle-stroke-color": 'yellow',
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: SizedBox(
-          height: 38.0,
-          child: FloatingActionButton.extended(
-            onPressed: _addGeoJson,
-            label: const Text(
-              "Add GeoJson Source, Circle & Symbol Layer",
-              textScaleFactor: 0.75,
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: () => _changeColor("blue"),
+                label: const Text(
+                  "Change Color",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
             ),
-            icon: const Icon(
-              Icons.layers,
-              color: Colors.white,
-              size: 14.0,
+            const SizedBox(
+              height: 8.0,
             ),
-          ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: () => _changeRadius(17),
+                label: const Text(
+                  "Change Radius",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: _changeColorNRadius,
+                label: const Text(
+                  "Change Together",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            SizedBox(
+              height: 38.0,
+              child: FloatingActionButton.extended(
+                onPressed: _addGeoJson,
+                label: const Text(
+                  "Reset",
+                  textScaleFactor: 0.75,
+                ),
+                icon: const Icon(
+                  Icons.layers,
+                  color: Colors.white,
+                  size: 14.0,
+                ),
+              ),
+            ),
+          ],
         ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
@@ -130,37 +236,35 @@ class _GeoJsonSourceExample2ScreenState
             ),
           ),
           onMapCreated: _onMapCreated,
-          onStyleLoaded: () {
-            _addGeoJson();
-          },
-          onStyleLoadError: (err) {
-            if (kDebugMode) {
-              print(
-                  "[Method Call -> onStyleLoadError] ---> From _MyAppState -> $err");
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("my-data-source") ?? false;
+            if (!isAlreadyAdded) {
+              _addGeoJson();
             }
           },
           onMapClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
           onMapLongClick: (point, screenCoordinate) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
           onFeatureClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.properties}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> $source, ${feature.properties}");
             }
           },
           onFeatureLongClick: (point, screenCoordinate, feature, source) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> $source, ${feature.toString()}");
             }
           },
         ),

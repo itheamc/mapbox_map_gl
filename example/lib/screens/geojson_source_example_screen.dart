@@ -69,6 +69,10 @@ class _GeoJsonSourceExampleScreenState
             15,
             10
           ],
+          circleRadiusTransition: StyleTransition.build(
+            delay: 500,
+            duration: const Duration(milliseconds: 1000),
+          ),
           circleStrokeWidth: [
             'case',
             [
