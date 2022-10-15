@@ -33,8 +33,6 @@ class LineLayer extends Layer<LineLayerProperties> {
 /// final lineLayerProperties = LineLayerProperties(
 ///                             lineWidth: 2.0,
 ///                             lineColor: 'red',
-///                             lineWidth: 2.0,
-///                             lineWidth: 2.0,
 ///                         );
 class LineLayerProperties extends LayerProperties {
   /// Stroke thickness.
