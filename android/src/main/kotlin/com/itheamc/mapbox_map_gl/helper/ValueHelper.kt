@@ -10,11 +10,11 @@ internal object ValueHelper {
     fun toValue(v: Any?): Value {
 
         return when (v) {
-            String -> Value.valueOf(v as String)
-            Long -> Value.valueOf(v as Long)
-            Int -> Value.valueOf((v as Int).toLong())
-            Double -> Value.valueOf(v as Double)
-            Boolean -> Value.valueOf(v as Boolean)
+            is String -> Value.valueOf(v)
+            is Long -> Value.valueOf(v)
+            is Int -> Value.valueOf(v.toLong())
+            is Double -> Value.valueOf(v)
+            is Boolean -> Value.valueOf(v)
             is List<*> -> Value.valueOf(v.map { toValue(it) })
             is Map<*, *> -> {
                 val hashMap = hashMapOf<String, Value>()
