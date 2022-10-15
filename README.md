@@ -195,5 +195,6 @@ You can add style image from your assets or from the url. Svg image is not suppo
 | GeoJson Source           | :white_check_mark:  | :x: | 
 | Image Source             | :white_check_mark:  | :x: | 
 | Expressions              | :white_check_mark:  | :x: |
+| Transitions              | :white_check_mark:  | :x: |
 
 

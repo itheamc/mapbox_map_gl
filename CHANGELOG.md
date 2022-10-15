@@ -37,3 +37,20 @@
 * Added support for Style Images
 * Method to remove source
 * Method to remove layers and many more.
+
+## 0.0.5
+
+* Added support for Changing Source & Style Properties
+  - setStyleLayerProperty
+  - setStyleLayerProperties
+  - setStyleSourceProperty and
+  - setStyleSourceProperties
+* Added support for move Layers
+  - moveStyleLayerAbove
+  - moveStyleLayerBelow
+  - moveStyleLayerAt
+* Added support for Style Model
+  - isStyleModelExist
+  - addStyleModel
+  - removeStyleModel
+* And known bug fix
