@@ -114,21 +114,6 @@ class _GeoJsonSourceExampleScreenState
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: SizedBox(
-          height: 38.0,
-          child: FloatingActionButton.extended(
-            onPressed: _addGeoJson,
-            label: const Text(
-              "Add GeoJson Source & Circle Layer",
-              textScaleFactor: 0.75,
-            ),
-            icon: const Icon(
-              Icons.layers,
-              color: Colors.white,
-              size: 14.0,
-            ),
-          ),
-        ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
             center: Point.fromLatLng(27.837785, 82.538961),
@@ -140,8 +125,12 @@ class _GeoJsonSourceExampleScreenState
             ),
           ),
           onMapCreated: _onMapCreated,
-          onStyleLoaded: () {
-            _addGeoJson();
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("my-data-source") ?? false;
+            if (!isAlreadyAdded) {
+              _addGeoJson();
+            }
           },
           onStyleLoadError: (err) {
             if (kDebugMode) {
