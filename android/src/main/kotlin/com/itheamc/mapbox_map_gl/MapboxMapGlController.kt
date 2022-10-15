@@ -188,6 +188,11 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     fun hasStyleModel(modelId: String): Boolean
 
     /**
+     * Method to remove style model with particular id if already added
+     */
+    fun removeStyleModel(modelId: String): Expected<String, None>
+
+    /**
      * Method to set style source property to the already added source with given id
      */
     fun setStyleSourceProperty(args: Map<*, *>): Expected<String, None>

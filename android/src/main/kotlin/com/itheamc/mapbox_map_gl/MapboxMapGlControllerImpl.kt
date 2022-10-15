@@ -707,6 +707,18 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to remove style model with particular id if already added
+     */
+    @OptIn(MapboxExperimental::class)
+    override fun removeStyleModel(modelId: String): Expected<String, None> {
+        return if (style != null) {
+            style!!.removeStyleModel(modelId)
+        } else {
+            ExpectedFactory.createError("Style is null!")
+        }
+    }
+
+    /**
      * Method to set style source property to the already added source with given id
      */
     override fun setStyleSourceProperty(args: Map<*, *>): Expected<String, None> {
@@ -1412,6 +1424,17 @@ internal class MapboxMapGlControllerImpl(
                 val modelUri = args["modelUri"] as String
 
                 addStyleModel(modelId = modelId, modelUri = modelUri)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.removeStyleModel -> {
+                val modelId = args as String
+                removeStyleModel(modelId)
                     .onValue {
                         result.success(true)
                     }

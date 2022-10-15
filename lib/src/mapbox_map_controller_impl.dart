@@ -421,6 +421,24 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return false;
   }
 
+  /// Method to remove added style model
+  /// [modelId] - An id of style model that you want to remove
+  @override
+  Future<bool> removeStyleModel(String modelId) async {
+    try {
+      return await _channel.invokeMethod<bool>(
+              Methods.removeStyleModel, modelId) ??
+          false;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeStyleModel",
+        message: e,
+      );
+    }
+    return false;
+  }
+
   /// Method to set style source property for given id
   /// [sourceId] - An id of the style source
   /// [property] - Name of the property

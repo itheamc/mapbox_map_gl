@@ -61,6 +61,7 @@ object Methods {
     const val removeSource = "removeSource"
     const val addStyleImage = "addStyleImage"
     const val removeStyleImage = "removeStyleImage"
+    const val removeStyleModel = "removeStyleModel"
 
     const val setStyleLayerProperty = "setStyleLayerProperty"
     const val setStyleLayerProperties = "setStyleLayerProperties"

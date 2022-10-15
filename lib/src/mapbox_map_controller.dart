@@ -105,6 +105,10 @@ abstract class MapboxMapController {
   /// modelUri - A URI for the model.
   Future<bool> addStyleModel(String modelId, String modelUri);
 
+  /// Method to remove added style model
+  /// [modelId] - An id of style model that you want to remove
+  Future<bool> removeStyleModel(String modelId);
+
   /// Method to set style source property for given id
   /// [sourceId] - An id of the style source
   /// [property] - Name of the property

@@ -43,6 +43,7 @@ class Methods {
   static const removeSource = "removeSource";
   static const addStyleImage = "addStyleImage";
   static const removeStyleImage = "removeStyleImage";
+  static const removeStyleModel = "removeStyleModel";
 
   static const setStyleLayerProperty = "setStyleLayerProperty";
   static const setStyleLayerProperties = "setStyleLayerProperties";
