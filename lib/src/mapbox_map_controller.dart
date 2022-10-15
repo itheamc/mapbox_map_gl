@@ -1,3 +1,5 @@
+import 'package:mapbox_map_gl/src/utils/listeners.dart';
+
 import 'mapbox_map.dart';
 import 'style_images/style_image.dart';
 
@@ -8,7 +10,7 @@ import 'utils/camera_position.dart';
 /// Type definition for style toggled callback
 typedef OnStyleToggled = void Function(MapStyle style);
 
-abstract class MapboxMapController {
+abstract class MapboxMapController with Listeners {
   /// Method to toggle the map style between two styles
   /// [style1] - the first style (MapStyle)
   /// [style2] - the second style (MapStyle)
@@ -170,4 +172,10 @@ abstract class MapboxMapController {
     required String layerId,
     required int at,
   });
+
+  /// Method to handle callbacks
+  void callbacks(Map<String, dynamic> params);
+
+  /// Method to dispose controller
+  void dispose();
 }

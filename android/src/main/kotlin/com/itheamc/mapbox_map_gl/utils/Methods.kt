@@ -22,7 +22,7 @@ object Methods {
     const val onFeatureLongClick = "onFeatureLongClick"
 
     const val onMapIdle = "onMapIdle"
-    const val onCameraMove = "onCameraMove"
+    const val onCameraChange = "onCameraChange"
     const val onSourceAdded = "onSourceAdded"
     const val onSourceDataLoaded = "onSourceDataLoaded"
     const val onSourceRemoved = "onSourceRemoved"

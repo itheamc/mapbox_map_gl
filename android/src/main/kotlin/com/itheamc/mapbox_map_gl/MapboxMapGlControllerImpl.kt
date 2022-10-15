@@ -911,7 +911,7 @@ internal class MapboxMapGlControllerImpl(
          * On Camera Change Listener
          */
         mapboxMap.addOnCameraChangeListener {
-            methodChannel.invokeMethod(Methods.onCameraMove, null)
+            methodChannel.invokeMethod(Methods.onCameraChange, null)
         }
 
         /**

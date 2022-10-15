@@ -126,13 +126,16 @@ class _MapboxMapState extends State<MapboxMap> {
   /// MapboxMapGlPlatform Instance
   late MapboxMapGlPlatform _glPlatform;
 
+  /// MapboxMapController
+  late MapboxMapController _mapController;
+
   /// Attaching the method call handler to the Channel method
   /// to handle the method call triggered through the native channel
   @override
   void initState() {
     super.initState();
-
     _glPlatform = MapboxMapGlPlatform.instance;
+    _mapController = MapboxMapControllerImpl(_glPlatform);
     _glPlatform.attachedMethodCallHandler(_methodCallHandler);
   }
 
@@ -179,6 +182,11 @@ class _MapboxMapState extends State<MapboxMap> {
         widget.onFeatureLongClick?.call(point, coordinate, feature, source);
         break;
       default:
+        final args = <String, dynamic>{
+          "method": call.method,
+          "args": call.arguments
+        };
+        _mapController.callbacks(args);
     }
   }
 
@@ -196,7 +204,7 @@ class _MapboxMapState extends State<MapboxMap> {
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,
       onPlatformViewCreated: (id) {
-        widget.onMapCreated?.call(MapboxMapControllerImpl(_glPlatform));
+        widget.onMapCreated?.call(_mapController);
       },
       hyperComposition: widget.hyperComposition,
     );

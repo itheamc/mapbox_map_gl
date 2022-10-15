@@ -11,6 +11,12 @@ class Methods {
   static const onFeatureClick = "onFeatureClick";
   static const onFeatureLongClick = "onFeatureLongClick";
 
+  static const onMapIdle = "onMapIdle";
+  static const onCameraChange = "onCameraChange";
+  static const onSourceAdded = "onSourceAdded";
+  static const onSourceDataLoaded = "onSourceDataLoaded";
+  static const onSourceRemoved = "onSourceRemoved";
+
   /// Methods triggered from the flutter side
   static const animateCameraPosition = "animateCameraPosition";
   static const toggleStyle = "toggleStyle";

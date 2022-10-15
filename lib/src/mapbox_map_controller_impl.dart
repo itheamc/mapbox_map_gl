@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'utils/listeners.dart';
 import 'utils/log_util.dart';
 import 'layers/background_layer.dart';
 import 'layers/fill_extrusion_layer.dart';
@@ -39,6 +40,52 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
   /// Getter for Method channel
   MethodChannel get _channel => _glPlatform.channel;
+
+  /// Method to handle callbacks
+  @override
+  void callbacks(Map<String, dynamic> params) {
+    final method = params["method"] as String;
+    final args = params["args"];
+
+    switch (method) {
+      case Methods.onMapIdle:
+        _handlingOnMapIdleListener(args);
+        break;
+      case Methods.onCameraChange:
+        _handlingOnCameraChangeListener(args);
+        break;
+      case Methods.onSourceAdded:
+        _handlingOnSourceAddedListener(args);
+        break;
+      case Methods.onSourceDataLoaded:
+        _handlingOnSourceDataLoadedListener(args);
+        break;
+      case Methods.onSourceRemoved:
+        _handlingOnSourceRemovedListener(args);
+        break;
+      default:
+    }
+  }
+
+  /// List of OnMapIdleListeners
+  final List<OnMapIdleListener> _onMapIdleListeners =
+      List.empty(growable: true);
+
+  /// List of OnCameraChangeListener
+  final List<OnCameraChangeListener> _onCameraChangeListeners =
+      List.empty(growable: true);
+
+  /// List of OnSourceAddedListeners
+  final List<OnSourceAddedListener> _onSourceAddedListeners =
+      List.empty(growable: true);
+
+  /// List of OnSourceDataLoadedListener
+  final List<OnSourceDataLoadedListener> _onSourceDataLoadedListeners =
+      List.empty(growable: true);
+
+  /// List of OnSourceRemovedListener
+  final List<OnSourceRemovedListener> _onSourceRemovedListeners =
+      List.empty(growable: true);
 
   /// Method to toggle the map style between two styles
   /// [style1] - the first style (MapStyle)
@@ -641,5 +688,124 @@ class MapboxMapControllerImpl extends MapboxMapController {
       );
     }
     return false;
+  }
+
+  /// Method to add onMapIdle listener
+  @override
+  void setOnMapIdleListener(OnMapIdleListener onMapIdleListener) {
+    _onMapIdleListeners.add(onMapIdleListener);
+  }
+
+  /// Method to add OnCameraChange listener
+  @override
+  void setOnCameraChangeListener(
+      OnCameraChangeListener onCameraChangeListener) {
+    _onCameraChangeListeners.add(onCameraChangeListener);
+  }
+
+  /// Method to add onSourceAdded listener
+  @override
+  void setOnSourceAddedListener(OnSourceAddedListener onSourceAddedListener) {
+    _onSourceAddedListeners.add(onSourceAddedListener);
+  }
+
+  /// Method to add onSourceDataLoaded listener
+  @override
+  void setOnSourceDataLoadedListener(
+      OnSourceDataLoadedListener onSourceDataLoadedListener) {
+    _onSourceDataLoadedListeners.add(onSourceDataLoadedListener);
+  }
+
+  /// Method to add onSourceRemoved listener
+  @override
+  void setOnSourceRemovedListener(
+      OnSourceRemovedListener onSourceRemovedListener) {
+    _onSourceRemovedListeners.add(onSourceRemovedListener);
+  }
+
+  /// Method to add listeners
+  /// [onMapIdleListener] - Listener for onMapIdle
+  /// [onCameraChangeListener] - Listener for onCameraChange
+  /// [onSourceAddedListener] - Listener for onSourceAdded
+  /// [onSourceDataLoadedListener] - Listener for onSourceDataLoaded
+  /// [onSourceRemovedListener] - Listener for onSourceRemoved
+  @override
+  void addListeners({
+    OnMapIdleListener? onMapIdleListener,
+    OnCameraChangeListener? onCameraChangeListener,
+    OnSourceAddedListener? onSourceAddedListener,
+    OnSourceDataLoadedListener? onSourceDataLoadedListener,
+    OnSourceRemovedListener? onSourceRemovedListener,
+  }) {
+    if (onMapIdleListener != null) {
+      _onMapIdleListeners.add(onMapIdleListener);
+    }
+
+    if (onCameraChangeListener != null) {
+      _onCameraChangeListeners.add(onCameraChangeListener);
+    }
+
+    if (onSourceAddedListener != null) {
+      _onSourceAddedListeners.add(onSourceAddedListener);
+    }
+
+    if (onSourceDataLoadedListener != null) {
+      _onSourceDataLoadedListeners.add(onSourceDataLoadedListener);
+    }
+
+    if (onSourceRemovedListener != null) {
+      _onSourceRemovedListeners.add(onSourceRemovedListener);
+    }
+  }
+
+  /// Method to remove all listeners
+  @override
+  void removeListeners() {
+    _onMapIdleListeners.clear();
+    _onCameraChangeListeners.clear();
+    _onSourceAddedListeners.clear();
+    _onSourceDataLoadedListeners.clear();
+    _onSourceRemovedListeners.clear();
+  }
+
+  /// Private method to handle OnMapIdleListener
+  void _handlingOnMapIdleListener(dynamic args) {
+    for (var element in _onMapIdleListeners) {
+      element.call();
+    }
+  }
+
+  /// Private method to handle OnCameraChangeListener
+  void _handlingOnCameraChangeListener(dynamic args) {
+    for (var element in _onCameraChangeListeners) {
+      element.call();
+    }
+  }
+
+  /// Private method to handle OnSourceAddedListener
+  void _handlingOnSourceAddedListener(dynamic args) {
+    for (var element in _onSourceAddedListeners) {
+      element.call(args);
+    }
+  }
+
+  /// Private method to handle OnSourceDataLoadedListener
+  void _handlingOnSourceDataLoadedListener(dynamic args) {
+    for (var element in _onSourceDataLoadedListeners) {
+      element.call(args);
+    }
+  }
+
+  /// Private method to handle OnSourceRemovedListener
+  void _handlingOnSourceRemovedListener(dynamic args) {
+    for (var element in _onSourceRemovedListeners) {
+      element.call(args);
+    }
+  }
+
+  /// Method to dispose the controller
+  @override
+  void dispose() {
+    removeListeners();
   }
 }
