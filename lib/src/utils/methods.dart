@@ -64,4 +64,5 @@ class Methods {
   static const setFeatureState = "setFeatureState";
   static const removeFeatureState = "removeFeatureState";
   static const querySourceFeatures = "querySourceFeatures";
+  static const queryRenderedFeatures = "queryRenderedFeatures";
 }

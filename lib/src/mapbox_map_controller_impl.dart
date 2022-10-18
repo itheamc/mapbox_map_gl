@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
-import 'package:mapbox_map_gl/src/utils/queried_feature.dart';
-import 'package:mapbox_map_gl/src/utils/source_query_options.dart';
+import 'utils/queried_feature.dart';
+import 'utils/rendered_query_options.dart';
+import 'utils/rendered_query_qeometry.dart';
+import 'utils/source_query_options.dart';
 import 'utils/listeners.dart';
 import 'utils/log_util.dart';
 import 'layers/background_layer.dart';
@@ -711,6 +713,38 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
       final result = await _channel.invokeMethod<List<Map<String, dynamic>>?>(
           Methods.querySourceFeatures, args);
+
+      return result?.map((e) => QueriedFeature.fromArgs(e)).toList();
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "querySourceFeatures",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Queries the map for rendered features.
+  /// Params:
+  /// [geometry] - The screen pixel coordinates (point, line string or box)
+  /// to query for rendered features.
+  /// [queryOptions] - The render query options for querying rendered features.
+  /// Returns:
+  /// An array of queried features.
+  @override
+  Future<List<QueriedFeature>?> queryRenderedFeatures({
+    required RenderedQueryGeometry geometry,
+    required RenderedQueryOptions queryOptions,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "geometry": geometry.toMap(),
+        "options": queryOptions.toMap(),
+      };
+
+      final result = await _channel.invokeMethod<List<Map<String, dynamic>>?>(
+          Methods.queryRenderedFeatures, args);
 
       return result?.map((e) => QueriedFeature.fromArgs(e)).toList();
     } on Exception catch (e, _) {

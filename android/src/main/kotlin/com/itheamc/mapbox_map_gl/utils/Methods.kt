@@ -76,5 +76,6 @@ object Methods {
     const val setFeatureState = "setFeatureState"
     const val removeFeatureState = "removeFeatureState"
     const val querySourceFeatures = "querySourceFeatures"
+    const val queryRenderedFeatures = "queryRenderedFeatures"
 
 }

@@ -2,6 +2,7 @@ package com.itheamc.mapbox_map_gl
 
 import android.os.Build
 import android.util.Log
+import com.itheamc.mapbox_map_gl.helper.RenderedQueryGeometryHelper
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
 import com.itheamc.mapbox_map_gl.helper.ValueHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.*
@@ -894,6 +895,46 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to query the map for rendered features.
+     */
+    override fun queryRenderedFeatures(
+        args: Map<*, *>,
+        queryFeaturesCallback: QueryFeaturesCallback
+    ) {
+        if (mapboxMap.isValid()) {
+            val geometryArgs =
+                if (args.containsKey("geometry")) args["geometry"] as Map<*, *> else null
+            val optionsArgs =
+                if (args.containsKey("options") && args["options"] != null) args["options"] as Map<*, *> else null
+
+            if (geometryArgs == null || optionsArgs == null) {
+                queryFeaturesCallback.run(ExpectedFactory.createError("Parameters are null"))
+            }
+
+            val geometry = RenderedQueryGeometryHelper.fromArgs(geometryArgs)
+            val option = geometryArgs?.let {
+                RenderedQueryOptions(
+                    if (it.containsKey("layerIds")) (it["layerIds"] as List<*>).map { str -> str as String } else null,
+                    ValueHelper.toValue(it["filter"])
+                )
+            }
+
+            if (geometry != null) {
+                mapboxMap.queryRenderedFeatures(
+                    geometry = geometry,
+                    options = option ?: RenderedQueryOptions(null, null),
+                    queryFeaturesCallback
+                )
+            } else {
+                queryFeaturesCallback.run(ExpectedFactory.createError("Parameters are null"))
+            }
+
+        } else {
+            queryFeaturesCallback.run(ExpectedFactory.createError("Invalid mapbox"))
+        }
+    }
+
+    /**
      * Method to add map related listeners
      * --------------------------------------------------------------------------------------
      */
@@ -1548,6 +1589,27 @@ internal class MapboxMapGlControllerImpl(
             Methods.querySourceFeatures -> {
                 args = args as Map<*, *>
                 querySourceFeatures(args) {
+                    it.onValue { list ->
+                        val queriedFeatureResult = list.map { qf ->
+                            mapOf(
+                                "source" to qf.source,
+                                "sourceLayer" to qf.sourceLayer,
+                                "feature" to qf.feature.toJson(),
+                                "state" to qf.state.toJson()
+                            )
+                        }
+                        result.success(queriedFeatureResult)
+                    }
+
+                    it.onError {
+                        result.success(null)
+                    }
+                }
+
+            }
+            Methods.queryRenderedFeatures -> {
+                args = args as Map<*, *>
+                queryRenderedFeatures(args) {
                     it.onValue { list ->
                         val queriedFeatureResult = list.map { qf ->
                             mapOf(

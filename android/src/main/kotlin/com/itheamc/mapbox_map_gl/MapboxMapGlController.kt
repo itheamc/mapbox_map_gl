@@ -3,7 +3,6 @@ package com.itheamc.mapbox_map_gl
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
-import com.mapbox.maps.QueriedFeature
 import com.mapbox.maps.QueryFeaturesCallback
 import com.mapbox.maps.extension.style.layers.generated.*
 import com.mapbox.maps.extension.style.sources.generated.*
@@ -233,6 +232,11 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to query the map for source features.
      */
     fun querySourceFeatures(args: Map<*, *>, queryFeaturesCallback: QueryFeaturesCallback)
+
+    /**
+     * Method to query the map for rendered features.
+     */
+    fun queryRenderedFeatures(args: Map<*, *>, queryFeaturesCallback: QueryFeaturesCallback)
 
     /**
      * Method to add map related listeners

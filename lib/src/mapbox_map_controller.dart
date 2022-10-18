@@ -1,6 +1,8 @@
-import 'package:mapbox_map_gl/src/utils/listeners.dart';
-import 'package:mapbox_map_gl/src/utils/queried_feature.dart';
-import 'package:mapbox_map_gl/src/utils/source_query_options.dart';
+import 'utils/listeners.dart';
+import 'utils/queried_feature.dart';
+import 'utils/rendered_query_options.dart';
+import 'utils/rendered_query_qeometry.dart';
+import 'utils/source_query_options.dart';
 
 import 'mapbox_map.dart';
 import 'style_images/style_image.dart';
@@ -184,6 +186,18 @@ abstract class MapboxMapController with Listeners {
   Future<List<QueriedFeature>?> querySourceFeatures({
     required String sourceId,
     required SourceQueryOptions queryOptions,
+  });
+
+  /// Queries the map for rendered features.
+  /// Params:
+  /// [geometry] - The screen pixel coordinates (point, line string or box)
+  /// to query for rendered features.
+  /// [queryOptions] - The render query options for querying rendered features.
+  /// Returns:
+  /// An array of queried features.
+  Future<List<QueriedFeature>?> queryRenderedFeatures({
+    required RenderedQueryGeometry geometry,
+    required RenderedQueryOptions queryOptions,
   });
 
   /// Method to handle callbacks
