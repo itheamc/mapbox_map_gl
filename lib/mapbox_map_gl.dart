@@ -29,3 +29,8 @@ export 'src/utils/feature.dart';
 export 'src/utils/feature_collection.dart';
 export 'src/utils/promoted_id.dart';
 export 'src/utils/tileset.dart';
+export 'src/utils/queried_feature.dart';
+export 'src/utils/rendered_query_options.dart';
+export 'src/utils/source_query_options.dart';
+export 'src/utils/rendered_query_geometry.dart';
+export 'src/utils/screen_box.dart';
