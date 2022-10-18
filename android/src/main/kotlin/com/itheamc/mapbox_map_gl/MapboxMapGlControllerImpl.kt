@@ -869,6 +869,31 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to query the map for source features.
+     */
+    override fun querySourceFeatures(
+        args: Map<*, *>,
+        queryFeaturesCallback: QueryFeaturesCallback
+    ) {
+        if (mapboxMap.isValid()) {
+            val sourceId = args["sourceId"] as String
+            val options = args["options"] as Map<*, *>
+
+            mapboxMap.querySourceFeatures(
+                sourceId = sourceId,
+                options = SourceQueryOptions(
+                    if (options.containsKey("sourceLayerIds")) (options["sourceLayerIds"] as List<*>).map { it as String } else null,
+                    ValueHelper.toValue(options["filter"])
+                ),
+                queryFeaturesCallback
+            )
+
+        } else {
+            queryFeaturesCallback.run(ExpectedFactory.createError("Invalid mapbox"))
+        }
+    }
+
+    /**
      * Method to add map related listeners
      * --------------------------------------------------------------------------------------
      */
@@ -1518,6 +1543,27 @@ internal class MapboxMapGlControllerImpl(
                     .onError {
                         result.success(false)
                     }
+
+            }
+            Methods.querySourceFeatures -> {
+                args = args as Map<*, *>
+                querySourceFeatures(args) {
+                    it.onValue { list ->
+                        val queriedFeatureResult = list.map { qf ->
+                            mapOf(
+                                "source" to qf.source,
+                                "sourceLayer" to qf.sourceLayer,
+                                "feature" to qf.feature.toJson(),
+                                "state" to qf.state.toJson()
+                            )
+                        }
+                        result.success(queriedFeatureResult)
+                    }
+
+                    it.onError {
+                        result.success(null)
+                    }
+                }
 
             }
             else -> {

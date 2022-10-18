@@ -1,4 +1,6 @@
 import 'package:flutter/services.dart';
+import 'package:mapbox_map_gl/src/utils/queried_feature.dart';
+import 'package:mapbox_map_gl/src/utils/source_query_options.dart';
 import 'utils/listeners.dart';
 import 'utils/log_util.dart';
 import 'layers/background_layer.dart';
@@ -688,6 +690,37 @@ class MapboxMapControllerImpl extends MapboxMapController {
       );
     }
     return false;
+  }
+
+  /// Queries the map for source features.
+  /// Params:
+  /// [sourceId] - Style source identifier used to query for source features.
+  /// [queryOptions] - Options for querying source features.
+  /// Returns:
+  /// An array of queried features.
+  @override
+  Future<List<QueriedFeature>?> querySourceFeatures({
+    required String sourceId,
+    required SourceQueryOptions queryOptions,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "options": queryOptions.toMap(),
+      };
+
+      final result = await _channel.invokeMethod<List<Map<String, dynamic>>?>(
+          Methods.querySourceFeatures, args);
+
+      return result?.map((e) => QueriedFeature.fromArgs(e)).toList();
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "querySourceFeatures",
+        message: e,
+      );
+    }
+    return null;
   }
 
   /// Method to add onMapIdle listener

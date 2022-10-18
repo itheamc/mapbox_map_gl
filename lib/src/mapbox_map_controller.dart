@@ -1,4 +1,6 @@
 import 'package:mapbox_map_gl/src/utils/listeners.dart';
+import 'package:mapbox_map_gl/src/utils/queried_feature.dart';
+import 'package:mapbox_map_gl/src/utils/source_query_options.dart';
 
 import 'mapbox_map.dart';
 import 'style_images/style_image.dart';
@@ -171,6 +173,17 @@ abstract class MapboxMapController with Listeners {
   Future<bool> moveStyleLayerAt({
     required String layerId,
     required int at,
+  });
+
+  /// Queries the map for source features.
+  /// Params:
+  /// [sourceId] - Style source identifier used to query for source features.
+  /// [queryOptions] - Options for querying source features.
+  /// Returns:
+  /// An array of queried features.
+  Future<List<QueriedFeature>?> querySourceFeatures({
+    required String sourceId,
+    required SourceQueryOptions queryOptions,
   });
 
   /// Method to handle callbacks

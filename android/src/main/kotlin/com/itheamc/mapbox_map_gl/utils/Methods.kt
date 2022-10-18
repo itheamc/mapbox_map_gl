@@ -71,4 +71,10 @@ object Methods {
     const val moveStyleLayerBelow = "moveStyleLayerBelow"
     const val moveStyleLayerAt = "moveStyleLayerAt"
 
+    const val getGeoJsonClusterChildren = "getGeoJsonClusterChildren"
+    const val getFeatureState = "getFeatureState"
+    const val setFeatureState = "setFeatureState"
+    const val removeFeatureState = "removeFeatureState"
+    const val querySourceFeatures = "querySourceFeatures"
+
 }

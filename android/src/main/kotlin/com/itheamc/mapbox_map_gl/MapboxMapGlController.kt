@@ -3,6 +3,8 @@ package com.itheamc.mapbox_map_gl
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
+import com.mapbox.maps.QueriedFeature
+import com.mapbox.maps.QueryFeaturesCallback
 import com.mapbox.maps.extension.style.layers.generated.*
 import com.mapbox.maps.extension.style.sources.generated.*
 import io.flutter.plugin.common.MethodChannel
@@ -226,6 +228,11 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to move style layer at specific position
      */
     fun moveStyleLayerAt(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to query the map for source features.
+     */
+    fun querySourceFeatures(args: Map<*, *>, queryFeaturesCallback: QueryFeaturesCallback)
 
     /**
      * Method to add map related listeners
