@@ -1,7 +1,7 @@
 import 'utils/listeners.dart';
 import 'utils/queried_feature.dart';
+import 'utils/rendered_query_geometry.dart';
 import 'utils/rendered_query_options.dart';
-import 'utils/rendered_query_qeometry.dart';
 import 'utils/source_query_options.dart';
 
 import 'mapbox_map.dart';

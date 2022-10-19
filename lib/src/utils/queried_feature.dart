@@ -28,7 +28,7 @@ class QueriedFeature {
   });
 
   /// Method to convert args from queried feature obj
-  factory QueriedFeature.fromArgs(Map<String, dynamic> args) {
+  factory QueriedFeature.fromArgs(dynamic args) {
     return QueriedFeature(
       source: args['source'],
       sourceLayer: args['sourceLayer'],

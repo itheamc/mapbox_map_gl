@@ -5,13 +5,13 @@ import 'screen_coordinate.dart';
 /// RenderedQueryOptions
 /// Added by Amit Chaudhary, 2022/10/18
 /// Geometry for querying rendered features.
-class RenderedQueryGeometry<T> {
+class RenderedQueryGeometry {
   /// Generic value
   /// [value] - It might me:
   /// - ScreenBox
   /// - ScreenCoordinate
   /// - and List<ScreenCoordinate>
-  final T value;
+  final dynamic value;
 
   /// Type of value
   final String _type;
@@ -21,22 +21,20 @@ class RenderedQueryGeometry<T> {
 
   /// Static method to create RenderedQueryGeometry object from ScreenBox
   static RenderedQueryGeometry fromScreenBox(ScreenBox screenBox) {
-    return RenderedQueryGeometry<ScreenBox>._(screenBox, "ScreenBox");
+    return RenderedQueryGeometry._(screenBox, "ScreenBox");
   }
 
   /// Static method to create RenderedQueryGeometry object from ScreenCoordinate
   static RenderedQueryGeometry fromScreenCoordinate(
       ScreenCoordinate screenCoordinate) {
-    return RenderedQueryGeometry<ScreenCoordinate>._(
-        screenCoordinate, "ScreenCoordinate");
+    return RenderedQueryGeometry._(screenCoordinate, "ScreenCoordinate");
   }
 
   /// Static method to create RenderedQueryGeometry object from list of
   /// ScreenCoordinate
   static RenderedQueryGeometry fromScreenCoordinates(
       List<ScreenCoordinate> screenCoordinates) {
-    return RenderedQueryGeometry<List<ScreenCoordinate>>._(
-        screenCoordinates, "ScreenCoordinates");
+    return RenderedQueryGeometry._(screenCoordinates, "ScreenCoordinates");
   }
 
   /// Method to convert the RenderedQueryGeometry to Map

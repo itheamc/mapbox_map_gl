@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'utils/queried_feature.dart';
+import 'utils/rendered_query_geometry.dart';
 import 'utils/rendered_query_options.dart';
-import 'utils/rendered_query_qeometry.dart';
 import 'utils/source_query_options.dart';
 import 'utils/listeners.dart';
 import 'utils/log_util.dart';
@@ -711,10 +711,18 @@ class MapboxMapControllerImpl extends MapboxMapController {
         "options": queryOptions.toMap(),
       };
 
-      final result = await _channel.invokeMethod<List<Map<String, dynamic>>?>(
+      final result = await _channel.invokeMethod<dynamic>(
           Methods.querySourceFeatures, args);
 
-      return result?.map((e) => QueriedFeature.fromArgs(e)).toList();
+      if (result == null || result.runtimeType != List<Object?>) return null;
+
+      final queriedFeatures = List<QueriedFeature>.empty(growable: true);
+
+      for (final item in result) {
+        queriedFeatures.add(QueriedFeature.fromArgs(item));
+      }
+
+      return queriedFeatures;
     } on Exception catch (e, _) {
       LogUtil.log(
         className: "MapboxMapController",
@@ -743,14 +751,22 @@ class MapboxMapControllerImpl extends MapboxMapController {
         "options": queryOptions.toMap(),
       };
 
-      final result = await _channel.invokeMethod<List<Map<String, dynamic>>?>(
+      final result = await _channel.invokeMethod<dynamic>(
           Methods.queryRenderedFeatures, args);
 
-      return result?.map((e) => QueriedFeature.fromArgs(e)).toList();
+      if (result == null || result.runtimeType != List<Object?>) return null;
+
+      final queriedFeatures = List<QueriedFeature>.empty(growable: true);
+
+      for (final item in result) {
+        queriedFeatures.add(QueriedFeature.fromArgs(item));
+      }
+
+      return queriedFeatures;
     } on Exception catch (e, _) {
       LogUtil.log(
         className: "MapboxMapController",
-        function: "querySourceFeatures",
+        function: "queryRenderedFeatures",
         message: e,
       );
     }

@@ -880,11 +880,15 @@ internal class MapboxMapGlControllerImpl(
             val sourceId = args["sourceId"] as String
             val options = args["options"] as Map<*, *>
 
+            val sourceLayerIds =
+                if (options.containsKey("sourceLayerIds")) (options["sourceLayerIds"] as List<*>).map { it as String } else null
+            val filter = ValueHelper.toValue(options["filter"])
+
             mapboxMap.querySourceFeatures(
                 sourceId = sourceId,
                 options = SourceQueryOptions(
-                    if (options.containsKey("sourceLayerIds")) (options["sourceLayerIds"] as List<*>).map { it as String } else null,
-                    ValueHelper.toValue(options["filter"])
+                    sourceLayerIds,
+                    filter
                 ),
                 queryFeaturesCallback
             )
@@ -912,7 +916,7 @@ internal class MapboxMapGlControllerImpl(
             }
 
             val geometry = RenderedQueryGeometryHelper.fromArgs(geometryArgs)
-            val option = geometryArgs?.let {
+            val option = optionsArgs?.let {
                 RenderedQueryOptions(
                     if (it.containsKey("layerIds")) (it["layerIds"] as List<*>).map { str -> str as String } else null,
                     ValueHelper.toValue(it["filter"])
@@ -926,7 +930,7 @@ internal class MapboxMapGlControllerImpl(
                     queryFeaturesCallback
                 )
             } else {
-                queryFeaturesCallback.run(ExpectedFactory.createError("Parameters are null"))
+                queryFeaturesCallback.run(ExpectedFactory.createError("Geometry is invalid!"))
             }
 
         } else {
@@ -1630,6 +1634,7 @@ internal class MapboxMapGlControllerImpl(
             }
             else -> {
                 Log.d(TAG, "onMethodCall: NOT Implemented")
+                result.notImplemented()
             }
         }
 
