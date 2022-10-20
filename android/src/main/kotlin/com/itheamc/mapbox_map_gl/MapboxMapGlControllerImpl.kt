@@ -931,6 +931,7 @@ internal class MapboxMapGlControllerImpl(
                 )
             } else {
                 queryFeaturesCallback.run(ExpectedFactory.createError("Geometry is invalid!"))
+                return
             }
 
         } else {
@@ -978,6 +979,30 @@ internal class MapboxMapGlControllerImpl(
             stateKey = stateKey
         )
         return ExpectedFactory.createNone()
+    }
+
+    /**
+     * Method to get the state map of a feature within a style source.
+     */
+    override fun getFeatureState(
+        args: Map<*, *>,
+        callback: QueryFeatureStateCallback
+    ) {
+        if (!mapboxMap.isValid()) {
+            callback.run(ExpectedFactory.createError("Invalid MapboxMap!"))
+            return
+        }
+
+        val sourceId = args["sourceId"] as String
+        val featureId = args["featureId"] as String
+        val sourceLayerId = args["sourceLayerId"] as String?
+
+        mapboxMap.getFeatureState(
+            sourceId = sourceId,
+            featureId = featureId,
+            sourceLayerId = sourceLayerId,
+            callback = callback
+        )
     }
 
     /**
@@ -1698,6 +1723,18 @@ internal class MapboxMapGlControllerImpl(
                     .onError {
                         result.success(false)
                     }
+
+            }
+            Methods.getFeatureState -> {
+                args = args as Map<*, *>
+                getFeatureState(args) {
+                    it.onValue { value ->
+                        result.success(value.toJson())
+                    }
+                    it.onError {
+                        result.success(null)
+                    }
+                }
 
             }
             else -> {

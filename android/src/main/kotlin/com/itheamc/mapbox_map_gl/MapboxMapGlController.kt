@@ -3,6 +3,7 @@ package com.itheamc.mapbox_map_gl
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
+import com.mapbox.maps.QueryFeatureStateCallback
 import com.mapbox.maps.QueryFeaturesCallback
 import com.mapbox.maps.extension.style.layers.generated.*
 import com.mapbox.maps.extension.style.sources.generated.*
@@ -247,6 +248,14 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to remove entries from a feature state map
      */
     fun removeFeatureState(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to get the state map of a feature within a style source.
+     */
+    fun getFeatureState(
+        args: Map<*, *>,
+        callback: QueryFeatureStateCallback
+    )
 
     /**
      * Method to add map related listeners

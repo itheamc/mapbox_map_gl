@@ -845,6 +845,39 @@ class MapboxMapControllerImpl extends MapboxMapController {
     }
   }
 
+  /// Get the state map of a feature within a style source.
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier (for multi-layer sources
+  /// such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be queried.
+  /// It will return feature's state map or an empty map if the feature could
+  /// not be found.
+  @override
+  Future<dynamic> getFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "featureId": featureId,
+        "sourceLayerId": sourceLayerId,
+      };
+
+      final result =
+          await _channel.invokeMethod<dynamic>(Methods.getFeatureState, args);
+      return result;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "getFeatureState",
+        message: e,
+      );
+    }
+    return null;
+  }
+
   /// Method to add onMapIdle listener
   @override
   void setOnMapIdleListener(OnMapIdleListener onMapIdleListener) {

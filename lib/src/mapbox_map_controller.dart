@@ -236,6 +236,19 @@ abstract class MapboxMapController with Listeners {
     required String? stateKey,
   });
 
+  /// Get the state map of a feature within a style source.
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier (for multi-layer sources
+  /// such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be queried.
+  /// It will return feature's state map or an empty map if the feature could
+  /// not be found.
+  Future<dynamic> getFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+  });
+
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);
 
