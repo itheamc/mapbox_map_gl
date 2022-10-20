@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'utils/feature_details.dart';
 import 'mapbox_map_controller.dart';
 import 'utils/camera_position.dart';
 import 'utils/feature.dart';
@@ -36,24 +37,26 @@ typedef OnMapClick = void Function(Point, ScreenCoordinate);
 typedef OnMapLongClick = void Function(Point, ScreenCoordinate);
 
 /// Method to handle onFeatureClick callback
+/// [details] - The details object will consist following: -
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 /// [Feature] - It is the feature objects that contains feature id, properties,
 /// geometry etc.
 /// [String] - Source of the feature
-typedef OnFeatureClick = void Function(
-    Point, ScreenCoordinate, Feature, String?);
+/// [String] - Source Layer of the feature
+typedef OnFeatureClick = void Function(FeatureDetails details);
 
 /// Method to handle onFeatureLongClick callback
+/// [details] - The details object will consist following: -
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 /// [Feature] - It is the feature objects that contains feature id, properties,
 /// geometry etc.
 /// [String] - Source of the feature
-typedef OnFeatureLongClick = void Function(
-    Point, ScreenCoordinate, Feature, String?);
+/// [String] - Source Layer of the feature
+typedef OnFeatureLongClick = void Function(FeatureDetails details);
 
 class MapboxMap extends StatefulWidget {
   /// [initialCameraPosition] An initial camera position to animate the camera
@@ -166,20 +169,12 @@ class _MapboxMapState extends State<MapboxMap> {
         widget.onMapLongClick?.call(point, coordinate);
         break;
       case Methods.onFeatureClick:
-        final point = Point.fromArgs(call.arguments['point']);
-        final coordinate =
-            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
-        final feature = Feature.fromArgs(call.arguments['feature']);
-        final source = call.arguments['source'];
-        widget.onFeatureClick?.call(point, coordinate, feature, source);
+        final details = FeatureDetails.fromArgs(call.arguments);
+        widget.onFeatureClick?.call(details);
         break;
       case Methods.onFeatureLongClick:
-        final point = Point.fromArgs(call.arguments['point']);
-        final coordinate =
-            ScreenCoordinate.fromArgs(call.arguments['screen_coordinate']);
-        final feature = Feature.fromArgs(call.arguments['feature']);
-        final source = call.arguments['source'];
-        widget.onFeatureLongClick?.call(point, coordinate, feature, source);
+        final details = FeatureDetails.fromArgs(call.arguments);
+        widget.onFeatureLongClick?.call(details);
         break;
       default:
         final args = <String, dynamic>{

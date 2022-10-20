@@ -34,3 +34,4 @@ export 'src/utils/rendered_query_options.dart';
 export 'src/utils/source_query_options.dart';
 export 'src/utils/rendered_query_geometry.dart';
 export 'src/utils/screen_box.dart';
+export 'src/utils/feature_details.dart';

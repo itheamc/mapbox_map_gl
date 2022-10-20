@@ -1028,6 +1028,7 @@ internal class MapboxMapGlControllerImpl(
                         if (features.isNotEmpty()) {
 
                             val source = features[0].source
+                            val sourceLayer = features[0].sourceLayer
                             val feature = features[0].feature
 
                             val arguments: Map<String, Any?> =
@@ -1035,7 +1036,8 @@ internal class MapboxMapGlControllerImpl(
                                     "point" to it.toJson(),
                                     "screen_coordinate" to scrCords,
                                     "feature" to feature.toJson(),
-                                    "source" to source
+                                    "source" to source,
+                                    "source_layer" to sourceLayer
                                 )
 
                             methodChannel.invokeMethod(Methods.onFeatureClick, arguments)
@@ -1074,6 +1076,7 @@ internal class MapboxMapGlControllerImpl(
 
                         if (features.isNotEmpty()) {
                             val source = features[0].source
+                            val sourceLayer = features[0].sourceLayer
                             val feature = features[0].feature
 
                             val arguments: Map<String, Any?> =
@@ -1081,7 +1084,8 @@ internal class MapboxMapGlControllerImpl(
                                     "point" to it.toJson(),
                                     "screen_coordinate" to scrCords,
                                     "feature" to feature.toJson(),
-                                    "source" to source
+                                    "source" to source,
+                                    "source_layer" to sourceLayer
                                 )
 
                             methodChannel.invokeMethod(Methods.onFeatureLongClick, arguments)
