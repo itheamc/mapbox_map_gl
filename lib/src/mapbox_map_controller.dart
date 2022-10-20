@@ -200,6 +200,42 @@ abstract class MapboxMapController with Listeners {
     required RenderedQueryOptions queryOptions,
   });
 
+  /// Update the state map of a feature within a style source.
+  /// Update entries in the state map of a given feature within a style source.
+  /// Only entries listed in the state map will be updated. An entry in the
+  /// feature state map that is not listed in state will retain its
+  /// previous value.
+  /// Note that updates to feature state are asynchronous, so changes made
+  /// by this method might not be immediately visible using getStateFeature().
+  /// Params:
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier (for multi-layer sources such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be updated.
+  /// [state] - Map of entries to update with their respective new values.
+  Future<void> setFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+    required Map<String, dynamic> state,
+  });
+
+  /// Remove entries from a feature state map.
+  /// Remove a specified entry or all entries from a feature's state map,
+  /// depending on the value of stateKey.
+  /// Params:
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier
+  /// (for multi-layer sources such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be removed.
+  /// [stateKey] - Key of the entry to remove. If empty, the entire state is
+  /// removed.
+  Future<void> removeFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+    required String? stateKey,
+  });
+
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);
 

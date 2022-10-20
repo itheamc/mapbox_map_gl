@@ -939,6 +939,48 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to update the state map of a feature within a style source.
+     */
+    override fun setFeatureState(args: Map<*, *>): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        val sourceId = args["sourceId"] as String
+        val sourceLayerId = args["sourceLayerId"] as String?
+        val featureId = args["featureId"] as String
+        val state = args["state"] as Map<*, *>
+
+        if (state.isNotEmpty()) return ExpectedFactory.createError("No state to update")
+
+        mapboxMap.setFeatureState(
+            sourceId = sourceId,
+            sourceLayerId = sourceLayerId,
+            featureId = featureId,
+            state = ValueHelper.toValue(state)
+        )
+        return ExpectedFactory.createNone()
+    }
+
+    /**
+     * Method to remove entries from a feature state map
+     */
+    override fun removeFeatureState(args: Map<*, *>): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        val sourceId = args["sourceId"] as String
+        val featureId = args["featureId"] as String
+        val sourceLayerId = args["sourceLayerId"] as String?
+        val stateKey = args["stateKey"] as String?
+
+        mapboxMap.removeFeatureState(
+            sourceId = sourceId,
+            sourceLayerId = sourceLayerId,
+            featureId = featureId,
+            stateKey = stateKey
+        )
+        return ExpectedFactory.createNone()
+    }
+
+    /**
      * Method to add map related listeners
      * --------------------------------------------------------------------------------------
      */
@@ -1634,6 +1676,28 @@ internal class MapboxMapGlControllerImpl(
                         result.success(null)
                     }
                 }
+
+            }
+            Methods.setFeatureState -> {
+                args = args as Map<*, *>
+                setFeatureState(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
+
+            }
+            Methods.removeFeatureState -> {
+                args = args as Map<*, *>
+                removeFeatureState(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.success(false)
+                    }
 
             }
             else -> {

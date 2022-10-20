@@ -773,6 +773,78 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return null;
   }
 
+  /// Update the state map of a feature within a style source.
+  /// Update entries in the state map of a given feature within a style source.
+  /// Only entries listed in the state map will be updated. An entry in the
+  /// feature state map that is not listed in state will retain its
+  /// previous value.
+  /// Note that updates to feature state are asynchronous, so changes made
+  /// by this method might not be immediately visible using getStateFeature().
+  /// Params:
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier (for multi-layer sources such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be updated.
+  /// [state] - Map of entries to update with their respective new values.
+  @override
+  Future<void> setFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+    required Map<String, dynamic> state,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "featureId": featureId,
+        "sourceLayerId": sourceLayerId,
+        "state": state,
+      };
+
+      await _channel.invokeMethod<dynamic>(Methods.setFeatureState, args);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setFeatureState",
+        message: e,
+      );
+    }
+  }
+
+  /// Remove entries from a feature state map.
+  /// Remove a specified entry or all entries from a feature's state map,
+  /// depending on the value of stateKey.
+  /// Params:
+  /// [sourceId] - Style source identifier.
+  /// [sourceLayerId] - Style source layer identifier
+  /// (for multi-layer sources such as vector sources).
+  /// [featureId] - Identifier of the feature whose state should be removed.
+  /// [stateKey] - Key of the entry to remove. If empty, the entire state is
+  /// removed.
+  @override
+  Future<void> removeFeatureState({
+    required String sourceId,
+    required String featureId,
+    String? sourceLayerId,
+    required String? stateKey,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "featureId": featureId,
+        "sourceLayerId": sourceLayerId,
+        "stateKey": stateKey,
+      };
+
+      await _channel.invokeMethod<dynamic>(Methods.removeFeatureState, args);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeFeatureState",
+        message: e,
+      );
+    }
+  }
+
   /// Method to add onMapIdle listener
   @override
   void setOnMapIdleListener(OnMapIdleListener onMapIdleListener) {

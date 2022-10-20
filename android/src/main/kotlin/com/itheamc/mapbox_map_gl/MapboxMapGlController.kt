@@ -239,6 +239,16 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     fun queryRenderedFeatures(args: Map<*, *>, queryFeaturesCallback: QueryFeaturesCallback)
 
     /**
+     * Method to update the state map of a feature within a style source.
+     */
+    fun setFeatureState(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to remove entries from a feature state map
+     */
+    fun removeFeatureState(args: Map<*, *>): Expected<String, None>
+
+    /**
      * Method to add map related listeners
      */
     fun addMapRelatedListeners()
