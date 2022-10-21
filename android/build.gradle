@@ -45,6 +45,6 @@ android {
     }
 
     dependencies {
-        implementation 'com.mapbox.maps:android:10.8.1'
+        implementation 'com.mapbox.maps:android:10.9.0'
     }
 }
