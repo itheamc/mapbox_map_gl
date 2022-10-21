@@ -62,7 +62,7 @@ directory of android section It starts with ```pk.```
 This plugin is not available in IOS yet.
 
 ### How to add MapboxMap?
- You have to use MapboxMap widget to add map in your page.
+ You have to use ```MapboxMap()``` widget to add map in your page.
 ```
         MapboxMap(
           initialCameraPosition: CameraPosition(
@@ -73,7 +73,9 @@ This plugin is not available in IOS yet.
               duration: const Duration(milliseconds: 750),
             ),
           ),
-          onMapCreated: _onMapCreated,
+          onMapCreated: (controller) {
+            // controller - MapboxMapController instance
+          },
           onStyleLoaded: () async {
             final isAlreadyAdded =
                 await _controller?.isSourceExist("my-data-source") ?? false;
