@@ -61,6 +61,45 @@ directory of android section It starts with ```pk.```
 
 This plugin is not available in IOS yet.
 
+### How to add MapboxMap?
+ You have to use MapboxMap widget to add map in your page.
+```
+        MapboxMap(
+          initialCameraPosition: CameraPosition(
+            center: Point.fromLatLng(29.837785, 87.538961),
+            zoom: 15.0,
+            animationOptions: AnimationOptions.mapAnimationOptions(
+              startDelay: 0,
+              duration: const Duration(milliseconds: 750),
+            ),
+          ),
+          onMapCreated: _onMapCreated,
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("my-data-source") ?? false;
+            if (!isAlreadyAdded) {
+              _addGeoJson();
+            }
+          },
+          onStyleLoadError: (err) {
+            if (kDebugMode) {
+              print(
+                  "[onStyleLoadError] ---> $err");
+            }
+          },
+          onMapClick(point, coordinates) {},
+          onMapLongClick(point, coordinates) {},
+          onFeatureClick: (details) {
+             // details contains:
+             // - point (lat and lng),
+             // - coordinates (x and y screen coordinate)
+             // - feature (Feature object)
+             // - source
+             // - sourceLayer
+          },
+          onFeatureLongClick: (details) {},
+        ),
+```
 
 ### How to add style source?
  This api supports all the style sources that is supported by the Mapbox Map Android Sdk. 
