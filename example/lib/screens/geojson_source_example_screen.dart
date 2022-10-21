@@ -150,16 +150,16 @@ class _GeoJsonSourceExampleScreenState
                   "[Method Call -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
-          onFeatureClick: (point, screenCoordinate, feature, source) {
+          onFeatureClick: (details) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.properties}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
-          onFeatureLongClick: (point, screenCoordinate, feature, source) {
+          onFeatureLongClick: (details) {
             if (kDebugMode) {
               print(
-                  "[Method Call -> onFeatureClick] ---> $source, ${feature.toString()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
         ),

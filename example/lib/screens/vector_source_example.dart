@@ -22,10 +22,12 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   Future<void> _addVectorSource() async {
     _controller
         ?.addSource<VectorSource>(
-      source: VectorSource(
-        sourceId: "mapbox-terrain",
-        url: 'mapbox://mapbox.mapbox-terrain-v2',
-      ),
+      source: VectorSource(sourceId: "mapbox-terrain",
+          // url: 'mapbox://mapbox.mapbox-terrain-v2',
+          tiles: [
+            "https://cleanup-staging.naxa.com.np/api/v1/core/maps/vector_layer/{z}/{x}/{y}/?layer_id=3",
+            // "https://pccmis.karnali.gov.np/api/v1/layer_vectortile/{z}/{x}/{y}/?layer=municipality&pro_code=6"
+          ]),
     )
         .then((value) {
       _addLineLayer();
@@ -42,7 +44,7 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
             lineWidth: 1.5,
             lineJoin: LineJoin.round,
             lineCap: LineCap.round,
-            sourceLayer: "contour"),
+            sourceLayer: "3"),
       ),
     );
   }
@@ -187,16 +189,16 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
                   "[_VectorSourceExampleScreenState -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
-          onFeatureClick: (point, screenCoordinate, feature, source) {
+          onFeatureClick: (details) {
             if (kDebugMode) {
               print(
-                  "[_VectorSourceExampleScreenState -> onFeatureClick] ---> $source, ${feature.properties}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
-          onFeatureLongClick: (point, screenCoordinate, feature, source) {
+          onFeatureLongClick: (details) {
             if (kDebugMode) {
               print(
-                  "[_VectorSourceExampleScreenState -> onFeatureClick] ---> $source, ${feature.toString()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
         ),

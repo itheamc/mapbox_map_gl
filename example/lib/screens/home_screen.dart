@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapbox_map_gl_example/screens/geojson_source_example3_screen.dart';
 import 'package:mapbox_map_gl_example/screens/geojson_source_example_screen.dart';
 import 'package:mapbox_map_gl_example/screens/image_source_example.dart';
 import 'package:mapbox_map_gl_example/screens/raster_source_example.dart';
@@ -51,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
       title: "Image Source",
       subtitle: "Raster layer added using image source!",
       page: const ImageSourceExampleScreen(),
+    ),
+    ExamplePage(
+      title: "Feature State",
+      subtitle: "Get, Set and Remove feature state",
+      page: const GeoJsonSourceExample3Screen(),
     ),
   ];
 

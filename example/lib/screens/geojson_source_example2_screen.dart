@@ -146,6 +146,58 @@ class _GeoJsonSourceExample2ScreenState
     );
   }
 
+  /// Method to get queried features
+  Future<void> _queryRenderedFeatures() async {
+    final size = MediaQuery.of(context).size;
+
+    final res = await _controller?.queryRenderedFeatures(
+      geometry: RenderedQueryGeometry.fromScreenBox(
+        ScreenBox(
+          ScreenCoordinate(0.0, 0.0),
+          ScreenCoordinate(size.width, size.height),
+        ),
+      ),
+      queryOptions: RenderedQueryOptions(),
+    );
+
+    // final res = await _controller?.queryRenderedFeatures(
+    //   geometry: RenderedQueryGeometry.fromScreenCoordinate(
+    //     ScreenCoordinate(size.width, size.height),
+    //   ),
+    //   queryOptions: RenderedQueryOptions(
+    //       layerIds: ["my-layer-id"]
+    //   ),
+    // );
+
+    // final res = await _controller?.queryRenderedFeatures(
+    //   geometry: RenderedQueryGeometry.fromScreenCoordinates(
+    //     [ScreenCoordinate(size.width, size.height),]
+    //   ),
+    //   queryOptions: RenderedQueryOptions(
+    //     layerIds: ["my-layer-id"]
+    //   ),
+    // );
+
+    print(res?.length);
+  }
+
+  /// Method to get queried features
+  Future<void> _querySourceFeatures() async {
+    final size = MediaQuery.of(context).size;
+
+    final res = await _controller?.querySourceFeatures(
+        sourceId: "my-data-source",
+        queryOptions: SourceQueryOptions(
+          sourceLayerIds: ["sourceLayer1", "sourceLayer2"],
+          filter: <String, dynamic>{
+            "region": "North America",
+            "name": "Amit",
+          },
+        ));
+
+    print(res?.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -211,7 +263,7 @@ class _GeoJsonSourceExample2ScreenState
             SizedBox(
               height: 38.0,
               child: FloatingActionButton.extended(
-                onPressed: _addGeoJson,
+                onPressed: _querySourceFeatures,
                 label: const Text(
                   "Reset",
                   textScaleFactor: 0.75,
@@ -255,16 +307,16 @@ class _GeoJsonSourceExample2ScreenState
                   "[_GeoJsonSourceExample2ScreenState -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
             }
           },
-          onFeatureClick: (point, screenCoordinate, feature, source) {
+          onFeatureClick: (details) {
             if (kDebugMode) {
               print(
-                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> $source, ${feature.properties}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
-          onFeatureLongClick: (point, screenCoordinate, feature, source) {
+          onFeatureLongClick: (details) {
             if (kDebugMode) {
               print(
-                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> $source, ${feature.toString()}");
+                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
             }
           },
         ),
