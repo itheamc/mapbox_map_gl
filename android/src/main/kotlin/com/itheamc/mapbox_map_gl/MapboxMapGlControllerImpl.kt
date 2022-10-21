@@ -950,7 +950,7 @@ internal class MapboxMapGlControllerImpl(
         val featureId = args["featureId"] as String
         val state = args["state"] as Map<*, *>
 
-        if (state.isNotEmpty()) return ExpectedFactory.createError("No state to update")
+        if (state.isEmpty()) return ExpectedFactory.createError("No state to update")
 
         mapboxMap.setFeatureState(
             sourceId = sourceId,
@@ -958,7 +958,9 @@ internal class MapboxMapGlControllerImpl(
             featureId = featureId,
             state = ValueHelper.toValue(state)
         )
+
         return ExpectedFactory.createNone()
+
     }
 
     /**
@@ -1705,6 +1707,7 @@ internal class MapboxMapGlControllerImpl(
             }
             Methods.setFeatureState -> {
                 args = args as Map<*, *>
+
                 setFeatureState(args)
                     .onValue {
                         result.success(true)
