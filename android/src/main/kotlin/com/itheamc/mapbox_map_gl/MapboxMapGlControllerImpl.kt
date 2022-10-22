@@ -18,9 +18,8 @@ import com.mapbox.maps.extension.style.layers.generated.*
 import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.*
 import com.mapbox.maps.plugin.animation.flyTo
-import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
-import com.mapbox.maps.plugin.gestures.addOnMapClickListener
-import com.mapbox.maps.plugin.gestures.addOnMapLongClickListener
+import com.mapbox.maps.plugin.delegates.listeners.*
+import com.mapbox.maps.plugin.gestures.*
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -46,15 +45,6 @@ internal class MapboxMapGlControllerImpl(
 
 
     /**
-     * Init Block
-     */
-    init {
-        methodChannel.setMethodCallHandler(this)
-        addMapRelatedListeners()
-        loadStyleUri()
-    }
-
-    /**
      * List of layers added by the user to the style
      */
     private val _interactiveLayers = mutableListOf<StyleLayerInfo>()
@@ -76,6 +66,182 @@ internal class MapboxMapGlControllerImpl(
      */
     private val style: Style?
         get() = if (mapboxMap.isValid()) mapboxMap.getStyle() else null
+
+
+    /**
+     * Listeners that will be added on Mapbox Map
+     * ---------------------------------------------------------------------
+     */
+
+    /**
+     * MapLoadedListener object
+     */
+    private val mapLoadedListener = OnMapLoadedListener {
+        methodChannel.invokeMethod(Methods.onMapLoaded, null)
+    }
+
+    /**
+     * MapLoadErrorListener object
+     */
+    private val mapLoadErrorListener = object : OnMapLoadErrorListener {
+        override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
+            methodChannel.invokeMethod(Methods.onMapLoadError, eventData.message)
+        }
+    }
+
+    /**
+     * StyleLoadedListener object
+     */
+    private val styleLoadedListener = OnStyleLoadedListener {
+        _interactiveLayerSources.clear()
+        _interactiveLayers.clear()
+        methodChannel.invokeMethod(Methods.onStyleLoaded, null)
+    }
+
+    /**
+     * MapIdleListener object
+     */
+    private val mapIdleListener = OnMapIdleListener {
+        methodChannel.invokeMethod(Methods.onMapIdle, null)
+    }
+
+    /**
+     * CameraChangeListener object
+     */
+    private val cameraChangeListener = OnCameraChangeListener {
+        methodChannel.invokeMethod(Methods.onCameraChange, null)
+    }
+
+    /**
+     * SourceAddedListener object
+     */
+    private val sourceAddedListener = OnSourceAddedListener {
+        methodChannel.invokeMethod(Methods.onSourceAdded, it.id)
+    }
+
+    /**
+     * SourceDataLoadedListener object
+     */
+    private val sourceDataLoadedListener = OnSourceDataLoadedListener {
+        val args = mapOf(
+            "id" to it.id,
+            "type" to it.type.value,
+            "loaded" to it.loaded
+        )
+        methodChannel.invokeMethod(Methods.onSourceDataLoaded, args)
+    }
+
+    /**
+     * SourceRemovedListener object
+     */
+    private val sourceRemovedListener = OnSourceRemovedListener {
+        methodChannel.invokeMethod(Methods.onSourceRemoved, it.id)
+    }
+
+    /**
+     * MapClickListener object
+     */
+    private val mapClickListener = OnMapClickListener {
+        val screenCoordinate: ScreenCoordinate = mapboxMap.pixelForCoordinate(it)
+
+        mapboxMap.queryRenderedFeatures(
+            geometry = RenderedQueryGeometry(screenCoordinate),
+            options = RenderedQueryOptions(interactiveLayers.map { l -> l.layerId }, null),
+            callback = { expectedValue ->
+                expectedValue.onValue { features ->
+
+                    val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
+
+                    if (features.isNotEmpty()) {
+
+                        val source = features[0].source
+                        val sourceLayer = features[0].sourceLayer
+                        val feature = features[0].feature
+
+                        val arguments: Map<String, Any?> =
+                            mapOf(
+                                "point" to it.toJson(),
+                                "screen_coordinate" to scrCords,
+                                "feature" to feature.toJson(),
+                                "source" to source,
+                                "source_layer" to sourceLayer
+                            )
+
+                        methodChannel.invokeMethod(Methods.onFeatureClick, arguments)
+                    } else {
+                        val arguments: Map<String, Any?> =
+                            mapOf(
+                                "point" to it.toJson(),
+                                "screen_coordinate" to scrCords,
+                            )
+                        methodChannel.invokeMethod(Methods.onMapClick, arguments)
+                    }
+                }
+
+                expectedValue.onError {
+                    Log.d(TAG, "addOnClickListener: Error")
+                }
+            }
+        )
+        true
+    }
+
+    /**
+     * MapLongClickListener object
+     */
+    private val mapLongClickListener = OnMapLongClickListener {
+        val screenCoordinate: ScreenCoordinate = mapboxMap.pixelForCoordinate(it)
+
+        mapboxMap.queryRenderedFeatures(
+            geometry = RenderedQueryGeometry(mapboxMap.pixelForCoordinate(it)),
+            options = RenderedQueryOptions(interactiveLayers.map { l -> l.layerId }, null),
+            callback = { expectedValue ->
+                expectedValue.onValue { features ->
+
+                    val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
+
+                    if (features.isNotEmpty()) {
+                        val source = features[0].source
+                        val sourceLayer = features[0].sourceLayer
+                        val feature = features[0].feature
+
+                        val arguments: Map<String, Any?> =
+                            mapOf(
+                                "point" to it.toJson(),
+                                "screen_coordinate" to scrCords,
+                                "feature" to feature.toJson(),
+                                "source" to source,
+                                "source_layer" to sourceLayer
+                            )
+
+                        methodChannel.invokeMethod(Methods.onFeatureLongClick, arguments)
+                    } else {
+                        val arguments: Map<String, Any?> =
+                            mapOf(
+                                "point" to it.toJson(),
+                                "screen_coordinate" to scrCords,
+                            )
+                        methodChannel.invokeMethod(Methods.onMapLongClick, arguments)
+                    }
+                }
+
+                expectedValue.onError {
+                    Log.d(TAG, "addOnLongClickListener: Error")
+                }
+            }
+        )
+        true
+    }
+
+
+    /**
+     * Init Block
+     */
+    init {
+        methodChannel.setMethodCallHandler(this)
+        addMapRelatedListeners()
+        loadStyleUri()
+    }
 
 
     /**
@@ -1009,7 +1175,6 @@ internal class MapboxMapGlControllerImpl(
 
     /**
      * Method to add map related listeners
-     * --------------------------------------------------------------------------------------
      */
     override fun addMapRelatedListeners() {
         if (!mapboxMap.isValid()) return
@@ -1017,164 +1182,110 @@ internal class MapboxMapGlControllerImpl(
         /**
          * On Map Loaded Listener
          */
-        mapboxMap.addOnMapLoadedListener {
-            methodChannel.invokeMethod(Methods.onMapLoaded, null)
-        }
+        mapboxMap.addOnMapLoadedListener(mapLoadedListener)
 
         /**
          * On Map Load Error Listener
          */
-        mapboxMap.addOnMapLoadErrorListener(object : OnMapLoadErrorListener {
-            override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
-                methodChannel.invokeMethod(Methods.onMapLoadError, eventData.message)
-            }
-        })
+        mapboxMap.addOnMapLoadErrorListener(mapLoadErrorListener)
 
         /**
          * On Style Loaded Listener
          */
-        mapboxMap.addOnStyleLoadedListener {
-            _interactiveLayerSources.clear()
-            _interactiveLayers.clear()
-            methodChannel.invokeMethod(Methods.onStyleLoaded, null)
-        }
+        mapboxMap.addOnStyleLoadedListener(styleLoadedListener)
 
         /**
          * On Map Idle Listener
          */
-        mapboxMap.addOnMapIdleListener {
-            methodChannel.invokeMethod(Methods.onMapIdle, null)
-        }
+        mapboxMap.addOnMapIdleListener(mapIdleListener)
 
         /**
          * On Camera Change Listener
          */
-        mapboxMap.addOnCameraChangeListener {
-            methodChannel.invokeMethod(Methods.onCameraChange, null)
-        }
+        mapboxMap.addOnCameraChangeListener(cameraChangeListener)
 
         /**
          * On Source Added Listener
          */
-        mapboxMap.addOnSourceAddedListener {
-            methodChannel.invokeMethod(Methods.onSourceAdded, it.id)
-        }
+        mapboxMap.addOnSourceAddedListener(sourceAddedListener)
 
         /**
          * On Source Data Loaded Listener
          */
-        mapboxMap.addOnSourceDataLoadedListener {
-            val args = mapOf(
-                "id" to it.id,
-                "type" to it.type.value,
-                "loaded" to it.loaded
-            )
-            methodChannel.invokeMethod(Methods.onSourceDataLoaded, args)
-        }
+        mapboxMap.addOnSourceDataLoadedListener(sourceDataLoadedListener)
 
         /**
          * On Source Removed Listener
          */
-        mapboxMap.addOnSourceRemovedListener {
-            methodChannel.invokeMethod(Methods.onSourceRemoved, it.id)
-        }
+        mapboxMap.addOnSourceRemovedListener(sourceRemovedListener)
 
         /**
          * On Map Click Listener
          */
-        mapboxMap.addOnMapClickListener {
-
-            val screenCoordinate: ScreenCoordinate = mapboxMap.pixelForCoordinate(it)
-
-            mapboxMap.queryRenderedFeatures(
-                geometry = RenderedQueryGeometry(screenCoordinate),
-                options = RenderedQueryOptions(interactiveLayers.map { l -> l.layerId }, null),
-                callback = { expectedValue ->
-                    expectedValue.onValue { features ->
-
-                        val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
-
-                        if (features.isNotEmpty()) {
-
-                            val source = features[0].source
-                            val sourceLayer = features[0].sourceLayer
-                            val feature = features[0].feature
-
-                            val arguments: Map<String, Any?> =
-                                mapOf(
-                                    "point" to it.toJson(),
-                                    "screen_coordinate" to scrCords,
-                                    "feature" to feature.toJson(),
-                                    "source" to source,
-                                    "source_layer" to sourceLayer
-                                )
-
-                            methodChannel.invokeMethod(Methods.onFeatureClick, arguments)
-                        } else {
-                            val arguments: Map<String, Any?> =
-                                mapOf(
-                                    "point" to it.toJson(),
-                                    "screen_coordinate" to scrCords,
-                                )
-                            methodChannel.invokeMethod(Methods.onMapClick, arguments)
-                        }
-                    }
-
-                    expectedValue.onError {
-                        Log.d(TAG, "addOnClickListener: Error")
-                    }
-                }
-            )
-            true
-        }
+        mapboxMap.addOnMapClickListener(mapClickListener)
 
         /**
          * On Map Long Click listener
          */
-        mapboxMap.addOnMapLongClickListener {
+        mapboxMap.addOnMapLongClickListener(mapLongClickListener)
 
-            val screenCoordinate: ScreenCoordinate = mapboxMap.pixelForCoordinate(it)
+    }
 
-            mapboxMap.queryRenderedFeatures(
-                geometry = RenderedQueryGeometry(mapboxMap.pixelForCoordinate(it)),
-                options = RenderedQueryOptions(interactiveLayers.map { l -> l.layerId }, null),
-                callback = { expectedValue ->
-                    expectedValue.onValue { features ->
+    /**
+     * Method to remove all the added listeners
+     */
+    override fun removeAllListeners() {
+        if (!mapboxMap.isValid()) return
 
-                        val scrCords = mapOf("x" to screenCoordinate.x, "y" to screenCoordinate.y)
+        /**
+         * Removed OnMapLoaded Listener
+         */
+        mapboxMap.removeOnMapLoadedListener(mapLoadedListener)
 
-                        if (features.isNotEmpty()) {
-                            val source = features[0].source
-                            val sourceLayer = features[0].sourceLayer
-                            val feature = features[0].feature
+        /**
+         * Removed OnMapLoad Error Listener
+         */
+        mapboxMap.removeOnMapLoadErrorListener(mapLoadErrorListener)
 
-                            val arguments: Map<String, Any?> =
-                                mapOf(
-                                    "point" to it.toJson(),
-                                    "screen_coordinate" to scrCords,
-                                    "feature" to feature.toJson(),
-                                    "source" to source,
-                                    "source_layer" to sourceLayer
-                                )
+        /**
+         * Removed OnStyleLoaded Listener
+         */
+        mapboxMap.removeOnStyleLoadedListener(styleLoadedListener)
 
-                            methodChannel.invokeMethod(Methods.onFeatureLongClick, arguments)
-                        } else {
-                            val arguments: Map<String, Any?> =
-                                mapOf(
-                                    "point" to it.toJson(),
-                                    "screen_coordinate" to scrCords,
-                                )
-                            methodChannel.invokeMethod(Methods.onMapLongClick, arguments)
-                        }
-                    }
+        /**
+         * Removed OnMapIdle Listener
+         */
+        mapboxMap.removeOnMapIdleListener(mapIdleListener)
 
-                    expectedValue.onError {
-                        Log.d(TAG, "addOnLongClickListener: Error")
-                    }
-                }
-            )
-            true
-        }
+        /**
+         * Removed OnCameraChange Listener
+         */
+        mapboxMap.removeOnCameraChangeListener(cameraChangeListener)
+
+        /**
+         * Removed OnSourceAdded Listener
+         */
+        mapboxMap.removeOnSourceAddedListener(sourceAddedListener)
+
+        /**
+         * Removed OnSourceData Loaded Listener
+         */
+        mapboxMap.removeOnSourceDataLoadedListener(sourceDataLoadedListener)
+
+        /**
+         * Removed OnSourceRemoved Listener
+         */
+        mapboxMap.removeOnSourceRemovedListener(sourceRemovedListener)
+
+        /**
+         * Removed OnMapClick Listener
+         */
+        mapboxMap.removeOnMapClickListener(mapClickListener)
+
+        /**
+         * Removed OnMapLong Click listener
+         */
+        mapboxMap.removeOnMapLongClickListener(mapLongClickListener)
     }
 
     /**

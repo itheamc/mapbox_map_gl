@@ -10,33 +10,33 @@ import 'utils/point.dart';
 import 'utils/screen_coordinate.dart';
 import 'mapbox_map_gl_platform_interface.dart';
 
-/// Method to handle onMapCreated callback
+/// Typedef for handling onMapCreated callback
 /// [MapboxMapController] Instance of the MapboxMapController
 typedef OnMapCreated = void Function(MapboxMapController);
 
-/// Method to handle onMapLoaded callback
+/// Typedef for handling onMapLoaded callback
 typedef OnMapLoaded = VoidCallback;
 
 /// Method to handle onStyleLoaded callback
 typedef OnStyleLoaded = VoidCallback;
 
-/// Method to handle onStyleLoadedError callback
+/// Typedef for handling onStyleLoadedError callback
 /// [String] - Error message
 typedef OnStyleLoadError = void Function(String);
 
-/// Method to handle onMapClick callback
+/// Typedef for handling onMapClick callback
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 typedef OnMapClick = void Function(Point, ScreenCoordinate);
 
-/// Method to handle onMapLongClick callback
+/// Typedef for handling onMapLongClick callback
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
 /// in device screen
 typedef OnMapLongClick = void Function(Point, ScreenCoordinate);
 
-/// Method to handle onFeatureClick callback
+/// Typedef for handling onFeatureClick callback
 /// [details] - The details object will consist following: -
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
@@ -47,7 +47,7 @@ typedef OnMapLongClick = void Function(Point, ScreenCoordinate);
 /// [String] - Source Layer of the feature
 typedef OnFeatureClick = void Function(FeatureDetails details);
 
-/// Method to handle onFeatureLongClick callback
+/// Typedef for handling onFeatureLongClick callback
 /// [details] - The details object will consist following: -
 /// [Point] - It consists the latitude and longitude of the clicked feature
 /// [ScreenCoordinate] - It consists the x and y coordinate of the clicked feature
@@ -66,6 +66,15 @@ class MapboxMap extends StatefulWidget {
   /// [style] An initial map style whenever map loaded
   /// default value is MapStyle.light
   final MapStyle style;
+
+  /// [showCurrentLocation] Boolean to decide weather to show user's current
+  /// location puck or not.
+  /// In order to get accurate location:-
+  /// Add this dependency on your app's build.gradle
+  /// implementation "com.google.android.gms:play-services-location:18.0.0"
+  ///
+  /// default value is false
+  final bool showCurrentLocation;
 
   /// [onMapCreated] A callback that will be triggered whenever platform view
   /// for mapbox map is created
@@ -110,6 +119,7 @@ class MapboxMap extends StatefulWidget {
     Key? key,
     this.initialCameraPosition,
     this.style = MapStyle.light,
+    this.showCurrentLocation = false,
     this.onMapCreated,
     this.onMapLoaded,
     this.onStyleLoaded,
@@ -194,7 +204,10 @@ class _MapboxMapState extends State<MapboxMap> {
 
     creationParams['initialCameraPosition'] =
         widget.initialCameraPosition?.toMap();
+
     creationParams['style'] = widget.style.name;
+
+    creationParams['enable_location'] = widget.showCurrentLocation;
 
     return MapboxMapGlPlatform.instance.buildMapView(
       creationParams: creationParams,

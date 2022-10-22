@@ -32,7 +32,6 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      */
     fun animateCameraPosition(cameraPosition: CameraPosition)
 
-
     /**
      * Method to add geo json sources
      * Remember: If your want to add line layer or fill layer along with the circle layer
@@ -261,6 +260,11 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to add map related listeners
      */
     fun addMapRelatedListeners()
+
+    /**
+     * Method to remove all map related listeners
+     */
+    fun removeAllListeners()
 
     /**
      * Method to get the list of applied layer id on given source

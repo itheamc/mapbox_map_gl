@@ -1,12 +1,15 @@
 package com.itheamc.mapbox_map_gl
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
+import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.scalebar.scalebar
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
@@ -28,7 +31,12 @@ internal class MapboxMapGlNativeView(
     /**
      * Map View
      */
-    private var mapView: MapView?
+    private var mapView: MapView? = null
+
+    /**
+     * MapboxMapGlController
+     */
+    private var mapboxMapGlController: MapboxMapGlController? = null
 
 
     /**
@@ -51,8 +59,24 @@ internal class MapboxMapGlNativeView(
             scalebar.enabled = false
             compass.enabled = false
             id = this@MapboxMapGlNativeView.id
+
+            /**
+             * Enable/Disable location as per the params
+             */
+            val isEnabled = creationParams?.get("enable_location") as Boolean? ?: false
+
+            Log.d("TAG", ": $isEnabled")
+
+            if (isEnabled) {
+                location.apply {
+                    enabled = true
+                    pulsingEnabled = true
+                    locationPuck = createDefault2DPuck(context, false)
+                }
+            }
+
         }.also {
-            MapboxMapGlControllerImpl(
+            mapboxMapGlController = MapboxMapGlControllerImpl(
                 messenger = messenger,
                 mapboxMap = it.getMapboxMap(),
                 creationParams = creationParams
@@ -67,14 +91,12 @@ internal class MapboxMapGlNativeView(
         }
     }
 
-
     /**
      * Method to get the view
      */
     override fun getView(): View? {
         return mapView
     }
-
 
     /**
      * On Dispose of Platform View
@@ -83,7 +105,12 @@ internal class MapboxMapGlNativeView(
         /**
          * Removing listener attached with the mapview on dispose
          */
+        mapboxMapGlController?.removeAllListeners()
+
         lifecycleOwnerProvider
             .lifecycleOwner?.lifecycle?.removeObserver(this)
+
+        mapView = null
     }
+
 }
