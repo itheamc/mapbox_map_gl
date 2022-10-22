@@ -97,6 +97,7 @@ class _ToggleStyleExampleScreenState extends State<ToggleStyleExampleScreen> {
               duration: const Duration(milliseconds: 750),
             ),
           ),
+          showCurrentLocation: true,
           onMapCreated: _onMapCreated,
           onMapLoaded: () {
             if (kDebugMode) {

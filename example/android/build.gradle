@@ -6,13 +6,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
-    def token = System.getenv('SDK_REGISTRY_TOKEN') ?: project.properties['MAPBOX_SECRET_TOKEN']
+    def token = System.getenv('MAPBOX_SECRET_TOKEN') ?: project.properties['MAPBOX_SECRET_TOKEN']
     if (token == null || token.empty) {
         throw new Exception("Please provide MAPBOX_SECRET_TOKEN in your gradle.properties")
     }

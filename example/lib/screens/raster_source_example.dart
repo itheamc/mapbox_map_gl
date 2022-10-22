@@ -52,21 +52,6 @@ class _RasterSourceExampleScreenState extends State<RasterSourceExampleScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: SizedBox(
-          height: 38.0,
-          child: FloatingActionButton.extended(
-            onPressed: _addRasterSource,
-            label: const Text(
-              "Add Raster Source & Layer",
-              textScaleFactor: 0.75,
-            ),
-            icon: const Icon(
-              Icons.layers,
-              color: Colors.white,
-              size: 14.0,
-            ),
-          ),
-        ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
             center: Point.fromLngLat(-74.5, 40.0),
@@ -77,39 +62,11 @@ class _RasterSourceExampleScreenState extends State<RasterSourceExampleScreen> {
             ),
           ),
           onMapCreated: _onMapCreated,
-          onStyleLoaded: () {
-            if (kDebugMode) {
-              print("[Method Call -> onStyleLoaded] ---> From _MyAppState");
-            }
-          },
-          onStyleLoadError: (err) {
-            if (kDebugMode) {
-              print(
-                  "[Method Call -> onStyleLoadError] ---> From _MyAppState -> $err");
-            }
-          },
-          onMapClick: (point, screenCoordinate) {
-            if (kDebugMode) {
-              print(
-                  "[Method Call -> onMapClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
-            }
-          },
-          onMapLongClick: (point, screenCoordinate) {
-            if (kDebugMode) {
-              print(
-                  "[Method Call -> onMapLongClick] ---> ${point.toMap()}, ${screenCoordinate.toMap()}");
-            }
-          },
-          onFeatureClick: (details) {
-            if (kDebugMode) {
-              print(
-                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
-            }
-          },
-          onFeatureLongClick: (details) {
-            if (kDebugMode) {
-              print(
-                  "[_GeoJsonSourceExample2ScreenState -> onFeatureClick] ---> ${details.source}, ${details.feature.properties}");
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("example-raster-tiles") ?? false;
+            if (!isAlreadyAdded) {
+              _addRasterSource();
             }
           },
         ),

@@ -53,21 +53,6 @@ class _ImageSourceExampleScreenState extends State<ImageSourceExampleScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        floatingActionButton: SizedBox(
-          height: 38.0,
-          child: FloatingActionButton.extended(
-            onPressed: _addImageSource,
-            label: const Text(
-              "Add Image Source & Raster Layer",
-              textScaleFactor: 0.75,
-            ),
-            icon: const Icon(
-              Icons.layers,
-              color: Colors.white,
-              size: 14.0,
-            ),
-          ),
-        ),
         body: MapboxMap(
           initialCameraPosition: CameraPosition(
             center: Point.fromLngLat(-75.789, 41.874),
@@ -78,6 +63,13 @@ class _ImageSourceExampleScreenState extends State<ImageSourceExampleScreen> {
             ),
           ),
           onMapCreated: _onMapCreated,
+          onStyleLoaded: () async {
+            final isAlreadyAdded =
+                await _controller?.isSourceExist("radar-image-source") ?? false;
+            if (!isAlreadyAdded) {
+              await _addImageSource();
+            }
+          },
         ),
       ),
     );

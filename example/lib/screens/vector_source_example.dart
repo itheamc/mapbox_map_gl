@@ -22,12 +22,10 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
   Future<void> _addVectorSource() async {
     _controller
         ?.addSource<VectorSource>(
-      source: VectorSource(sourceId: "mapbox-terrain",
-          // url: 'mapbox://mapbox.mapbox-terrain-v2',
-          tiles: [
-            "https://cleanup-staging.naxa.com.np/api/v1/core/maps/vector_layer/{z}/{x}/{y}/?layer_id=3",
-            // "https://pccmis.karnali.gov.np/api/v1/layer_vectortile/{z}/{x}/{y}/?layer=municipality&pro_code=6"
-          ]),
+      source: VectorSource(
+        sourceId: "mapbox-terrain",
+        url: 'mapbox://mapbox.mapbox-terrain-v2',
+      ),
     )
         .then((value) {
       _addLineLayer();
@@ -40,11 +38,12 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
         layerId: "line-layer-id",
         sourceId: "mapbox-terrain",
         layerProperties: LineLayerProperties(
-            lineColor: "#ff69b4",
-            lineWidth: 1.5,
-            lineJoin: LineJoin.round,
-            lineCap: LineCap.round,
-            sourceLayer: "3"),
+          lineColor: "#ff69b4",
+          lineWidth: 1.5,
+          lineJoin: LineJoin.round,
+          lineCap: LineCap.round,
+          sourceLayer: "contour",
+        ),
       ),
     );
   }

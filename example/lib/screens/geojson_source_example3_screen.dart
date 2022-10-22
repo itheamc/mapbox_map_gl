@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_map_gl/mapbox_map_gl.dart';
-import 'package:mapbox_map_gl_example/main.dart';
 
 class GeoJsonSourceExample3Screen extends StatefulWidget {
   const GeoJsonSourceExample3Screen({Key? key}) : super(key: key);
