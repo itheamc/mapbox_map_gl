@@ -54,3 +54,16 @@
   - addStyleModel
   - removeStyleModel
 * And known bug fix
+
+## 0.0.6
+
+* Added Methods
+  - setFeatureState
+  - getFeatureState
+  - removeFeatureState
+  - querySourceFeatures and
+  - queryRenderedFeatures
+* Now your can enable the user current location puck
+* Work on disposal of mapbox map and added listeners
+* Upgraded to MapboxMap SDk version v10.9.0
+* And known bug fix
