@@ -1,4 +1,5 @@
 # Mapbox Map GL
+
 [![Pub](https://img.shields.io/pub/v/mapbox_map_gl)](https://pub.dev/packages/mapbox_map_gl)
 [![License](https://img.shields.io/github/license/itheamc/mapbox_map_gl)](https://github.com/itheamc/mapbox_map_gl/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/itheamc/mapbox_map_gl.svg?style=social)](https://github.com/itheamc/mapbox_map_gl)
@@ -7,8 +8,8 @@
 
 This flutter plugin allow you to embed Mapbox Map to your flutter app. This plugin uses the latest
 version of the Mapbox Map SDK so that you can experience all the latest feature introduced.
-Currently this plugin only support android platform. It is based on Mapbox Android
-SDK version```v10.8.1```
+Currently this plugin only support android platform. It is based on Mapbox Android SDK
+version```v10.9.0```
 
 ## Setting up
 
@@ -62,7 +63,9 @@ directory of android section It starts with ```pk.```
 This plugin is not available in IOS yet.
 
 ### How to add MapboxMap?
- You have to use ```MapboxMap()``` widget to add map in your page.
+
+You have to use ```MapboxMap()``` widget to add map in your page.
+
 ```
         MapboxMap(
           initialCameraPosition: CameraPosition(
@@ -73,6 +76,8 @@ This plugin is not available in IOS yet.
               duration: const Duration(milliseconds: 750),
             ),
           ),
+          style: MapStyle.light,
+          showCurrentLocation: true,
           onMapCreated: (controller) {
             // controller - MapboxMapController instance
           },
@@ -104,8 +109,10 @@ This plugin is not available in IOS yet.
 ```
 
 ### How to add style source?
- This api supports all the style sources that is supported by the Mapbox Map Android Sdk. 
- You can add the style source like this.
+
+This api supports all the style sources that is supported by the Mapbox Map Android Sdk. You can add
+the style source like this.
+
 ```
     await _controller.addSource<GeoJsonSource>(
           source: GeoJsonSource(
@@ -122,8 +129,10 @@ This plugin is not available in IOS yet.
 ```
 
 ### How to add style layer?
-Like sources, this api also supports all the style layers that is supported by the Mapbox Map Android Sdk.
-You can add the style layer like this.
+
+Like sources, this api also supports all the style layers that is supported by the Mapbox Map
+Android Sdk. You can add the style layer like this.
+
 ```
     // Circle Layer
     await _controller.addLayer<CircleLayer>(
@@ -191,7 +200,9 @@ You can add the style layer like this.
 ```
 
 ### How to add style image?
+
 You can add style image from your assets or from the url. Svg image is not supported yet.
+
 ```
     // Add image stored on assets
     await _controller.addStyleImage<LocalStyleImage>(
@@ -212,12 +223,29 @@ You can add style image from your assets or from the url. Svg image is not suppo
     );
 ```
 
+### How to show users current location on Map (location puck)?
+
+If you want to show the current location indicator (location puck) on map then you have to
+set ```showCurrentLocation: true``` in ```MapboxMap()```.
+
+By default, the Maps SDK uses the Android GPS and Network Providers to obtain raw location updates.
+In applications using Android 11, the raw location updates might suffer from precision issues. In
+order to get accurate location you can add this dependency to your app's ```build.gradle```.
+
+For more info:
+- [Mapbox Map Location Provider](https://docs.mapbox.com/android/maps/guides/user-location/#location-provider)
+
+```
+implementation "com.google.android.gms:play-services-location:18.0.0"
+```
+
 ### Supported Mapbox Api
 
 | Feature                  | Android             | iOS | 
 |--------------------------|---------------------| --- | 
 | Style                    | :white_check_mark:  | :x: | 
 | Camera                   | :white_check_mark:  | :x: | 
+| Current Location         | :white_check_mark:  | :x: | 
 | StyleDsl                 | :white_check_mark:  | :x: | 
 | Circle Layer             | :white_check_mark:  | :x: | 
 | Line Layer               | :white_check_mark:  | :x: | 
