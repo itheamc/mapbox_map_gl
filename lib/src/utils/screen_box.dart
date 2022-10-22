@@ -27,19 +27,4 @@ class ScreenBox {
   String toString() {
     return "min(x: ${min.x}, y: ${min.y}), max(x: ${max.x}, y: ${max.y})";
   }
-
-  @override
-  int get hashCode {
-    return Object.hash(min, max);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (runtimeType != other.runtimeType) return false;
-
-    return min.x == (other as ScreenBox).min.x &&
-        min.y == other.min.y &&
-        max.x == other.max.x &&
-        max.y == other.max.y;
-  }
 }

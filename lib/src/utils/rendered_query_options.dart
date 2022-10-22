@@ -33,18 +33,4 @@ class RenderedQueryOptions {
   String toString() {
     return "layerIds: $layerIds, filter: $filter";
   }
-
-  @override
-  int get hashCode {
-    return Object.hash(layerIds, filter);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
-
-    return layerIds.hashCode ==
-            (other as RenderedQueryOptions).layerIds.hashCode &&
-        filter.hashCode == other.filter.hashCode;
-  }
 }
