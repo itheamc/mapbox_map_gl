@@ -110,6 +110,7 @@ internal class MapboxMapGlNativeView(
         lifecycleOwnerProvider
             .lifecycleOwner?.lifecycle?.removeObserver(this)
 
+        mapboxMapGlController = null
         mapView = null
     }
 
