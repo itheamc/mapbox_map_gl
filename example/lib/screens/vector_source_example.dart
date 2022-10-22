@@ -90,7 +90,7 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
                   textScaleFactor: 0.75,
                 ),
                 icon: const Icon(
-                  Icons.layers,
+                  Icons.colorize,
                   color: Colors.white,
                   size: 14.0,
                 ),
@@ -108,7 +108,7 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
                   textScaleFactor: 0.75,
                 ),
                 icon: const Icon(
-                  Icons.layers,
+                  Icons.colorize,
                   color: Colors.white,
                   size: 14.0,
                 ),
@@ -126,7 +126,7 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
                   textScaleFactor: 0.75,
                 ),
                 icon: const Icon(
-                  Icons.layers,
+                  Icons.line_axis_outlined,
                   color: Colors.white,
                   size: 14.0,
                 ),
@@ -140,11 +140,11 @@ class _VectorSourceExampleScreenState extends State<VectorSourceExampleScreen> {
               child: FloatingActionButton.extended(
                 onPressed: _changeProperties,
                 label: const Text(
-                  "Change Properties",
+                  "Change More than one Properties",
                   textScaleFactor: 0.75,
                 ),
                 icon: const Icon(
-                  Icons.layers,
+                  Icons.read_more,
                   color: Colors.white,
                   size: 14.0,
                 ),
