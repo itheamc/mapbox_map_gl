@@ -67,3 +67,7 @@
 * Work on disposal of mapbox map and added listeners
 * Upgraded to MapboxMap SDk version v10.9.0
 * And known bug fix
+
+## 0.0.7
+
+* Improved Pub Score
