@@ -147,18 +147,18 @@ class _GeoJsonSourceExample2ScreenState
   }
 
   /// Method to get queried features
-  Future<void> _queryRenderedFeatures() async {
-    final size = MediaQuery.of(context).size;
-
-    final res = await _controller?.queryRenderedFeatures(
-      geometry: RenderedQueryGeometry.fromScreenBox(
-        ScreenBox(
-          ScreenCoordinate(0.0, 0.0),
-          ScreenCoordinate(size.width, size.height),
-        ),
-      ),
-      queryOptions: RenderedQueryOptions(),
-    );
+  // Future<void> _queryRenderedFeatures() async {
+  //   final size = MediaQuery.of(context).size;
+  //
+  //   final res = await _controller?.queryRenderedFeatures(
+  //     geometry: RenderedQueryGeometry.fromScreenBox(
+  //       ScreenBox(
+  //         ScreenCoordinate(0.0, 0.0),
+  //         ScreenCoordinate(size.width, size.height),
+  //       ),
+  //     ),
+  //     queryOptions: RenderedQueryOptions(),
+  //   );
 
     // final res = await _controller?.queryRenderedFeatures(
     //   geometry: RenderedQueryGeometry.fromScreenCoordinate(
@@ -177,26 +177,26 @@ class _GeoJsonSourceExample2ScreenState
     //     layerIds: ["my-layer-id"]
     //   ),
     // );
-
-    print(res?.length);
-  }
+  //
+  //   print(res?.length);
+  // }
 
   /// Method to get queried features
-  Future<void> _querySourceFeatures() async {
-    final size = MediaQuery.of(context).size;
-
-    final res = await _controller?.querySourceFeatures(
-        sourceId: "my-data-source",
-        queryOptions: SourceQueryOptions(
-          sourceLayerIds: ["sourceLayer1", "sourceLayer2"],
-          filter: <String, dynamic>{
-            "region": "North America",
-            "name": "Amit",
-          },
-        ));
-
-    print(res?.length);
-  }
+  // Future<void> _querySourceFeatures() async {
+  //   final size = MediaQuery.of(context).size;
+  //
+  //   final res = await _controller?.querySourceFeatures(
+  //       sourceId: "my-data-source",
+  //       queryOptions: SourceQueryOptions(
+  //         sourceLayerIds: ["sourceLayer1", "sourceLayer2"],
+  //         filter: <String, dynamic>{
+  //           "region": "North America",
+  //           "name": "Amit",
+  //         },
+  //       ));
+  //
+  //   print(res?.length);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +263,22 @@ class _GeoJsonSourceExample2ScreenState
             SizedBox(
               height: 38.0,
               child: FloatingActionButton.extended(
-                onPressed: _querySourceFeatures,
+                onPressed: () async {
+                  await _controller?.setStyleLayerProperty(
+                      layerId: "symbol-layer-example",
+                      property: "icon-color",
+                      value: "#fff");
+
+                  await _controller?.setStyleLayerProperties(
+                    layerId: "my-layer-id",
+                    properties: <String, dynamic>{
+                      "circle-color": "red",
+                      "circle-radius": 12,
+                      "circle-stroke-width": 2.5,
+                      "circle-stroke-color": 'white',
+                    },
+                  );
+                },
                 label: const Text(
                   "Reset",
                   textScaleFactor: 0.75,
