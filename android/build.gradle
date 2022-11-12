@@ -2,7 +2,7 @@ group 'com.itheamc.mapbox_map_gl'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.7.20'
     repositories {
         google()
         mavenCentral()
@@ -45,6 +45,6 @@ android {
     }
 
     dependencies {
-        implementation 'com.mapbox.maps:android:10.9.0'
+        implementation 'com.mapbox.maps:android:10.9.1'
     }
 }
