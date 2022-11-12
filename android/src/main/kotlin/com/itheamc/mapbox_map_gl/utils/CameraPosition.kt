@@ -2,6 +2,7 @@ package com.itheamc.mapbox_map_gl.utils
 
 import com.itheamc.mapbox_map_gl.helper.PointHelper
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 
@@ -52,5 +53,18 @@ class CameraPosition internal constructor(
 
             )
         }
+    }
+
+    /**
+     * Method to convert CameraPosition to CameraOptions Object
+     */
+    fun toCameraOptions(): CameraOptions {
+        return CameraOptions.Builder()
+            .center(center)
+            .zoom(zoom)
+            .bearing(bearing)
+            .pitch(pitch)
+            .anchor(anchor)
+            .build()
     }
 }

@@ -2,7 +2,8 @@ package com.itheamc.mapbox_map_gl
 
 import android.os.Build
 import android.util.Log
-import com.itheamc.mapbox_map_gl.helper.RenderedQueryGeometryHelper
+import com.itheamc.mapbox_map_gl.helper.*
+import com.itheamc.mapbox_map_gl.helper.MapMemoryBudgetHelper
 import com.itheamc.mapbox_map_gl.helper.StyleHelper
 import com.itheamc.mapbox_map_gl.helper.ValueHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.*
@@ -11,6 +12,7 @@ import com.itheamc.mapbox_map_gl.utils.*
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
 import com.mapbox.bindgen.None
+import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.layers.addLayer
@@ -139,6 +141,20 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * RenderFrameStartedListener object
+     */
+    private val renderFrameStartedListener = OnRenderFrameStartedListener {
+        methodChannel.invokeMethod(Methods.onRenderFrameStarted, null)
+    }
+
+    /**
+     * RenderFrameFinishedListener object
+     */
+    private val renderFrameFinishedListener = OnRenderFrameFinishedListener {
+        methodChannel.invokeMethod(Methods.onRenderFrameFinished, null)
+    }
+
+    /**
      * MapClickListener object
      */
     private val mapClickListener = OnMapClickListener {
@@ -264,6 +280,71 @@ internal class MapboxMapGlControllerImpl(
                 animateToInitialCameraPosition()
             }
         )
+    }
+
+    /**
+     * Method to load the style json
+     */
+    override fun loadStyleJson(styleJson: String): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid mapbox")
+
+        return try {
+            mapboxMap.loadStyleJson(styleJson)
+            ExpectedFactory.createNone()
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to reduce memory uses
+     * Reduce memory use. Useful to call when the application gets paused
+     * or sent to background.
+     */
+    override fun reduceMemoryUse(): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid mapbox")
+
+        return try {
+            mapboxMap.reduceMemoryUse()
+            ExpectedFactory.createNone()
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to set map memory budget
+     */
+    @OptIn(MapboxExperimental::class)
+    override fun setMapMemoryBudget(args: Map<*, *>): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid mapbox")
+
+        return try {
+            val memoryBudget = MapMemoryBudgetHelper.fromArgs(args)
+
+            if (memoryBudget != null) {
+                mapboxMap.setMemoryBudget(memoryBudget)
+                ExpectedFactory.createNone()
+            } else {
+                ExpectedFactory.createError("Invalid parameters")
+            }
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "Something went wrong")
+        }
+    }
+
+    /**
+     * Method to trigger map repaint
+     */
+    override fun triggerRepaint(): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid mapbox")
+
+        return try {
+            mapboxMap.triggerRepaint()
+            ExpectedFactory.createNone()
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
     }
 
     /**
@@ -1174,6 +1255,128 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to get the coordinate as per given pixel
+     */
+    override fun coordinateForPixel(args: Map<*, *>): Expected<String, Point> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val screenCoordinate = ScreenCoordinateHelper.fromArgs(args)
+            if (screenCoordinate != null) {
+                val point = mapboxMap.coordinateForPixel(screenCoordinate)
+                ExpectedFactory.createValue(point)
+            } else {
+                ExpectedFactory.createError("Invalid Screen Coordinate")
+            }
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to get the list of coordinates for given pixels
+     */
+    override fun coordinatesForPixels(args: List<*>): Expected<String, List<*>> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val screenCoordinates =
+                args.map { ScreenCoordinateHelper.fromArgs(it as Map<*, *>) }.mapNotNull { it }
+                    .toList()
+
+            val points = mapboxMap.coordinatesForPixels(screenCoordinates)
+
+            ExpectedFactory.createValue(points.map { it.toJson() }.toList())
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to get the screen pixel for the given coordinate
+     */
+    override fun pixelForCoordinate(args: Map<*, *>): Expected<String, ScreenCoordinate> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val point = PointHelper.fromArgs(args)
+
+            if (point != null) {
+                val coordinate = mapboxMap.pixelForCoordinate(point)
+                ExpectedFactory.createValue(coordinate)
+            } else {
+                ExpectedFactory.createError("Invalid Point")
+            }
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to get the list of screen pixel for given coordinates
+     */
+    override fun pixelsForCoordinates(args: List<*>): Expected<String, List<*>> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val points =
+                args.map { PointHelper.fromArgs(it as Map<*, *>) }.mapNotNull { it }.toList()
+
+            val coordinates = mapboxMap.pixelsForCoordinates(points)
+
+            ExpectedFactory.createValue(coordinates.map { mapOf("x" to it.x, "y" to it.y) }
+                .toList())
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to get the size of the rendered map in pixels
+     */
+    override fun getMapSize(): Expected<String, Size> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val size = mapboxMap.getSize()
+            ExpectedFactory.createValue(size)
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+
+    }
+
+    /**
+     * Method to set the view port mode of the rendered map
+     */
+    override fun setViewportMode(mode: String): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            mapboxMap.setViewportMode(viewportMode = ViewportMode.valueOf(mode.uppercase()))
+            ExpectedFactory.createNone()
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+    }
+
+    /**
+     * Method to set camera of the map]
+     */
+    override fun setCamera(args: Map<*, *>): Expected<String, None> {
+        if (!mapboxMap.isValid()) return ExpectedFactory.createError("Invalid MapboxMap!")
+
+        return try {
+            val cameraOptions = CameraPosition.fromArgs(args).toCameraOptions()
+            mapboxMap.setCamera(cameraOptions = cameraOptions)
+            ExpectedFactory.createNone()
+        } catch (e: Exception) {
+            ExpectedFactory.createError(e.message ?: "")
+        }
+
+    }
+
+    /**
      * Method to add map related listeners
      */
     override fun addMapRelatedListeners() {
@@ -1218,6 +1421,16 @@ internal class MapboxMapGlControllerImpl(
          * On Source Removed Listener
          */
         mapboxMap.addOnSourceRemovedListener(sourceRemovedListener)
+
+        /**
+         * On Render Frame Started Listener
+         */
+        mapboxMap.addOnRenderFrameStartedListener(renderFrameStartedListener)
+
+        /**
+         * On Render Frame Finished Listener
+         */
+        mapboxMap.addOnRenderFrameFinishedListener(renderFrameFinishedListener)
 
         /**
          * On Map Click Listener
@@ -1276,6 +1489,16 @@ internal class MapboxMapGlControllerImpl(
          * Removed OnSourceRemoved Listener
          */
         mapboxMap.removeOnSourceRemovedListener(sourceRemovedListener)
+
+        /**
+         * Remove OnRenderFrameStarted Listener
+         */
+        mapboxMap.removeOnRenderFrameStartedListener(renderFrameStartedListener)
+
+        /**
+         * Remove OnRenderFrameFinished Listener
+         */
+        mapboxMap.removeOnRenderFrameFinishedListener(renderFrameFinishedListener)
 
         /**
          * Removed OnMapClick Listener
@@ -1849,6 +2072,92 @@ internal class MapboxMapGlControllerImpl(
                         result.success(null)
                     }
                 }
+
+            }
+            Methods.loadStyleJson -> {
+                args = args as String
+                loadStyleJson(args)
+                    .onValue {
+                        result.success(null)
+                    }
+                    .onError {
+                        result.error("STYLE_LOAD_ERROR", it, null)
+                    }
+
+            }
+            Methods.reduceMemoryUse -> {
+                reduceMemoryUse()
+                    .onValue {
+                        result.success(null)
+                    }
+                    .onError {
+                        result.error("REDUCE_MEMORY_USE_ERROR", it, null)
+                    }
+
+            }
+            Methods.triggerRepaint -> {
+                triggerRepaint()
+                    .onValue {
+                        result.success(null)
+                    }
+                    .onError {
+                        result.error("TRIGGER_REPAINT_ERROR", it, null)
+                    }
+
+            }
+            Methods.setMapMemoryBudget -> {
+                args = args as Map<*, *>
+                setMapMemoryBudget(args)
+                    .onValue {
+                        result.success(null)
+                    }
+                    .onError {
+                        result.error("SET_MEMORY_BUDGET_ERROR", it, null)
+                    }
+
+            }
+            Methods.coordinateForPixel -> {
+                args = args as Map<*, *>
+                coordinateForPixel(args)
+                    .onValue {
+                        result.success(it.toJson())
+                    }
+                    .onError {
+                        result.error("COORDINATE_4_PIXEL_ERROR", it, null)
+                    }
+
+            }
+            Methods.coordinatesForPixels -> {
+                args = args as List<*>
+                coordinatesForPixels(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("COORDINATES_4_PIXELS_ERROR", it, null)
+                    }
+
+            }
+            Methods.pixelForCoordinate -> {
+                args = args as Map<*, *>
+                pixelForCoordinate(args)
+                    .onValue {
+                        result.success(mapOf("x" to it.x, "y" to it.y))
+                    }
+                    .onError {
+                        result.error("PIXEL_4_COORDINATE_ERROR", it, null)
+                    }
+
+            }
+            Methods.pixelsForCoordinates -> {
+                args = args as List<*>
+                pixelsForCoordinates(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("PIXELS_4_COORDINATES_ERROR", it, null)
+                    }
 
             }
             else -> {

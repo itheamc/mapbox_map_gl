@@ -26,6 +26,8 @@ object Methods {
     const val onSourceAdded = "onSourceAdded"
     const val onSourceDataLoaded = "onSourceDataLoaded"
     const val onSourceRemoved = "onSourceRemoved"
+    const val onRenderFrameStarted = "onRenderFrameStarted"
+    const val onRenderFrameFinished = "onRenderFrameFinished"
 
 
     /**
@@ -71,11 +73,21 @@ object Methods {
     const val moveStyleLayerBelow = "moveStyleLayerBelow"
     const val moveStyleLayerAt = "moveStyleLayerAt"
 
-    const val getGeoJsonClusterChildren = "getGeoJsonClusterChildren"
     const val getFeatureState = "getFeatureState"
     const val setFeatureState = "setFeatureState"
     const val removeFeatureState = "removeFeatureState"
     const val querySourceFeatures = "querySourceFeatures"
     const val queryRenderedFeatures = "queryRenderedFeatures"
 
+    const val loadStyleJson = "loadStyleJson"
+    const val reduceMemoryUse = "reduceMemoryUse"
+    const val setMapMemoryBudget = "setMapMemoryBudget"
+    const val triggerRepaint = "triggerRepaint"
+    const val coordinateForPixel = "coordinateForPixel"
+    const val coordinatesForPixels = "coordinatesForPixels"
+    const val pixelForCoordinate = "pixelForCoordinate"
+    const val pixelsForCoordinates = "pixelsForCoordinates"
+    const val getMapSize = "getMapSize"
+    const val setViewportMode = "setViewportMode"
+    const val setCamera = "setCamera"
 }

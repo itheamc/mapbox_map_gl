@@ -3,8 +3,11 @@ package com.itheamc.mapbox_map_gl
 import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
+import com.mapbox.geojson.Point
 import com.mapbox.maps.QueryFeatureStateCallback
 import com.mapbox.maps.QueryFeaturesCallback
+import com.mapbox.maps.ScreenCoordinate
+import com.mapbox.maps.Size
 import com.mapbox.maps.extension.style.layers.generated.*
 import com.mapbox.maps.extension.style.sources.generated.*
 import io.flutter.plugin.common.MethodChannel
@@ -15,6 +18,26 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to load the style uri
      */
     fun loadStyleUri()
+
+    /**
+     * Method to load the style json
+     */
+    fun loadStyleJson(styleJson: String): Expected<String, None>
+
+    /**
+     * Method to reduce memory uses
+     */
+    fun reduceMemoryUse(): Expected<String, None>
+
+    /**
+     * Method to set map memory budget
+     */
+    fun setMapMemoryBudget(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to trigger map repaint
+     */
+    fun triggerRepaint(): Expected<String, None>
 
     /**
      * Method to
@@ -255,6 +278,41 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
         args: Map<*, *>,
         callback: QueryFeatureStateCallback
     )
+
+    /**
+     * Method to get the coordinate as per given pixel
+     */
+    fun coordinateForPixel(args: Map<*, *>): Expected<String, Point>
+
+    /**
+     * Method to get the list of coordinates for given pixels
+     */
+    fun coordinatesForPixels(args: List<*>): Expected<String, List<*>>
+
+    /**
+     * Method to get the screen pixel for the given coordinate
+     */
+    fun pixelForCoordinate(args: Map<*, *>): Expected<String, ScreenCoordinate>
+
+    /**
+     * Method to get the list of screen pixel for given coordinates
+     */
+    fun pixelsForCoordinates(args: List<*>): Expected<String, List<*>>
+
+    /**
+     * Method to get the size of the rendered map in pixels
+     */
+    fun getMapSize(): Expected<String, Size>
+
+    /**
+     * Method to set the view port mode of the rendered map
+     */
+    fun setViewportMode(mode: String): Expected<String, None>
+
+    /**
+     * Method to set camera of the map]
+     */
+    fun setCamera(args: Map<*, *>): Expected<String, None>
 
     /**
      * Method to add map related listeners
