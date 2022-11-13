@@ -41,28 +41,28 @@
 ## 0.0.5
 
 * Added support for Changing Source & Style Properties
-  - setStyleLayerProperty
-  - setStyleLayerProperties
-  - setStyleSourceProperty and
-  - setStyleSourceProperties
+    - setStyleLayerProperty
+    - setStyleLayerProperties
+    - setStyleSourceProperty and
+    - setStyleSourceProperties
 * Added support for move Layers
-  - moveStyleLayerAbove
-  - moveStyleLayerBelow
-  - moveStyleLayerAt
+    - moveStyleLayerAbove
+    - moveStyleLayerBelow
+    - moveStyleLayerAt
 * Added support for Style Model
-  - isStyleModelExist
-  - addStyleModel
-  - removeStyleModel
+    - isStyleModelExist
+    - addStyleModel
+    - removeStyleModel
 * And known bug fix
 
 ## 0.0.6
 
 * Added Methods
-  - setFeatureState
-  - getFeatureState
-  - removeFeatureState
-  - querySourceFeatures and
-  - queryRenderedFeatures
+    - setFeatureState
+    - getFeatureState
+    - removeFeatureState
+    - querySourceFeatures and
+    - queryRenderedFeatures
 * Now your can enable the user current location puck
 * Work on disposal of mapbox map and added listeners
 * Upgraded to MapboxMap SDk version v10.9.0
@@ -71,3 +71,23 @@
 ## 0.0.7
 
 * Improved Pub Score
+
+## 0.0.8
+
+* Added these methods:
+    - getGeoJsonClusterChildren
+    - getGeoJsonClusterLeaves
+    - loadStyleJson
+    - loadStyleUri
+    - reduceMemoryUse
+    - setMapMemoryBudget
+    - triggerRepaint
+    - coordinateForPixel
+    - coordinatesForPixels
+    - pixelForCoordinate
+    - pixelsForCoordinates
+    - getMapSize
+    - setViewportMode
+    - setCamera
+* Upgraded Mapbox SDK version to 10.9.1
+* Fix known bug from the previous version

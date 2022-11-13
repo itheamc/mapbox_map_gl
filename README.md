@@ -8,8 +8,8 @@
 
 This flutter plugin allow you to embed Mapbox Map to your flutter app. This plugin uses the latest
 version of the Mapbox Map SDK so that you can experience all the latest feature introduced.
-Currently this plugin only support android platform. It is based on Mapbox Android SDK
-version```v10.9.0```
+Currently this plugin only support android platform. It is based on Mapbox SDK
+version```v10.9.1```
 
 ## Setting up
 
@@ -110,7 +110,7 @@ You have to use ```MapboxMap()``` widget to add map in your page.
 
 ### How to add style source?
 
-This api supports all the style sources that is supported by the Mapbox Map Android Sdk. You can add
+This api supports all the style sources that is supported by the latest Mapbox Map SDK. You can add
 the style source like this.
 
 ```
@@ -130,8 +130,7 @@ the style source like this.
 
 ### How to add style layer?
 
-Like sources, this api also supports all the style layers that is supported by the Mapbox Map
-Android Sdk. You can add the style layer like this.
+Like sources, this api also supports all the style layers that is supported by the latest Mapbox Map SDK. You can add the style layer like this.
 
 ```
     // Circle Layer
@@ -218,7 +217,6 @@ You can add style image from your assets or from the url. Svg image is not suppo
       image: NetworkStyleImage(
         imageId: "icon",
         url: "https://example.com/icon.png",
-        sdf: true,
       ),
     );
 ```
@@ -245,8 +243,7 @@ implementation "com.google.android.gms:play-services-location:18.0.0"
 |--------------------------|---------------------| --- | 
 | Style                    | :white_check_mark:  | :x: | 
 | Camera                   | :white_check_mark:  | :x: | 
-| Current Location         | :white_check_mark:  | :x: | 
-| StyleDsl                 | :white_check_mark:  | :x: | 
+| Current Location         | :white_check_mark:  | :x: |
 | Circle Layer             | :white_check_mark:  | :x: | 
 | Line Layer               | :white_check_mark:  | :x: | 
 | Fill Layer               | :white_check_mark:  | :x: | 
