@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
+import 'utils/feature.dart';
 import 'utils/point.dart';
 import 'utils/enums.dart';
 import 'utils/queried_feature.dart';
@@ -790,6 +793,97 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return null;
   }
 
+  /// Returns the children (original points or clusters) of a cluster
+  /// (on the next zoom level) given its id (cluster_id value from
+  /// feature properties) from a GeoJsonSource.
+  /// Requires configuring the source as a cluster by calling
+  /// GeoJsonSource.Builder#cluster(boolean).
+  /// Params:
+  /// [sourceId] - GeoJsonSource identifier.
+  /// [cluster] - cluster from which to retrieve children from
+  @override
+  Future<List<Feature>?> getGeoJsonClusterChildren({
+    required String sourceId,
+    required Feature cluster,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "cluster": jsonEncode(cluster.toMap()),
+      };
+
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.getGeoJsonClusterChildren, args);
+
+      if (result == null || result.runtimeType != List<Object?>) return null;
+
+      final features = List<Feature>.empty(growable: true);
+
+      for (final item in result) {
+        features.add(Feature.fromArgs(item));
+      }
+
+      return features;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "getGeoJsonClusterChildren",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Returns all the leaves (original points) of a cluster
+  /// (given its cluster_id) from a GeoJsonSource, with pagination support:
+  /// limit is the number of leaves to return (set to Infinity for all points),
+  /// and offset is the amount of points to skip (for pagination).
+  ///
+  /// Requires configuring the source as a cluster by calling
+  /// GeoJsonSource.Builder#cluster(boolean).
+  /// Params:
+  /// [sourceId] - GeoJsonSource identifier.
+  /// [cluster] - Cluster from which to retrieve leaves from
+  /// [limit] - The number of points to return from the query,
+  /// set to maximum for all points). Defaults to 10.
+  /// [offset] - The amount of points to skip. Defaults to 0.
+  @override
+  Future<List<Feature>?> getGeoJsonClusterLeaves({
+    required String sourceId,
+    required Feature cluster,
+    int limit = 10,
+    int offset = 0,
+  }) async {
+    try {
+      final args = <String, dynamic>{
+        "sourceId": sourceId,
+        "cluster": jsonEncode(cluster.toMap()),
+        "limit": limit,
+        "offset": offset,
+      };
+
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.getGeoJsonClusterLeaves, args);
+
+      if (result == null || result.runtimeType != List<Object?>) return null;
+
+      final features = List<Feature>.empty(growable: true);
+
+      for (final item in result) {
+        features.add(Feature.fromArgs(item));
+      }
+
+      return features;
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "getGeoJsonClusterLeaves",
+        message: e,
+      );
+    }
+    return null;
+  }
+
   /// Update the state map of a feature within a style source.
   /// Update entries in the state map of a given feature within a style source.
   /// Only entries listed in the state map will be updated. An entry in the
@@ -1149,7 +1243,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
   Future<ScreenCoordinate?> pixelForCoordinate(Point coordinate) async {
     try {
       final result = await _channel.invokeMethod<dynamic>(
-          Methods.coordinateForPixel, coordinate.toMap());
+          Methods.pixelForCoordinate, coordinate.toMap());
 
       if (result != null) {
         final screenCoordinate = ScreenCoordinate.fromArgs(result);
@@ -1189,7 +1283,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
       final args = coordinates.map((e) => e.toMap()).toList();
 
       final result = await _channel.invokeMethod<dynamic>(
-          Methods.coordinatesForPixels, args);
+          Methods.pixelsForCoordinates, args);
 
       if (result != null && result is List) {
         final screenCoordinates =

@@ -62,6 +62,7 @@ class Methods {
   static const moveStyleLayerAt = "moveStyleLayerAt";
 
   static const getGeoJsonClusterChildren = "getGeoJsonClusterChildren";
+  static const getGeoJsonClusterLeaves = "getGeoJsonClusterLeaves";
   static const getFeatureState = "getFeatureState";
   static const setFeatureState = "setFeatureState";
   static const removeFeatureState = "removeFeatureState";

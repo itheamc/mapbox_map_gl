@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'utils/enums.dart';
 import 'utils/listeners.dart';
 import 'utils/queried_feature.dart';
@@ -10,7 +11,7 @@ import 'utils/screen_coordinate.dart';
 
 import 'mapbox_map.dart';
 import 'style_images/style_image.dart';
-
+import 'utils/feature.dart';
 import 'layers/layer.dart';
 import 'sources/source.dart';
 import 'utils/camera_position.dart';
@@ -202,6 +203,39 @@ abstract class MapboxMapController with Listeners {
   Future<List<QueriedFeature>?> queryRenderedFeatures({
     required RenderedQueryGeometry geometry,
     required RenderedQueryOptions queryOptions,
+  });
+
+  /// Returns the children (original points or clusters) of a cluster
+  /// (on the next zoom level) given its id (cluster_id value from
+  /// feature properties) from a GeoJsonSource.
+  /// Requires configuring the source as a cluster by calling
+  /// GeoJsonSource.Builder#cluster(boolean).
+  /// Params:
+  /// [sourceId] - GeoJsonSource identifier.
+  /// [cluster] - cluster from which to retrieve children from
+  Future<List<Feature>?> getGeoJsonClusterChildren({
+    required String sourceId,
+    required Feature cluster,
+  });
+
+  /// Returns all the leaves (original points) of a cluster
+  /// (given its cluster_id) from a GeoJsonSource, with pagination support:
+  /// limit is the number of leaves to return (set to Infinity for all points),
+  /// and offset is the amount of points to skip (for pagination).
+  ///
+  /// Requires configuring the source as a cluster by calling
+  /// GeoJsonSource.Builder#cluster(boolean).
+  /// Params:
+  /// [sourceId] - GeoJsonSource identifier.
+  /// [cluster] - Cluster from which to retrieve leaves from
+  /// [limit] - The number of points to return from the query,
+  /// set to maximum for all points). Defaults to 10.
+  /// [offset] - The amount of points to skip. Defaults to 0.
+  Future<List<Feature>?> getGeoJsonClusterLeaves({
+    required String sourceId,
+    required Feature cluster,
+    int limit = 10,
+    int offset = 0,
   });
 
   /// Update the state map of a feature within a style source.

@@ -12,6 +12,7 @@ import com.itheamc.mapbox_map_gl.utils.*
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.ExpectedFactory
 import com.mapbox.bindgen.None
+import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
@@ -950,7 +951,7 @@ internal class MapboxMapGlControllerImpl(
      */
     @OptIn(MapboxExperimental::class)
     override fun addStyleModel(modelId: String, modelUri: String): Expected<String, None> {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             style!!.addStyleModel(modelId, modelUri)
         } else {
             ExpectedFactory.createError("Style is null!")
@@ -962,7 +963,7 @@ internal class MapboxMapGlControllerImpl(
      */
     @OptIn(MapboxExperimental::class)
     override fun hasStyleModel(modelId: String): Boolean {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             style!!.hasStyleModel(modelId)
         } else {
             false
@@ -974,7 +975,7 @@ internal class MapboxMapGlControllerImpl(
      */
     @OptIn(MapboxExperimental::class)
     override fun removeStyleModel(modelId: String): Expected<String, None> {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             style!!.removeStyleModel(modelId)
         } else {
             ExpectedFactory.createError("Style is null!")
@@ -986,7 +987,7 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun setStyleSourceProperty(args: Map<*, *>): Expected<String, None> {
 
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val sourceId = args["sourceId"] as String
             val property = args["property"] as String
             val value = ValueHelper.toValue(args["value"])
@@ -1007,7 +1008,7 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun setStyleSourceProperties(args: Map<*, *>): Expected<String, None> {
 
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val sourceId = args["sourceId"] as String
             val properties = args["properties"] as Map<*, *>
 
@@ -1028,7 +1029,7 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun setStyleLayerProperty(args: Map<*, *>): Expected<String, None> {
 
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val layerId = args["layerId"] as String
             val property = args["property"] as String
             val value = ValueHelper.toValue(args["value"])
@@ -1049,7 +1050,7 @@ internal class MapboxMapGlControllerImpl(
      */
     override fun setStyleLayerProperties(args: Map<*, *>): Expected<String, None> {
 
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val layerId = args["layerId"] as String
             val properties = args["properties"] as Map<*, *>
 
@@ -1069,7 +1070,7 @@ internal class MapboxMapGlControllerImpl(
      * Method to move style layer above given layer
      */
     override fun moveStyleLayerAbove(args: Map<*, *>): Expected<String, None> {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val layerId = args["layerId"] as String
             val belowLayerId = args["belowLayerId"] as String
 
@@ -1091,10 +1092,9 @@ internal class MapboxMapGlControllerImpl(
      * Method to move style layer below given layer
      */
     override fun moveStyleLayerBelow(args: Map<*, *>): Expected<String, None> {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val layerId = args["layerId"] as String
             val aboveLayerId = args["aboveLayerId"] as String
-
             style!!.moveStyleLayer(
                 layerId = layerId,
                 layerPosition = LayerPosition(
@@ -1113,7 +1113,7 @@ internal class MapboxMapGlControllerImpl(
      * Method to move style layer at specific position
      */
     override fun moveStyleLayerAt(args: Map<*, *>): Expected<String, None> {
-        return if (style != null) {
+        return if (style != null && style!!.isValid()) {
             val layerId = args["layerId"] as String
             val at = args["at"] as Int
 
@@ -1198,6 +1198,64 @@ internal class MapboxMapGlControllerImpl(
 
         } else {
             queryFeaturesCallback.run(ExpectedFactory.createError("Invalid mapbox"))
+        }
+    }
+
+    /**
+     * Method to get geo json cluster children.
+     */
+    override fun getGeoJsonClusterChildren(
+        args: Map<*, *>,
+        queryFeatureExtensionCallback: QueryFeatureExtensionCallback
+    ) {
+        if (mapboxMap.isValid()) {
+            val sourceId = args["sourceId"] as String
+            val cluster = args["cluster"] as String
+
+            mapboxMap.getGeoJsonClusterChildren(
+                sourceIdentifier = sourceId,
+                cluster = Feature.fromJson(cluster),
+                callback = queryFeatureExtensionCallback
+            )
+
+        } else {
+            queryFeatureExtensionCallback.run(ExpectedFactory.createError("Invalid mapbox"))
+        }
+    }
+
+    /**
+     * Method to get geo json cluster leaves.
+     */
+    override fun getGeoJsonClusterLeaves(
+        args: Map<*, *>,
+        queryFeatureExtensionCallback: QueryFeatureExtensionCallback
+    ) {
+        if (mapboxMap.isValid()) {
+            val sourceId = args["sourceId"] as String
+            val cluster = args["cluster"] as String
+            val limit = when (val v = args["limit"]) {
+                is Long -> v
+                is Int -> v.toLong()
+                is Double -> v.toLong()
+                else -> 10L
+            }
+            val offset = when (val v = args["offset"]) {
+                is Long -> v
+                is Int -> v.toLong()
+                is Double -> v.toLong()
+                else -> 0L
+            }
+
+            mapboxMap.getGeoJsonClusterLeaves(
+                sourceIdentifier = sourceId,
+                cluster = Feature.fromJson(cluster),
+                limit = limit,
+                offset = offset,
+                callback = queryFeatureExtensionCallback
+            )
+
+        } else {
+            queryFeatureExtensionCallback.run(ExpectedFactory.createError("Invalid mapbox"))
         }
     }
 
@@ -2020,42 +2078,82 @@ internal class MapboxMapGlControllerImpl(
             Methods.querySourceFeatures -> {
                 args = args as Map<*, *>
                 querySourceFeatures(args) {
-                    it.onValue { list ->
-                        val queriedFeatureResult = list.map { qf ->
-                            mapOf(
-                                "source" to qf.source,
-                                "sourceLayer" to qf.sourceLayer,
-                                "feature" to qf.feature.toJson(),
-                                "state" to qf.state.toJson()
-                            )
+                    it
+                        .onValue { list ->
+                            val queriedFeatureResult = list.map { qf ->
+                                mapOf(
+                                    "source" to qf.source,
+                                    "sourceLayer" to qf.sourceLayer,
+                                    "feature" to qf.feature.toJson(),
+                                    "state" to qf.state.toJson()
+                                )
+                            }
+                            result.success(queriedFeatureResult)
                         }
-                        result.success(queriedFeatureResult)
-                    }
-
-                    it.onError { err ->
-                        result.error("QUERY_SOURCE_FEATURES_ERROR", err, null)
-                    }
+                        .onError { err ->
+                            result.error("QUERY_SOURCE_FEATURES_ERROR", err, null)
+                        }
                 }
 
             }
             Methods.queryRenderedFeatures -> {
                 args = args as Map<*, *>
                 queryRenderedFeatures(args) {
-                    it.onValue { list ->
-                        val queriedFeatureResult = list.map { qf ->
-                            mapOf(
-                                "source" to qf.source,
-                                "sourceLayer" to qf.sourceLayer,
-                                "feature" to qf.feature.toJson(),
-                                "state" to qf.state.toJson()
-                            )
+                    it
+                        .onValue { list ->
+                            val queriedFeatureResult = list.map { qf ->
+                                mapOf(
+                                    "source" to qf.source,
+                                    "sourceLayer" to qf.sourceLayer,
+                                    "feature" to qf.feature.toJson(),
+                                    "state" to qf.state.toJson()
+                                )
+                            }
+                            result.success(queriedFeatureResult)
                         }
-                        result.success(queriedFeatureResult)
-                    }
+                        .onError { err ->
+                            result.error("QUERY_RENDERED_FEATURES_ERROR", err, null)
+                        }
+                }
 
-                    it.onError { err ->
-                        result.error("QUERY_RENDERED_FEATURES_ERROR", err, null)
-                    }
+            }
+            Methods.getGeoJsonClusterChildren -> {
+                args = args as Map<*, *>
+                getGeoJsonClusterChildren(args) {
+                    it
+                        .onValue { featureExtensionValue ->
+
+                            val features = featureExtensionValue.featureCollection
+
+                            val clusterChildrenAsMap = features?.map { f ->
+                                f.toJson()
+                            }
+
+                            result.success(clusterChildrenAsMap)
+                        }
+                        .onError { err ->
+                            result.error("GET_GEO_JSON_CLUSTER_CHILDREN_ERROR", err, null)
+                        }
+                }
+
+            }
+            Methods.getGeoJsonClusterLeaves -> {
+                args = args as Map<*, *>
+                getGeoJsonClusterLeaves(args) {
+                    it
+                        .onValue { featureExtensionValue ->
+
+                            val features = featureExtensionValue.featureCollection
+
+                            val clusterChildrenAsMap = features?.map { f ->
+                                f.toJson()
+                            }
+
+                            result.success(clusterChildrenAsMap)
+                        }
+                        .onError { err ->
+                            result.error("GET_GEO_JSON_CLUSTER_LEAVES_ERROR", err, null)
+                        }
                 }
 
             }

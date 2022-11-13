@@ -33,10 +33,9 @@ class Feature {
   /// [args] arguments send from the native platform
   factory Feature.fromArgs(dynamic args) {
     final decodedArgs = jsonDecode(args);
-
     return Feature._(
       decodedArgs['type'],
-      decodedArgs['bbox'],
+      null,
       decodedArgs['id'],
       decodedArgs['geometry'],
       decodedArgs['properties'],
@@ -46,7 +45,7 @@ class Feature {
   /// Method to convert Feature object to map
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "id": type,
+      "id": id,
       "type": type,
       "geometry": geometry,
       "properties": properties,

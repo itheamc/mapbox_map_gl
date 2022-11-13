@@ -4,6 +4,7 @@ import com.itheamc.mapbox_map_gl.utils.CameraPosition
 import com.mapbox.bindgen.Expected
 import com.mapbox.bindgen.None
 import com.mapbox.geojson.Point
+import com.mapbox.maps.QueryFeatureExtensionCallback
 import com.mapbox.maps.QueryFeatureStateCallback
 import com.mapbox.maps.QueryFeaturesCallback
 import com.mapbox.maps.ScreenCoordinate
@@ -260,6 +261,22 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to query the map for rendered features.
      */
     fun queryRenderedFeatures(args: Map<*, *>, queryFeaturesCallback: QueryFeaturesCallback)
+
+    /**
+     * Method to get geo json cluster leaves.
+     */
+    fun getGeoJsonClusterLeaves(
+        args: Map<*, *>,
+        queryFeatureExtensionCallback: QueryFeatureExtensionCallback
+    )
+
+    /**
+     * Method to get geo json cluster children.
+     */
+    fun getGeoJsonClusterChildren(
+        args: Map<*, *>,
+        queryFeatureExtensionCallback: QueryFeatureExtensionCallback
+    )
 
     /**
      * Method to update the state map of a feature within a style source.

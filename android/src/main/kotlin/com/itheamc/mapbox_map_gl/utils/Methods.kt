@@ -79,6 +79,8 @@ object Methods {
     const val querySourceFeatures = "querySourceFeatures"
     const val queryRenderedFeatures = "queryRenderedFeatures"
 
+    const val getGeoJsonClusterChildren = "getGeoJsonClusterChildren"
+    const val getGeoJsonClusterLeaves = "getGeoJsonClusterLeaves"
     const val loadStyleJson = "loadStyleJson"
     const val reduceMemoryUse = "reduceMemoryUse"
     const val setMapMemoryBudget = "setMapMemoryBudget"
