@@ -90,4 +90,5 @@ object Methods {
     const val getMapSize = "getMapSize"
     const val setViewportMode = "setViewportMode"
     const val setCamera = "setCamera"
+    const val loadStyleUri = "loadStyleUri"
 }

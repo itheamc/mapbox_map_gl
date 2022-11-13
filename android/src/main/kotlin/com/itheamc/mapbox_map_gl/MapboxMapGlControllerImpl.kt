@@ -256,30 +256,45 @@ internal class MapboxMapGlControllerImpl(
     init {
         methodChannel.setMethodCallHandler(this)
         addMapRelatedListeners()
-        loadStyleUri()
+        loadStyleUri(null)
     }
 
 
     /**
      * Method to load the style uri
      */
-    override fun loadStyleUri() {
+    override fun loadStyleUri(styleUri: String?) {
         if (!mapboxMap.isValid()) return
 
-        val mapStyle = creationParams?.get("style") as String?
+        if (styleUri == null) {
+            val mapStyle = creationParams?.get("style") as String?
 
-        mapboxMap.loadStyleUri(
-            StyleHelper.fromArgs(mapStyle),
-            styleTransitionOptions = TransitionOptions
-                .Builder()
-                .duration(500L)
-                .delay(0)
-                .enablePlacementTransitions(false)
-                .build(),
-            onStyleLoaded = {
-                animateToInitialCameraPosition()
-            }
-        )
+            mapboxMap.loadStyleUri(
+                StyleHelper.fromArgs(mapStyle),
+                styleTransitionOptions = TransitionOptions
+                    .Builder()
+                    .duration(500L)
+                    .delay(0)
+                    .enablePlacementTransitions(false)
+                    .build(),
+                onStyleLoaded = {
+                    animateToInitialCameraPosition()
+                }
+            )
+        } else {
+            mapboxMap.loadStyleUri(
+                styleUri = styleUri,
+                styleTransitionOptions = TransitionOptions
+                    .Builder()
+                    .duration(500L)
+                    .delay(0)
+                    .enablePlacementTransitions(false)
+                    .build(),
+                onStyleLoaded = {
+                    animateToInitialCameraPosition()
+                }
+            )
+        }
     }
 
     /**
@@ -1620,36 +1635,41 @@ internal class MapboxMapGlControllerImpl(
         var args = call.arguments
 
         when (call.method) {
+            Methods.loadStyleUri -> {
+                args = args as String
+                loadStyleUri(args)
+                result.success(null)
+            }
             Methods.isSourceExist -> {
                 val sourceId = args as String
                 val isExist = style?.styleSourceExists(sourceId) ?: false
-                return result.success(isExist)
+                result.success(isExist)
             }
             Methods.isLayerExist -> {
                 val layerId = args as String
                 val isExist = style?.styleLayerExists(layerId) ?: false
-                return result.success(isExist)
+                result.success(isExist)
             }
             Methods.isStyleImageExist -> {
                 val imageId = args as String
                 val isExist = style?.hasStyleImage(imageId) ?: false
-                return result.success(isExist)
+                result.success(isExist)
             }
             Methods.isStyleModelExist -> {
                 val modelId = args as String
                 val isExist = hasStyleModel(modelId)
-                return result.success(isExist)
+                result.success(isExist)
             }
             Methods.toggleStyle -> {
                 args = args as List<*>
                 val selectedStyle = toggleStyle(args)
-                return result.success(selectedStyle)
+                result.success(selectedStyle)
             }
             Methods.animateCameraPosition -> {
                 val cameraPosition: CameraPosition = CameraPosition
                     .fromArgs(args as Map<*, *>)
                 animateCameraPosition(cameraPosition)
-                return result.success(true)
+                result.success(true)
             }
             Methods.addGeoJsonSource -> {
                 args = args as Map<*, *>
@@ -1658,7 +1678,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = GeoJsonSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addVectorSource -> {
                 args = args as Map<*, *>
@@ -1667,7 +1687,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = VectorSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addRasterSource -> {
                 args = args as Map<*, *>
@@ -1676,7 +1696,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = RasterSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addRasterDemSource -> {
                 args = args as Map<*, *>
@@ -1685,7 +1705,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = RasterDemSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addImageSource -> {
                 args = args as Map<*, *>
@@ -1694,7 +1714,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = ImageSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addVideoSource -> {
                 args = args as Map<*, *>
@@ -1703,7 +1723,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = VideoSourceHelper.blockFromArgs(args)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addCircleLayer -> {
                 args = args as Map<*, *>
@@ -1716,7 +1736,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = CircleLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addLineLayer -> {
                 args = args as Map<*, *>
@@ -1729,7 +1749,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = LineLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addFillLayer -> {
                 args = args as Map<*, *>
@@ -1742,7 +1762,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = FillLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addSymbolLayer -> {
                 args = args as Map<*, *>
@@ -1755,7 +1775,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = SymbolLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addRasterLayer -> {
                 args = args as Map<*, *>
@@ -1768,7 +1788,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = RasterLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addSkyLayer -> {
                 args = args as Map<*, *>
@@ -1778,7 +1798,7 @@ internal class MapboxMapGlControllerImpl(
                     layerId = layerId,
                     block = SkyLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addFillExtrusionLayer -> {
                 args = args as Map<*, *>
@@ -1792,7 +1812,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = FillExtrusionLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addHeatmapLayer -> {
                 args = args as Map<*, *>
@@ -1806,7 +1826,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = HeatmapLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addHillShadeLayer -> {
                 args = args as Map<*, *>
@@ -1820,7 +1840,7 @@ internal class MapboxMapGlControllerImpl(
                     sourceId = sourceId,
                     block = HillShadeLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addBackgroundLayer -> {
                 args = args as Map<*, *>
@@ -1832,7 +1852,7 @@ internal class MapboxMapGlControllerImpl(
                     layerId = layerId,
                     block = BackgroundLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addLocationIndicatorLayer -> {
                 args = args as Map<*, *>
@@ -1844,7 +1864,7 @@ internal class MapboxMapGlControllerImpl(
                     layerId = layerId,
                     block = LocationIndicatorLayerHelper.blockFromArgs(layerProperties)
                 )
-                return result.success(true)
+                result.success(true)
             }
             Methods.addStyleImage -> {
                 addStyleImage(args as Map<*, *>)
@@ -2012,8 +2032,8 @@ internal class MapboxMapGlControllerImpl(
                         result.success(queriedFeatureResult)
                     }
 
-                    it.onError {
-                        result.success(null)
+                    it.onError { err ->
+                        result.error("QUERY_SOURCE_FEATURES_ERROR", err, null)
                     }
                 }
 
@@ -2033,8 +2053,8 @@ internal class MapboxMapGlControllerImpl(
                         result.success(queriedFeatureResult)
                     }
 
-                    it.onError {
-                        result.success(null)
+                    it.onError { err ->
+                        result.error("QUERY_RENDERED_FEATURES_ERROR", err, null)
                     }
                 }
 
@@ -2157,6 +2177,38 @@ internal class MapboxMapGlControllerImpl(
                     }
                     .onError {
                         result.error("PIXELS_4_COORDINATES_ERROR", it, null)
+                    }
+
+            }
+            Methods.getMapSize -> {
+                getMapSize()
+                    .onValue {
+                        result.success(mapOf("width" to it.width, "height" to it.height))
+                    }
+                    .onError {
+                        result.error("GET_SIZE_ERROR", it, null)
+                    }
+
+            }
+            Methods.setCamera -> {
+                args = args as Map<*, *>
+                setCamera(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("SET_CAMERA_ERROR", it, null)
+                    }
+
+            }
+            Methods.setViewportMode -> {
+                args = args as String
+                setViewportMode(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("SET_VIEW_PORT_MODE_ERROR", it, null)
                     }
 
             }

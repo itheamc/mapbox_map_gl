@@ -17,7 +17,7 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     /**
      * Method to load the style uri
      */
-    fun loadStyleUri()
+    fun loadStyleUri(styleUri: String?)
 
     /**
      * Method to load the style json

@@ -1,8 +1,12 @@
+import 'dart:ui';
+import 'utils/enums.dart';
 import 'utils/listeners.dart';
 import 'utils/queried_feature.dart';
 import 'utils/rendered_query_geometry.dart';
 import 'utils/rendered_query_options.dart';
 import 'utils/source_query_options.dart';
+import 'utils/point.dart';
+import 'utils/screen_coordinate.dart';
 
 import 'mapbox_map.dart';
 import 'style_images/style_image.dart';
@@ -248,6 +252,130 @@ abstract class MapboxMapController with Listeners {
     required String featureId,
     String? sourceLayerId,
   });
+
+  /// Will load a new map style asynchronous from the specified style json data.
+  /// [styleJson] - A style json data
+  Future<void> loadStyleJson(String styleJson);
+
+  /// Will load a new map style asynchronous from the specified style style uri.
+  /// [styleUri] - A style uri
+  Future<void> loadStyleUri(String styleUri);
+
+  /// Reduce memory use. Useful to call when the application
+  /// gets paused or sent to background.
+  Future<void> reduceMemoryUse();
+
+  /// Triggers a repaint of the map.
+  Future<void> triggerRepaint();
+
+  /// Set the map viewport mode
+  /// Params:
+  /// [viewportMode] - The map viewport mode to set
+  Future<void> setViewportMode(ViewportMode viewportMode);
+
+  /// The memory budget hint to be used by the map. The budget can be given
+  /// in tile units or in megabytes. A Map will do the best effort to keep
+  /// memory allocations for a non essential resources within the budget.
+  ///
+  /// The memory budget distribution and resource eviction logic is a subject
+  /// to change. Current implementation sets memory budget hint per data source.
+  ///
+  /// If null is set, the memory budget in tile units will be dynamically
+  /// calculated based on the current viewport size.
+  /// Params:
+  /// [budgetIn] - The memory budget hint to be used by the Map.
+  /// [value] - budget value
+  Future<void> setMapMemoryBudget(MapMemoryBudgetIn budgetIn, int value);
+
+  /// Gets the size of the map.
+  /// Returns:
+  /// [Size] - The size of the map in pixels
+  Future<Size?> getMapSize();
+
+  /// Changes the map view by any combination of center, zoom, bearing,
+  /// and pitch, without an animated transition. The map will retain its
+  /// current values for any details not passed via the camera options argument.
+  /// It is not guaranteed that the provided CameraOptions will be set, the
+  /// map may apply constraints resulting in a different CameraState.
+  /// Note: - animationOptions has no effect on it.
+  /// Params:
+  /// [cameraPosition] - New camera position
+  Future<void> setCamera(CameraPosition cameraPosition);
+
+  /// Calculate a geographical coordinate(i.e., longitude-latitude pair) that
+  /// corresponds to a screen coordinate.
+  /// The screen coordinate is in MapOptions.size platform pixels relative to
+  /// the top left of the map (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// [pixel] - A screen coordinate represented by x y coordinates.
+  /// Returns:
+  /// Returns a geographical coordinate [Point] corresponding to the x y
+  /// coordinates on the screen.
+  Future<Point?> coordinateForPixel(ScreenCoordinate pixel);
+
+  /// Calculate geographical coordinates(i.e., longitude-latitude pair)
+  /// that corresponds to screen coordinates.
+  /// The screen coordinates are in MapOptions.size platform pixels relative
+  /// to the top left of the map (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// [pixels] - A batch of screen coordinates on the screen in pixels.
+  /// Returns:
+  /// Returns a batch of geographical coordinates [List<Point>] corresponding
+  /// to the screen coordinates on the screen.
+  Future<List<Point>?> coordinatesForPixels(List<ScreenCoordinate> pixels);
+
+  /// Calculate a screen coordinate that corresponds to a geographical
+  /// coordinate (i.e., longitude-latitude pair).
+  /// The screen coordinate is in pixels relative to the top left of the map
+  /// (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// If the screen coordinate is outside of the bounds of MapView the returned
+  /// screen coordinate contains -1 for both coordinates.
+  ///
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// coordinate - A geographical coordinate on the map to convert
+  /// to a screen coordinate.
+  /// Returns:
+  /// Returns a screen coordinate on the screen in pixels.
+  /// If the screen coordinate is outside of the bounds of MapView the
+  /// returned screen coordinate contains -1 for both coordinates.
+  Future<ScreenCoordinate?> pixelForCoordinate(Point coordinate);
+
+  /// Calculate screen coordinates that corresponds to geographical coordinates
+  /// (i.e., longitude-latitude pair).
+  /// The screen coordinates are in pixels relative to the top left of the map
+  /// (not of the whole screen).
+  ///
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  ///
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// coordinates - A batch of geographical coordinates on the map to convert
+  /// to screen coordinates.
+  /// Returns:
+  /// Returns a batch of screen coordinates on the screen in pixels.
+  Future<List<ScreenCoordinate>?> pixelsForCoordinates(List<Point> coordinates);
 
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);

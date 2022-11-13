@@ -19,6 +19,12 @@ typedef OnSourceDataLoadedListener = void Function(Map<String, dynamic> args);
 /// [sourceId] - Id of the removed source
 typedef OnSourceRemovedListener = void Function(String sourceId);
 
+/// Type definition for onRenderFrameStarted listener
+typedef OnRenderFrameStartedListener = void Function();
+
+/// Type definition for onRenderFrameFinished listener
+typedef OnRenderFrameFinishedListener = void Function();
+
 /// Listeners Mixin
 /// Added By Amit Chaudhary, 2022/10/15
 mixin Listeners {
@@ -39,18 +45,30 @@ mixin Listeners {
   void setOnSourceRemovedListener(
       OnSourceRemovedListener onSourceRemovedListener);
 
+  /// Method to set nRenderFrameStarted listener
+  void setOnRenderFrameStartedListener(
+      OnRenderFrameStartedListener onRenderFrameStartedListener);
+
+  /// Method to set nRenderFrameFinished listener
+  void setOnRenderFrameFinishedListener(
+      OnRenderFrameFinishedListener onRenderFrameFinishedListener);
+
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
   /// [onCameraChangeListener] - Listener for onCameraChange
   /// [onSourceAddedListener] - Listener for onSourceAdded
   /// [onSourceDataLoadedListener] - Listener for onSourceDataLoaded
   /// [onSourceRemovedListener] - Listener for onSourceRemoved
+  /// [onRenderFrameStartedListener] - Listener for onRenderFrameStarted
+  /// [onRenderFrameFinishedListener] - Listener for onRenderFrameFinished
   void addListeners({
     OnMapIdleListener? onMapIdleListener,
     OnCameraChangeListener? onCameraChangeListener,
     OnSourceAddedListener? onSourceAddedListener,
     OnSourceDataLoadedListener? onSourceDataLoadedListener,
     OnSourceRemovedListener? onSourceRemovedListener,
+    OnRenderFrameStartedListener? onRenderFrameStartedListener,
+    OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
   });
 
   /// Method to remove listeners

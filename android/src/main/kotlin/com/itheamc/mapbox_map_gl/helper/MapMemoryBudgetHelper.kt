@@ -19,16 +19,15 @@ internal object MapMemoryBudgetHelper {
      * {args} - > Map<*, *> data
      */
     fun fromArgs(args: Map<*, *>?): MapMemoryBudget? {
-
         return args?.let {
-            val budgetIn = it["budgetIn"] as String
-            val budget = when (val b = it["budget"]) {
+            val budgetIn = it["budget_in"] as String
+            val budget = when (val b = it["value"]) {
                 is Double -> b.toLong()
                 is Int -> b.toLong()
                 else -> b as Long
             }
 
-            if (budgetIn == "mega_bytes") {
+            if (budgetIn.lowercase() == "megabytes") {
                 MapMemoryBudget.valueOf(MapMemoryBudgetInMegabytes(budget))
             } else {
                 MapMemoryBudget.valueOf(MapMemoryBudgetInTiles(budget))

@@ -16,6 +16,8 @@ class Methods {
   static const onSourceAdded = "onSourceAdded";
   static const onSourceDataLoaded = "onSourceDataLoaded";
   static const onSourceRemoved = "onSourceRemoved";
+  static const onRenderFrameStarted = "onRenderFrameStarted";
+  static const onRenderFrameFinished = "onRenderFrameFinished";
 
   /// Methods triggered from the flutter side
   static const animateCameraPosition = "animateCameraPosition";
@@ -65,4 +67,17 @@ class Methods {
   static const removeFeatureState = "removeFeatureState";
   static const querySourceFeatures = "querySourceFeatures";
   static const queryRenderedFeatures = "queryRenderedFeatures";
+
+  static const loadStyleJson = "loadStyleJson";
+  static const reduceMemoryUse = "reduceMemoryUse";
+  static const setMapMemoryBudget = "setMapMemoryBudget";
+  static const triggerRepaint = "triggerRepaint";
+  static const coordinateForPixel = "coordinateForPixel";
+  static const coordinatesForPixels = "coordinatesForPixels";
+  static const pixelForCoordinate = "pixelForCoordinate";
+  static const pixelsForCoordinates = "pixelsForCoordinates";
+  static const getMapSize = "getMapSize";
+  static const setViewportMode = "setViewportMode";
+  static const setCamera = "setCamera";
+  static const loadStyleUri = "loadStyleUri";
 }

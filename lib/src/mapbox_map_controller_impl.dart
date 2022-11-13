@@ -1,7 +1,10 @@
 import 'package:flutter/services.dart';
+import 'utils/point.dart';
+import 'utils/enums.dart';
 import 'utils/queried_feature.dart';
 import 'utils/rendered_query_geometry.dart';
 import 'utils/rendered_query_options.dart';
+import 'utils/screen_coordinate.dart';
 import 'utils/source_query_options.dart';
 import 'utils/listeners.dart';
 import 'utils/log_util.dart';
@@ -67,6 +70,12 @@ class MapboxMapControllerImpl extends MapboxMapController {
       case Methods.onSourceRemoved:
         _handlingOnSourceRemovedListener(args);
         break;
+      case Methods.onRenderFrameStarted:
+        _handlingOnRenderFrameStartedListener(args);
+        break;
+      case Methods.onRenderFrameFinished:
+        _handlingOnRenderFrameFinishedListener(args);
+        break;
       default:
     }
   }
@@ -89,6 +98,14 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
   /// List of OnSourceRemovedListener
   final List<OnSourceRemovedListener> _onSourceRemovedListeners =
+      List.empty(growable: true);
+
+  /// List of OnRenderFrameStartedListener
+  final List<OnRenderFrameStartedListener> _onRenderFrameStartedListeners =
+      List.empty(growable: true);
+
+  /// List of OnRenderFrameFinishedListener
+  final List<OnRenderFrameFinishedListener> _onRenderFrameFinishedListeners =
       List.empty(growable: true);
 
   /// Method to toggle the map style between two styles
@@ -878,6 +895,317 @@ class MapboxMapControllerImpl extends MapboxMapController {
     return null;
   }
 
+  /// Will load a new map style asynchronous from the specified style json data.
+  /// [styleJson] - A style json data
+  @override
+  Future<void> loadStyleJson(String styleJson) async {
+    try {
+      await _channel.invokeMethod<dynamic>(Methods.loadStyleJson, styleJson);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "loadStyleJson",
+        message: e,
+      );
+    }
+  }
+
+  /// Will load a new map style asynchronous from the specified style style uri.
+  /// [styleUri] - A style uri
+  @override
+  Future<void> loadStyleUri(String styleUri) async {
+    try {
+      await _channel.invokeMethod<dynamic>(Methods.loadStyleUri, styleUri);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "loadStyleUri",
+        message: e,
+      );
+    }
+  }
+
+  /// Reduce memory use. Useful to call when the application
+  /// gets paused or sent to background.
+  @override
+  Future<void> reduceMemoryUse() async {
+    try {
+      await _channel.invokeMethod<dynamic>(Methods.reduceMemoryUse, null);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "reduceMemoryUse",
+        message: e,
+      );
+    }
+  }
+
+  /// Triggers a repaint of the map.
+  @override
+  Future<void> triggerRepaint() async {
+    try {
+      await _channel.invokeMethod<dynamic>(Methods.triggerRepaint, null);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "triggerRepaint",
+        message: e,
+      );
+    }
+  }
+
+  /// Set the map viewport mode
+  /// Params:
+  /// [viewportMode] - The map viewport mode to set
+  @override
+  Future<void> setViewportMode(ViewportMode viewportMode) async {
+    try {
+      final args =
+          viewportMode == ViewportMode.defaultMode ? "DEFAULT" : "FLIPPED_Y";
+
+      await _channel.invokeMethod<dynamic>(Methods.setViewportMode, args);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setViewportMode",
+        message: e,
+      );
+    }
+  }
+
+  /// The memory budget hint to be used by the map. The budget can be given
+  /// in tile units or in megabytes. A Map will do the best effort to keep
+  /// memory allocations for a non essential resources within the budget.
+  ///
+  /// The memory budget distribution and resource eviction logic is a subject
+  /// to change. Current implementation sets memory budget hint per data source.
+  ///
+  /// If null is set, the memory budget in tile units will be dynamically
+  /// calculated based on the current viewport size.
+  /// Params:
+  /// [budgetIn] - The memory budget hint to be used by the Map.
+  /// [value] - budget value
+  @override
+  Future<void> setMapMemoryBudget(MapMemoryBudgetIn budgetIn, int value) async {
+    try {
+      final args = <String, dynamic>{
+        "budget_in": budgetIn.name,
+        "value": value,
+      };
+
+      await _channel.invokeMethod<dynamic>(Methods.setMapMemoryBudget, args);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setMapMemoryBudget",
+        message: e,
+      );
+    }
+  }
+
+  /// Gets the size of the map.
+  /// Returns:
+  /// [Size] - The size of the map in pixels
+  @override
+  Future<Size?> getMapSize() async {
+    try {
+      final result =
+          await _channel.invokeMethod<dynamic>(Methods.getMapSize, null);
+
+      if (result != null &&
+          result['width'] != null &&
+          result['height'] != null) {
+        final size =
+            Size(result['width'] as double, result['height'] as double);
+
+        return size;
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "getMapSize",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Changes the map view by any combination of center, zoom, bearing,
+  /// and pitch, without an animated transition. The map will retain its
+  /// current values for any details not passed via the camera options argument.
+  /// It is not guaranteed that the provided CameraOptions will be set, the
+  /// map may apply constraints resulting in a different CameraState.
+  /// Note: - animationOptions has no effect on it.
+  /// Params:
+  /// [cameraPosition] - New camera position
+  @override
+  Future<void> setCamera(CameraPosition cameraPosition) async {
+    try {
+      await _channel.invokeMethod<dynamic>(
+          Methods.setCamera, cameraPosition.toMap());
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "setCamera",
+        message: e,
+      );
+    }
+  }
+
+  /// Calculate a geographical coordinate(i.e., longitude-latitude pair) that
+  /// corresponds to a screen coordinate.
+  /// The screen coordinate is in MapOptions.size platform pixels relative to
+  /// the top left of the map (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// [pixel] - A screen coordinate represented by x y coordinates.
+  /// Returns:
+  /// Returns a geographical coordinate [Point] corresponding to the x y
+  /// coordinates on the screen.
+  @override
+  Future<Point?> coordinateForPixel(ScreenCoordinate pixel) async {
+    try {
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.coordinateForPixel, pixel.toMap());
+
+      if (result != null) {
+        final point = Point.fromArgs(result);
+        return point;
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "coordinateForPixel",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Calculate geographical coordinates(i.e., longitude-latitude pair)
+  /// that corresponds to screen coordinates.
+  /// The screen coordinates are in MapOptions.size platform pixels relative
+  /// to the top left of the map (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// [pixels] - A batch of screen coordinates on the screen in pixels.
+  /// Returns:
+  /// Returns a batch of geographical coordinates [List<Point>] corresponding
+  /// to the screen coordinates on the screen.
+  @override
+  Future<List<Point>?> coordinatesForPixels(
+      List<ScreenCoordinate> pixels) async {
+    try {
+      final args = pixels.map((e) => e.toMap()).toList();
+
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.coordinatesForPixels, args);
+
+      if (result != null && result is List) {
+        final points = result.map((e) => Point.fromArgs(e)).toList();
+        return points;
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "coordinatesForPixels",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Calculate a screen coordinate that corresponds to a geographical
+  /// coordinate (i.e., longitude-latitude pair).
+  /// The screen coordinate is in pixels relative to the top left of the map
+  /// (not of the whole screen).
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  /// If the screen coordinate is outside of the bounds of MapView the returned
+  /// screen coordinate contains -1 for both coordinates.
+  ///
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// coordinate - A geographical coordinate on the map to convert
+  /// to a screen coordinate.
+  /// Returns:
+  /// Returns a screen coordinate on the screen in pixels.
+  /// If the screen coordinate is outside of the bounds of MapView the
+  /// returned screen coordinate contains -1 for both coordinates.
+  @override
+  Future<ScreenCoordinate?> pixelForCoordinate(Point coordinate) async {
+    try {
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.coordinateForPixel, coordinate.toMap());
+
+      if (result != null) {
+        final screenCoordinate = ScreenCoordinate.fromArgs(result);
+        return screenCoordinate;
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "pixelForCoordinate",
+        message: e,
+      );
+    }
+    return null;
+  }
+
+  /// Calculate screen coordinates that corresponds to geographical coordinates
+  /// (i.e., longitude-latitude pair).
+  /// The screen coordinates are in pixels relative to the top left of the map
+  /// (not of the whole screen).
+  ///
+  /// Map must be fully loaded for getting an altitude-compliant result
+  /// if using 3D terrain.
+  ///
+  /// This API isn't supported by Globe projection and will return a no-op
+  /// result matching the center of the screen.
+  /// See com.mapbox.maps.extension.style.projection.generated.setProjection
+  /// and com.mapbox.maps.extension.style.projection.generated.getProjection
+  /// Params:
+  /// coordinates - A batch of geographical coordinates on the map to convert
+  /// to screen coordinates.
+  /// Returns:
+  /// Returns a batch of screen coordinates on the screen in pixels.
+  @override
+  Future<List<ScreenCoordinate>?> pixelsForCoordinates(
+      List<Point> coordinates) async {
+    try {
+      final args = coordinates.map((e) => e.toMap()).toList();
+
+      final result = await _channel.invokeMethod<dynamic>(
+          Methods.coordinatesForPixels, args);
+
+      if (result != null && result is List) {
+        final screenCoordinates =
+            result.map((e) => ScreenCoordinate.fromArgs(e)).toList();
+        return screenCoordinates;
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "pixelsForCoordinates",
+        message: e,
+      );
+    }
+    return null;
+  }
+
   /// Method to add onMapIdle listener
   @override
   void setOnMapIdleListener(OnMapIdleListener onMapIdleListener) {
@@ -911,6 +1239,20 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onSourceRemovedListeners.add(onSourceRemovedListener);
   }
 
+  /// Method to add onRenderFrameFinished listener
+  @override
+  void setOnRenderFrameStartedListener(
+      OnRenderFrameStartedListener onRenderFrameStartedListener) {
+    _onRenderFrameStartedListeners.add(onRenderFrameStartedListener);
+  }
+
+  /// Method to add onRenderFrameFinished listener
+  @override
+  void setOnRenderFrameFinishedListener(
+      OnRenderFrameFinishedListener onRenderFrameFinishedListener) {
+    _onRenderFrameFinishedListeners.add(onRenderFrameFinishedListener);
+  }
+
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
   /// [onCameraChangeListener] - Listener for onCameraChange
@@ -924,6 +1266,8 @@ class MapboxMapControllerImpl extends MapboxMapController {
     OnSourceAddedListener? onSourceAddedListener,
     OnSourceDataLoadedListener? onSourceDataLoadedListener,
     OnSourceRemovedListener? onSourceRemovedListener,
+    OnRenderFrameStartedListener? onRenderFrameStartedListener,
+    OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
   }) {
     if (onMapIdleListener != null) {
       _onMapIdleListeners.add(onMapIdleListener);
@@ -944,6 +1288,14 @@ class MapboxMapControllerImpl extends MapboxMapController {
     if (onSourceRemovedListener != null) {
       _onSourceRemovedListeners.add(onSourceRemovedListener);
     }
+
+    if (onRenderFrameStartedListener != null) {
+      _onRenderFrameStartedListeners.add(onRenderFrameStartedListener);
+    }
+
+    if (onRenderFrameFinishedListener != null) {
+      _onRenderFrameFinishedListeners.add(onRenderFrameFinishedListener);
+    }
   }
 
   /// Method to remove all listeners
@@ -954,6 +1306,8 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onSourceAddedListeners.clear();
     _onSourceDataLoadedListeners.clear();
     _onSourceRemovedListeners.clear();
+    _onRenderFrameStartedListeners.clear();
+    _onRenderFrameFinishedListeners.clear();
   }
 
   /// Private method to handle OnMapIdleListener
@@ -988,6 +1342,20 @@ class MapboxMapControllerImpl extends MapboxMapController {
   void _handlingOnSourceRemovedListener(dynamic args) {
     for (var element in _onSourceRemovedListeners) {
       element.call(args);
+    }
+  }
+
+  /// Private method to handle OnRenderFrameStartedListener
+  void _handlingOnRenderFrameStartedListener(dynamic args) {
+    for (var element in _onRenderFrameStartedListeners) {
+      element.call();
+    }
+  }
+
+  /// Private method to handle OnRenderFrameFinishedListener
+  void _handlingOnRenderFrameFinishedListener(dynamic args) {
+    for (var element in _onRenderFrameFinishedListeners) {
+      element.call();
     }
   }
 
