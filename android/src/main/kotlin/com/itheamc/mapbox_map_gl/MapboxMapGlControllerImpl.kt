@@ -3,9 +3,10 @@ package com.itheamc.mapbox_map_gl
 import android.os.Build
 import android.util.Log
 import com.itheamc.mapbox_map_gl.helper.*
-import com.itheamc.mapbox_map_gl.helper.MapMemoryBudgetHelper
-import com.itheamc.mapbox_map_gl.helper.StyleHelper
-import com.itheamc.mapbox_map_gl.helper.ValueHelper
+import com.itheamc.mapbox_map_gl.helper.annotation_helper.CircleAnnotationOptionsHelper
+import com.itheamc.mapbox_map_gl.helper.annotation_helper.PointAnnotationOptionsHelper
+import com.itheamc.mapbox_map_gl.helper.annotation_helper.PolygonAnnotationOptionsHelper
+import com.itheamc.mapbox_map_gl.helper.annotation_helper.PolylineAnnotationOptionsHelper
 import com.itheamc.mapbox_map_gl.helper.layer_helper.*
 import com.itheamc.mapbox_map_gl.helper.source_helper.*
 import com.itheamc.mapbox_map_gl.utils.*
@@ -18,9 +19,12 @@ import com.mapbox.maps.*
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.layers.addLayer
 import com.mapbox.maps.extension.style.layers.generated.*
+import com.mapbox.maps.extension.style.layers.properties.generated.*
 import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.*
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.annotation.*
+import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.delegates.listeners.*
 import com.mapbox.maps.plugin.gestures.*
 import io.flutter.plugin.common.BinaryMessenger
@@ -36,7 +40,7 @@ private const val TAG = "MapboxMapGlController"
  */
 internal class MapboxMapGlControllerImpl(
     messenger: BinaryMessenger,
-    private val mapboxMap: MapboxMap,
+    private val mapView: MapView,
     private val creationParams: Map<*, *>?,
 ) : MapboxMapGlController {
 
@@ -65,10 +69,53 @@ internal class MapboxMapGlControllerImpl(
     private val _styleImages = mutableListOf<StyleImageInfo>()
 
     /**
+     * Getter for mapbox map
+     */
+    private val mapboxMap: MapboxMap
+        get() = mapView.getMapboxMap()
+
+    /**
      * Getter for style
      */
     private val style: Style?
         get() = if (mapboxMap.isValid()) mapboxMap.getStyle() else null
+
+
+    /**
+     * Circle Annotation manager instance
+     */
+    private val circleAnnotationManager = mapView.annotations.createCircleAnnotationManager(
+        annotationConfig = AnnotationConfig(
+            annotationSourceOptions = AnnotationSourceOptions()
+        )
+    )
+
+    /**
+     * Point Annotation manager instance
+     */
+    private val pointAnnotationManager = mapView.annotations.createPointAnnotationManager(
+        annotationConfig = AnnotationConfig(
+            annotationSourceOptions = AnnotationSourceOptions()
+        )
+    )
+
+    /**
+     * Polygon Annotation manager instance
+     */
+    private val polygonAnnotationManager = mapView.annotations.createPolygonAnnotationManager(
+        annotationConfig = AnnotationConfig(
+            annotationSourceOptions = AnnotationSourceOptions()
+        )
+    )
+
+    /**
+     * Polyline Annotation manager instance
+     */
+    private val polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager(
+        annotationConfig = AnnotationConfig(
+            annotationSourceOptions = AnnotationSourceOptions()
+        )
+    )
 
 
     /**
@@ -1450,6 +1497,70 @@ internal class MapboxMapGlControllerImpl(
     }
 
     /**
+     * Method to create circle annotation as per the given args
+     */
+    override fun createCircleAnnotation(args: Map<*, *>): Expected<String, Long> {
+        return try {
+            val circleAnnotationOptions = CircleAnnotationOptionsHelper.fromArgs(args)
+
+            val annotation = circleAnnotationManager.create(option = circleAnnotationOptions)
+            ExpectedFactory.createValue(annotation.id)
+        } catch (err: Exception) {
+            ExpectedFactory.createError(
+                err.message ?: "Error occurred while creating circle annotation"
+            )
+        }
+    }
+
+    /**
+     * Method to create point annotation as per the given args
+     */
+    override fun createPointAnnotation(args: Map<*, *>): Expected<String, Long> {
+        return try {
+            val pointAnnotationOptions = PointAnnotationOptionsHelper.fromArgs(args)
+
+            val annotation = pointAnnotationManager.create(option = pointAnnotationOptions)
+            ExpectedFactory.createValue(annotation.id)
+        } catch (err: Exception) {
+            ExpectedFactory.createError(
+                err.message ?: "Error occurred while creating point annotation"
+            )
+        }
+    }
+
+    /**
+     * Method to create polygon annotation as per the given args
+     */
+    override fun createPolygonAnnotation(args: Map<*, *>): Expected<String, Long> {
+        return try {
+            val polygonAnnotationOptions = PolygonAnnotationOptionsHelper.fromArgs(args)
+
+            val annotation = polygonAnnotationManager.create(option = polygonAnnotationOptions)
+            ExpectedFactory.createValue(annotation.id)
+        } catch (err: Exception) {
+            ExpectedFactory.createError(
+                err.message ?: "Error occurred while creating polygon annotation"
+            )
+        }
+    }
+
+    /**
+     * Method to create polyline annotation as per the given args
+     */
+    override fun createPolylineAnnotation(args: Map<*, *>): Expected<String, Long> {
+        return try {
+            val polylineAnnotationOptions = PolylineAnnotationOptionsHelper.fromArgs(args)
+
+            val annotation = polylineAnnotationManager.create(option = polylineAnnotationOptions)
+            ExpectedFactory.createValue(annotation.id)
+        } catch (err: Exception) {
+            ExpectedFactory.createError(
+                err.message ?: "Error occurred while creating polyline annotation"
+            )
+        }
+    }
+
+    /**
      * Method to add map related listeners
      */
     override fun addMapRelatedListeners() {
@@ -2307,6 +2418,50 @@ internal class MapboxMapGlControllerImpl(
                     }
                     .onError {
                         result.error("SET_VIEW_PORT_MODE_ERROR", it, null)
+                    }
+
+            }
+            Methods.createCircleAnnotation -> {
+                args = args as Map<*, *>
+                createCircleAnnotation(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("CREATE_CIRCLE_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.createPointAnnotation -> {
+                args = args as Map<*, *>
+                createPointAnnotation(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("CREATE_POINT_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.createPolygonAnnotation -> {
+                args = args as Map<*, *>
+                createPolygonAnnotation(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("CREATE_POLYGON_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.createPolylineAnnotation -> {
+                args = args as Map<*, *>
+                createPolylineAnnotation(args)
+                    .onValue {
+                        result.success(it)
+                    }
+                    .onError {
+                        result.error("CREATE_POLYLINE_ANNOTATION_ERROR", it, null)
                     }
 
             }

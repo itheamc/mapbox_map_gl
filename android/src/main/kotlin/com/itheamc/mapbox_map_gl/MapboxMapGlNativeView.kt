@@ -78,7 +78,7 @@ internal class MapboxMapGlNativeView(
         }.also {
             mapboxMapGlController = MapboxMapGlControllerImpl(
                 messenger = messenger,
-                mapboxMap = it.getMapboxMap(),
+                mapView = it,
                 creationParams = creationParams
             )
         }

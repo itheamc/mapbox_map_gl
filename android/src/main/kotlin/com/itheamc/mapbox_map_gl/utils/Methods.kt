@@ -93,4 +93,9 @@ object Methods {
     const val setViewportMode = "setViewportMode"
     const val setCamera = "setCamera"
     const val loadStyleUri = "loadStyleUri"
+
+    const val createCircleAnnotation = "createCircleAnnotation"
+    const val createPointAnnotation = "createPointAnnotation"
+    const val createPolygonAnnotation = "createPolygonAnnotation"
+    const val createPolylineAnnotation = "createPolylineAnnotation"
 }

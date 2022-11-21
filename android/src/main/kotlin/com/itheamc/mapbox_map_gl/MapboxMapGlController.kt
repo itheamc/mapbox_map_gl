@@ -332,6 +332,26 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
     fun setCamera(args: Map<*, *>): Expected<String, None>
 
     /**
+     * Method to create circle annotation as per the given args
+     */
+    fun createCircleAnnotation(args: Map<*, *>): Expected<String, Long>
+
+    /**
+     * Method to create point annotation as per the given args
+     */
+    fun createPointAnnotation(args: Map<*, *>): Expected<String, Long>
+
+    /**
+     * Method to create polygon annotation as per the given args
+     */
+    fun createPolygonAnnotation(args: Map<*, *>): Expected<String, Long>
+
+    /**
+     * Method to create polyline annotation as per the given args
+     */
+    fun createPolylineAnnotation(args: Map<*, *>): Expected<String, Long>
+
+    /**
      * Method to add map related listeners
      */
     fun addMapRelatedListeners()
