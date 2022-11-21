@@ -1791,6 +1791,141 @@ internal class MapboxMapGlControllerImpl(
         }
     }
 
+    /**
+     * Method to remove circle annotations if any
+     */
+    override fun removeCircleAnnotationsIfAny(args: Map<*, *>): Expected<String, None> {
+        return try {
+
+            val removeAll =
+                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+
+            if (removeAll) {
+                circleAnnotationManager.deleteAll()
+            } else {
+
+                val ids = mutableListOf<Long>()
+
+                if (args.containsKey("ids") && args["ids"] is List<*>) {
+                    val temp =
+                        (args["ids"] as List<*>).mapNotNull { id -> if (id is Int) id.toLong() else if (id is Long) id else null }
+                    ids.addAll(temp)
+                }
+
+                val annotations = circleAnnotationManager.annotations.filter { ids.contains(it.id) }
+
+                if (annotations.isNotEmpty()) {
+                    circleAnnotationManager.delete(annotations)
+                }
+            }
+
+            ExpectedFactory.createNone()
+        } catch (err: Exception) {
+            ExpectedFactory.createError("Error occurred while removing circle annotations!")
+        }
+    }
+
+    /**
+     * Method to remove point annotations if any
+     */
+    override fun removePointAnnotationsIfAny(args: Map<*, *>): Expected<String, None> {
+        return try {
+
+            val removeAll =
+                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+
+            if (removeAll) {
+                pointAnnotationManager.deleteAll()
+            } else {
+
+                val ids = mutableListOf<Long>()
+
+                if (args.containsKey("ids") && args["ids"] is List<*>) {
+                    val temp =
+                        (args["ids"] as List<*>).mapNotNull { id -> if (id is Int) id.toLong() else if (id is Long) id else null }
+                    ids.addAll(temp)
+                }
+
+                val annotations = pointAnnotationManager.annotations.filter { ids.contains(it.id) }
+
+                if (annotations.isNotEmpty()) {
+                    pointAnnotationManager.delete(annotations)
+                }
+            }
+            ExpectedFactory.createNone()
+        } catch (err: Exception) {
+            ExpectedFactory.createError("Error occurred while removing point annotations!")
+        }
+    }
+
+    /**
+     * Method to remove polygon annotations if any
+     */
+    override fun removePolygonAnnotationsIfAny(args: Map<*, *>): Expected<String, None> {
+        return try {
+
+            val removeAll =
+                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+
+            if (removeAll) {
+                polygonAnnotationManager.deleteAll()
+            } else {
+
+                val ids = mutableListOf<Long>()
+
+                if (args.containsKey("ids") && args["ids"] is List<*>) {
+                    val temp =
+                        (args["ids"] as List<*>).mapNotNull { id -> if (id is Int) id.toLong() else if (id is Long) id else null }
+                    ids.addAll(temp)
+                }
+
+                val annotations =
+                    polygonAnnotationManager.annotations.filter { ids.contains(it.id) }
+
+                if (annotations.isNotEmpty()) {
+                    polygonAnnotationManager.delete(annotations)
+                }
+            }
+            ExpectedFactory.createNone()
+        } catch (err: Exception) {
+            ExpectedFactory.createError("Error occurred while removing polygon annotations!")
+        }
+    }
+
+    /**
+     * Method to remove polyline annotations if any
+     */
+    override fun removePolylineAnnotationsIfAny(args: Map<*, *>): Expected<String, None> {
+        return try {
+
+            val removeAll =
+                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+
+            if (removeAll) {
+                polylineAnnotationManager.deleteAll()
+            } else {
+
+                val ids = mutableListOf<Long>()
+
+                if (args.containsKey("ids") && args["ids"] is List<*>) {
+                    val temp =
+                        (args["ids"] as List<*>).mapNotNull { id -> if (id is Int) id.toLong() else if (id is Long) id else null }
+                    ids.addAll(temp)
+                }
+
+                val annotations =
+                    polylineAnnotationManager.annotations.filter { ids.contains(it.id) }
+
+                if (annotations.isNotEmpty()) {
+                    polylineAnnotationManager.delete(annotations)
+                }
+            }
+            ExpectedFactory.createNone()
+        } catch (err: Exception) {
+            ExpectedFactory.createError("Error occurred while removing polyline annotations!")
+        }
+    }
+
 
     /**
      * Method to handle method call
@@ -2462,6 +2597,50 @@ internal class MapboxMapGlControllerImpl(
                     }
                     .onError {
                         result.error("CREATE_POLYLINE_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.removeCircleAnnotation -> {
+                args = args as Map<*, *>
+                removeCircleAnnotationsIfAny(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("REMOVE_CIRCLE_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.removePointAnnotation -> {
+                args = args as Map<*, *>
+                removePointAnnotationsIfAny(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("REMOVE_POINT_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.removePolygonAnnotation -> {
+                args = args as Map<*, *>
+                removePolygonAnnotationsIfAny(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("REMOVE_POLYGON_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.removePolylineAnnotation -> {
+                args = args as Map<*, *>
+                removePolylineAnnotationsIfAny(args)
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("REMOVE_POLYLINE_ANNOTATION_ERROR", it, null)
                     }
 
             }

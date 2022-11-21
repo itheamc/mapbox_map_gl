@@ -98,4 +98,8 @@ object Methods {
     const val createPointAnnotation = "createPointAnnotation"
     const val createPolygonAnnotation = "createPolygonAnnotation"
     const val createPolylineAnnotation = "createPolylineAnnotation"
+    const val removeCircleAnnotation = "removeCircleAnnotation"
+    const val removePointAnnotation = "removePointAnnotation"
+    const val removePolygonAnnotation = "removePolygonAnnotation"
+    const val removePolylineAnnotation = "removePolylineAnnotation"
 }

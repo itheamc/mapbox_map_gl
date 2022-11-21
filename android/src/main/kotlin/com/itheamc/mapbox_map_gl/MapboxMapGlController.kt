@@ -388,4 +388,24 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to remove layers
      */
     fun removeLayers(layersId: List<String>): Expected<String, None>
+
+    /**
+     * Method to remove circle annotations if any
+     */
+    fun removeCircleAnnotationsIfAny(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to remove point annotations if any
+     */
+    fun removePointAnnotationsIfAny(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to remove polygon annotations if any
+     */
+    fun removePolygonAnnotationsIfAny(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to remove polyline annotations if any
+     */
+    fun removePolylineAnnotationsIfAny(args: Map<*, *>): Expected<String, None>
 }
