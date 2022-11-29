@@ -49,6 +49,18 @@ internal object CircleAnnotationOptionsHelper {
                 }
             }
 
+            if (args.containsKey("circleRadius")) {
+                when (val radius = args["circleRadius"]) {
+                    is Double -> withCircleRadius(radius)
+                    is Long -> withCircleRadius(radius.toDouble())
+                    is Int -> withCircleRadius(radius.toDouble())
+                    else -> Log.d(
+                        TAG,
+                        "[CircleAnnotationOptionsHelper.fromArgs]: Invalid circle radius value!!"
+                    )
+                }
+            }
+
             if (args.containsKey("circleBlur")) {
                 when (val blur = args["circleBlur"]) {
                     is Double -> withCircleBlur(blur)

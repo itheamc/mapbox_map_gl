@@ -81,4 +81,13 @@ class Methods {
   static const setViewportMode = "setViewportMode";
   static const setCamera = "setCamera";
   static const loadStyleUri = "loadStyleUri";
+
+  static const createCircleAnnotation = "createCircleAnnotation";
+  static const createPointAnnotation = "createPointAnnotation";
+  static const createPolygonAnnotation = "createPolygonAnnotation";
+  static const createPolylineAnnotation = "createPolylineAnnotation";
+  static const removeCircleAnnotation = "removeCircleAnnotation";
+  static const removePointAnnotation = "removePointAnnotation";
+  static const removePolygonAnnotation = "removePolygonAnnotation";
+  static const removePolylineAnnotation = "removePolylineAnnotation";
 }
