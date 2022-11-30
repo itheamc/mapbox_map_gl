@@ -3,11 +3,11 @@
 abstract class Annotation<T> {
   /// AnnotationOptions
   /// It contains the properties that is needed to build and create annotation
-  final T? annotationOptions;
+  final T annotationOptions;
 
   /// Constructor
   Annotation({
-    this.annotationOptions,
+    required this.annotationOptions,
   });
 
   /// Method to convert Layer object to Map

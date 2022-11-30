@@ -1,13 +1,13 @@
-import 'package:mapbox_map_gl/src/annotations/annotation.dart';
-import 'package:mapbox_map_gl/src/annotations/annotation_options.dart';
-import 'package:mapbox_map_gl/src/utils/point.dart';
+import 'annotation.dart';
+import 'annotation_options.dart';
+import '../utils/point.dart';
 
 /// PolygonAnnotation class
 /// Created by Amit Chaudhary, 2022/11/29
 class PolygonAnnotation extends Annotation<PolygonAnnotationOptions> {
   /// Constructor for PolygonAnnotation
   PolygonAnnotation({
-    super.annotationOptions,
+    required super.annotationOptions,
   });
 
   /// Method to convert the PolygonAnnotation Object to the
@@ -15,9 +15,7 @@ class PolygonAnnotation extends Annotation<PolygonAnnotationOptions> {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "annotationOptions": (annotationOptions ??
-              PolygonAnnotationOptions.defaultAnnotationOptions)
-          .toMap(),
+      "annotationOptions": annotationOptions.toMap(),
     };
   }
 }
@@ -26,10 +24,13 @@ class PolygonAnnotation extends Annotation<PolygonAnnotationOptions> {
 /// It contains all the properties for the polygon annotation
 /// e.g.
 /// final polygonAnnotationOptions = PolygonAnnotationOptions(
-///                             circleColor: 'green',
-///                             circleRadius: 10.0,
-///                             circleStrokeWidth: 2.0,
-///                             circleStrokeColor: "#fff",
+///                             points: [
+///                                [
+///                                Point.fromLatLng(27.34, 85.43),
+///                                Point.fromLatLng(27.4, 85.5)
+///                                ]
+///                             ],
+///                             fillColor: "#ef2d3f",
 ///                         );
 class PolygonAnnotationOptions extends AnnotationOptions {
   /// Set a list of lists of Point for the fill, which represents
@@ -99,17 +100,6 @@ class PolygonAnnotationOptions extends AnnotationOptions {
     this.draggable = false,
     this.data,
   });
-
-  /// Default Polygon Annotation Options
-  static PolygonAnnotationOptions get defaultAnnotationOptions {
-    return PolygonAnnotationOptions(
-      points: [
-        [Point.fromLatLng(27.34, 85.43), Point.fromLatLng(27.4, 85.5)]
-      ],
-      fillColor: 'blue',
-      fillOutlineColor: "#fff",
-    );
-  }
 
   /// Method to proceeds the polygon annotation option for native
   @override

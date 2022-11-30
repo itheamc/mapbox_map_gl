@@ -1,13 +1,13 @@
-import 'package:mapbox_map_gl/src/annotations/annotation.dart';
-import 'package:mapbox_map_gl/src/annotations/annotation_options.dart';
-import 'package:mapbox_map_gl/src/utils/point.dart';
+import 'annotation.dart';
+import 'annotation_options.dart';
+import '../utils/point.dart';
 
 /// CircleAnnotation class
 /// Created by Amit Chaudhary, 2022/11/29
 class CircleAnnotation extends Annotation<CircleAnnotationOptions> {
   /// Constructor for CircleAnnotation
   CircleAnnotation({
-    super.annotationOptions,
+    required super.annotationOptions,
   });
 
   /// Method to convert the CircleAnnotation Object to the
@@ -15,9 +15,7 @@ class CircleAnnotation extends Annotation<CircleAnnotationOptions> {
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      "annotationOptions": (annotationOptions ??
-              CircleAnnotationOptions.defaultAnnotationOptions)
-          .toMap(),
+      "annotationOptions": annotationOptions.toMap(),
     };
   }
 }
@@ -114,17 +112,6 @@ class CircleAnnotationOptions extends AnnotationOptions {
     this.draggable = false,
     this.data,
   });
-
-  /// Default Circle Annotation Options
-  static CircleAnnotationOptions get defaultAnnotationOptions {
-    return CircleAnnotationOptions(
-      point: Point.fromLatLng(27.34, 85.43),
-      circleColor: 'blue',
-      circleRadius: 10.0,
-      circleStrokeWidth: 2.0,
-      circleStrokeColor: "#fff",
-    );
-  }
 
   /// Method to proceeds the circle annotation options for native
   @override
