@@ -311,8 +311,8 @@ internal object PointAnnotationOptionsHelper {
                 }
             }
 
-            if (args.containsKey("textRadicalOffset")) {
-                when (val offset = args["textRadicalOffset"]) {
+            if (args.containsKey("textRadialOffset")) {
+                when (val offset = args["textRadialOffset"]) {
                     is Double -> withTextRadialOffset(offset)
                     is Long -> withTextRadialOffset(offset.toDouble())
                     is Int -> withTextRadialOffset(offset.toDouble())
