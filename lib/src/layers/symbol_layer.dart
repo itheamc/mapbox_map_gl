@@ -343,7 +343,7 @@ class SymbolLayerProperties extends LayerProperties {
 
   /// The opacity at which the icon will be drawn.
   /// StyleTransition
-  final dynamic iconOpacityTransition;
+  final StyleTransition? iconOpacityTransition;
 
   /// Distance that the icon's anchor is moved from its original placement.
   /// Positive values indicate right and down, while negative values indicate
