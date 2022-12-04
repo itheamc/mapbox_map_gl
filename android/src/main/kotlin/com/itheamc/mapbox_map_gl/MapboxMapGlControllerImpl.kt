@@ -1500,8 +1500,15 @@ internal class MapboxMapGlControllerImpl(
      * Method to create circle annotation as per the given args
      */
     override fun createCircleAnnotation(args: Map<*, *>): Expected<String, Long> {
+        if (!args.containsKey("annotationOptions")) {
+            return ExpectedFactory.createError(
+                "Annotation Options not provided!"
+            )
+        }
+
         return try {
-            val circleAnnotationOptions = CircleAnnotationOptionsHelper.fromArgs(args)
+            val circleAnnotationOptions =
+                CircleAnnotationOptionsHelper.fromArgs(args["annotationOptions"] as Map<*, *>)
 
             val annotation = circleAnnotationManager.create(option = circleAnnotationOptions)
             ExpectedFactory.createValue(annotation.id)
@@ -1516,8 +1523,15 @@ internal class MapboxMapGlControllerImpl(
      * Method to create point annotation as per the given args
      */
     override fun createPointAnnotation(args: Map<*, *>): Expected<String, Long> {
+        if (!args.containsKey("annotationOptions")) {
+            return ExpectedFactory.createError(
+                "Annotation Options not provided!"
+            )
+        }
+
         return try {
-            val pointAnnotationOptions = PointAnnotationOptionsHelper.fromArgs(args)
+            val pointAnnotationOptions =
+                PointAnnotationOptionsHelper.fromArgs(args)
 
             val annotation = pointAnnotationManager.create(option = pointAnnotationOptions)
             ExpectedFactory.createValue(annotation.id)
@@ -1532,8 +1546,15 @@ internal class MapboxMapGlControllerImpl(
      * Method to create polygon annotation as per the given args
      */
     override fun createPolygonAnnotation(args: Map<*, *>): Expected<String, Long> {
+        if (!args.containsKey("annotationOptions")) {
+            return ExpectedFactory.createError(
+                "Annotation Options not provided!"
+            )
+        }
+
         return try {
-            val polygonAnnotationOptions = PolygonAnnotationOptionsHelper.fromArgs(args)
+            val polygonAnnotationOptions =
+                PolygonAnnotationOptionsHelper.fromArgs(args["annotationOptions"] as Map<*, *>)
 
             val annotation = polygonAnnotationManager.create(option = polygonAnnotationOptions)
             ExpectedFactory.createValue(annotation.id)
@@ -1548,8 +1569,15 @@ internal class MapboxMapGlControllerImpl(
      * Method to create polyline annotation as per the given args
      */
     override fun createPolylineAnnotation(args: Map<*, *>): Expected<String, Long> {
+        if (!args.containsKey("annotationOptions")) {
+            return ExpectedFactory.createError(
+                "Annotation Options not provided!"
+            )
+        }
+
         return try {
-            val polylineAnnotationOptions = PolylineAnnotationOptionsHelper.fromArgs(args)
+            val polylineAnnotationOptions =
+                PolylineAnnotationOptionsHelper.fromArgs(args["annotationOptions"] as Map<*, *>)
 
             val annotation = polylineAnnotationManager.create(option = polylineAnnotationOptions)
             ExpectedFactory.createValue(annotation.id)
@@ -2569,6 +2597,7 @@ internal class MapboxMapGlControllerImpl(
             }
             Methods.createPointAnnotation -> {
                 args = args as Map<*, *>
+                Log.d(TAG, "onMethodCall: $args")
                 createPointAnnotation(args)
                     .onValue {
                         result.success(it)

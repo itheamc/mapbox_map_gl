@@ -40,8 +40,8 @@ class PointAnnotation extends Annotation<PointAnnotationOptions> {
     this.iconPath,
     this.iconImage,
     required super.annotationOptions,
-  }) : assert(iconUrl != null || iconPath != null,
-            "Please provide iconUrl or iconPath.");
+  }) : assert(iconUrl != null || iconPath != null || iconImage != null,
+            "Please provide iconUrl or iconPath or iconImage.");
 
   /// Method to convert the PointAnnotation Object to the
   /// Map data to pass to the native platform through args
@@ -54,6 +54,8 @@ class PointAnnotation extends Annotation<PointAnnotationOptions> {
 
   /// Method to get byte array
   Future<Uint8List?> getByteArray() async {
+    if (iconImage != null && iconImage!.isNotEmpty) return null;
+
     try {
       if (iconPath == null || iconPath!.trim().isEmpty) {
         if (iconUrl == null ||

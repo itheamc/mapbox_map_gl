@@ -1,6 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:mapbox_map_gl/src/annotations/circle_annotation.dart';
+import 'package:mapbox_map_gl/src/annotations/point_annotation.dart';
+import 'package:mapbox_map_gl/src/annotations/polygon_annotation.dart';
+import 'package:mapbox_map_gl/src/annotations/polyline_annotation.dart';
+import 'annotations/annotation.dart';
 import 'utils/feature.dart';
 import 'utils/point.dart';
 import 'utils/enums.dart';
@@ -1298,6 +1303,62 @@ class MapboxMapControllerImpl extends MapboxMapController {
       );
     }
     return null;
+  }
+
+  /// Generic method to add style annotations
+  /// You can add:
+  /// - CircleAnnotation
+  /// - PointAnnotation
+  /// - PolylineAnnotation
+  /// - Polygon Annotation
+  @override
+  Future<void> addAnnotation<T extends Annotation>(
+      {required T annotation}) async {
+    try {
+      final method = annotation.runtimeType == CircleAnnotation
+          ? Methods.createCircleAnnotation
+          : annotation.runtimeType == PointAnnotation
+              ? Methods.createPointAnnotation
+              : annotation.runtimeType == PolygonAnnotation
+                  ? Methods.createPolygonAnnotation
+                  : annotation.runtimeType == PolylineAnnotation
+                      ? Methods.createPolylineAnnotation
+                      : null;
+      if (method == null) {
+        LogUtil.log(
+          className: "MapboxMapController",
+          function: "addAnnotation<T>",
+          message: "Unspecified annotation!",
+        );
+        return;
+      }
+
+      Map<String, dynamic> args = annotation.toMap();
+
+      if (method == Methods.createPointAnnotation) {
+        final byteArray = await (annotation as PointAnnotation).getByteArray();
+
+        if (byteArray != null) {
+          args = <String, dynamic>{
+            ...args,
+            "iconImage": byteArray,
+          };
+        } else {
+          args = <String, dynamic>{
+            ...args,
+            "iconImage": annotation.iconImage ?? "",
+          };
+        }
+      }
+
+      await _channel.invokeMethod(method, args);
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "addAnnotation<T>",
+        message: e,
+      );
+    }
   }
 
   /// Method to add onMapIdle listener

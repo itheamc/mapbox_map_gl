@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'annotations/annotation.dart';
 import 'utils/enums.dart';
 import 'utils/listeners.dart';
 import 'utils/queried_feature.dart';
@@ -411,7 +412,13 @@ abstract class MapboxMapController with Listeners {
   /// Returns a batch of screen coordinates on the screen in pixels.
   Future<List<ScreenCoordinate>?> pixelsForCoordinates(List<Point> coordinates);
 
-
+  /// Generic method to add style annotations
+  /// You can add:
+  /// - CircleAnnotation
+  /// - PointAnnotation
+  /// - PolylineAnnotation
+  /// - Polygon Annotation
+  Future<void> addAnnotation<T extends Annotation>({required T annotation});
 
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);

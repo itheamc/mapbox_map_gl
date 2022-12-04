@@ -1,7 +1,7 @@
-import '../../mapbox_map_gl.dart';
+import '../utils/enums.dart';
+import '../utils/point.dart';
 import 'annotation.dart';
 import 'annotation_options.dart';
-import '../utils/point.dart';
 
 /// PolylineAnnotation class
 /// Created by Amit Chaudhary, 2022/11/30
