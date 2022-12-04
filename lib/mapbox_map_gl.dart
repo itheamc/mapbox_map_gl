@@ -36,3 +36,7 @@ export 'src/utils/rendered_query_geometry.dart';
 export 'src/utils/screen_box.dart';
 export 'src/utils/feature_details.dart';
 export 'src/utils/enums.dart';
+export 'src/annotations/circle_annotation.dart';
+export 'src/annotations/point_annotation.dart';
+export 'src/annotations/polyline_annotation.dart';
+export 'src/annotations/polygon_annotation.dart';

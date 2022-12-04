@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
@@ -224,12 +225,4 @@ class HillShadeLayerProperties extends LayerProperties {
     }
     return args.isNotEmpty ? args : null;
   }
-}
-
-enum HillShadeIlluminationAnchor {
-  /// The hill shade illumination is relative to the north direction.
-  map,
-
-  /// The hill shade illumination is relative to the top of the viewport.
-  viewport,
 }

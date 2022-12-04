@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
 
@@ -1022,94 +1023,4 @@ class SymbolLayerProperties extends LayerProperties {
         return anchor.name.toLowerCase();
     }
   }
-}
-
-enum IconAnchor {
-  center,
-  left,
-  right,
-  top,
-  bottom,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
-
-enum IconPitchAlignment {
-  auto,
-  map,
-  viewport,
-}
-
-enum IconRotationAlignment {
-  auto,
-  map,
-  viewport,
-}
-
-enum IconTextFit {
-  none,
-  width,
-  height,
-  both,
-}
-
-enum SymbolPlacement {
-  point,
-  line,
-  lineCenter,
-}
-
-enum SymbolZOrder {
-  auto,
-  viewportY,
-  source,
-}
-
-enum TextAnchor {
-  center,
-  left,
-  right,
-  top,
-  bottom,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
-
-enum TextJustify {
-  auto,
-  left,
-  center,
-  right,
-}
-
-enum TextPitchAlignment {
-  auto,
-  map,
-  viewport,
-}
-
-enum TextRotationAlignment {
-  auto,
-  map,
-  viewport,
-}
-
-enum TextTransform {
-  none,
-  uppercase,
-  lowercase,
-}
-
-enum IconTranslateAnchor {
-  map,
-  viewport,
-}
-
-enum TextTranslateAnchor {
-  map,
-  viewport,
 }

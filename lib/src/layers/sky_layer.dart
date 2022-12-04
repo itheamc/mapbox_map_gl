@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
@@ -279,15 +280,4 @@ class SkyLayerProperties extends LayerProperties {
     }
     return args.isNotEmpty ? args : null;
   }
-}
-
-enum SkyType {
-  /// Renders the sky with a gradient that can be configured with
-  /// {@link SKY_GRADIENT_RADIUS} and {@link SKY_GRADIENT}.
-  gradient,
-
-  /// Renders the sky with a simulated atmospheric scattering algorithm,
-  /// the sun direction can be attached to the light position or explicitly
-  /// set through {@link SKY_ATMOSPHERE_SUN}.
-  atmosphere
 }

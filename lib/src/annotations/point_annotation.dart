@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 
+import '../utils/enums.dart';
 import '../utils/log_util.dart';
 import 'annotation.dart';
 import 'annotation_options.dart';
@@ -111,24 +112,24 @@ class PointAnnotationOptions extends AnnotationOptions {
   /// The new pixel size of the image will be the original pixel
   /// size multiplied by `icon-size`. 1 is the original size;
   /// 3 triples the size of the image.
-  /// Double or Expression
+  /// Double
   /// Default is 1.0
-  final dynamic iconSize;
+  final double? iconSize;
 
   /// The opacity at which the icon will be drawn.
-  /// double and Expression
+  /// double
   /// Default value is 1.0
-  final dynamic iconOpacity;
+  final double? iconOpacity;
 
   /// Rotates the icon clockwise.
-  /// Double or Expression
+  /// Double
   /// Default is 0.0
-  final dynamic iconRotate;
+  final double? iconRotate;
 
   /// Part of the icon placed closest to the anchor.
   /// PointIconAnchor
-  /// Default is PointIconAnchor.center
-  final PointIconAnchor? iconAnchor;
+  /// Default is IconAnchor.center
+  final IconAnchor? iconAnchor;
 
   /// Offset distance of icon from its anchor.
   /// Positive values indicate right and down,
@@ -137,61 +138,61 @@ class PointAnnotationOptions extends AnnotationOptions {
   /// the final offset in pixels.
   /// When combined with `icon-rotate` the offset will be as if the
   /// rotated direction was up.
-  /// List<Double> or Expression
+  /// List<Double>
   /// Default value is listOf(0.0, 0.0)
-  final dynamic iconOffset;
+  final List<double>? iconOffset;
 
   /// The color of the icon's halo. Icon halos can only be used with [SDF icons]
   /// (/help/troubleshooting/using-recolorable-images-in-mapbox-maps/).
-  /// String, int or Expression
+  /// String, int
   final dynamic iconHaloColor;
 
   /// Fade out the halo towards the outside.
-  /// double or Expression
+  /// double
   /// Default value is 0.0
-  final dynamic iconHaloBlur;
+  final double? iconHaloBlur;
 
   /// Distance of halo to the icon outline.
-  /// double and Expression
+  /// double
   /// Default value is 0.0
-  final dynamic iconHaloWidth;
+  final double? iconHaloWidth;
 
   /// Value to use for a text label. If a plain `string` is provided,
   /// it will be treated as a `formatted` with default/inherited
   /// formatting options. SDF images are not supported in formatted text
   /// and will be ignored.
-  /// String and Expression
-  final dynamic textField;
+  /// String
+  final String? textField;
 
   /// The color with which the text will be drawn.
-  /// String, int or Expression
+  /// String, int
   /// Default is '#000'
   final dynamic textColor;
 
   /// The opacity at which the text will be drawn.
-  /// double or Expression
+  /// double
   /// Default value is 1.0
-  final dynamic textOpacity;
+  final double? textOpacity;
 
   /// Font size.
-  /// double or Expression
+  /// double
   /// Default value is 16.0
-  final dynamic textSize;
+  final double? textSize;
 
   /// Rotates the text clockwise.
-  /// double or Expression
+  /// double
   /// Default value is 0.0
-  final dynamic textRotate;
+  final double? textRotate;
 
   /// Text tracking amount.
-  /// Double and Expression
+  /// Double
   /// Default value is 0.0
-  final dynamic textLetterSpacing;
+  final double? textLetterSpacing;
 
   /// Text leading value for multi-line text.
-  /// Double and Expression
+  /// Double
   /// Default value is 1.2
-  final dynamic textLineHeight;
+  final double? textLineHeight;
 
   /// Offset distance of text from its anchor.
   ///
@@ -199,25 +200,25 @@ class PointAnnotationOptions extends AnnotationOptions {
   /// indicate left and up. If used with text-variable-anchor, input values
   /// will be taken as absolute values. Offsets along the x- and y-axis will
   /// be applied automatically based on the anchor position.
-  /// List<double> or Expression
+  /// List<double>
   /// Default is listOf(0.0, 0.0)
-  final dynamic textOffset;
+  final List<double>? textOffset;
 
   /// The color of the text's halo, which helps it stand out from backgrounds.
-  /// String, int or Expression
+  /// String, int
   /// Default is '#000'
   final dynamic textHaloColor;
 
   /// The halo's fadeout distance towards the outside.
-  /// double or Expression
+  /// double
   /// Default value is  0.0
-  final dynamic textHaloBlur;
+  final double? textHaloBlur;
 
   /// Distance of halo to the font outline. Max text halo width is 1/4
   /// of the font-size.
-  /// double or Expression
+  /// double
   /// Default value is 0.0
-  final dynamic textHaloWidth;
+  final double? textHaloWidth;
 
   /// The maximum line width for text wrapping.
   /// double
@@ -241,23 +242,23 @@ class PointAnnotationOptions extends AnnotationOptions {
   /// is set to `true`, features with a higher sort key will overlap
   /// over features with a lower sort key.
   /// Double
-  final dynamic symbolSortKey;
+  final double? symbolSortKey;
 
   /// Part of the text placed closest to the anchor.
   /// PointTextAnchor
-  /// Default value is PointTextAnchor.center
-  final PointTextAnchor? textAnchor;
+  /// Default value is TextAnchor.center
+  final TextAnchor? textAnchor;
 
   /// Text justification options.
   /// PointTextJustify
-  /// Default is PointTextJustify.enter
-  final PointTextJustify? textJustify;
+  /// Default is TextJustify.enter
+  final TextJustify? textJustify;
 
   /// Specifies how to capitalize text, similar to the CSS
   /// `text-transform` property.
   /// PointTextTransform
-  /// Default is PointTextTransform.NONE
-  final PointTextTransform? textTransform;
+  /// Default is TextTransform.NONE
+  final TextTransform? textTransform;
 
   /// Set whether this circleAnnotation should be draggable, meaning it can be
   /// dragged across the screen when touched and moved.
@@ -422,45 +423,4 @@ class PointAnnotationOptions extends AnnotationOptions {
 
     return args.isNotEmpty ? args : null;
   }
-}
-
-/// Point Icon Anchor Enum Class
-enum PointIconAnchor {
-  center,
-  left,
-  right,
-  top,
-  bottom,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
-
-/// Point Text Anchor Enum Class
-enum PointTextAnchor {
-  center,
-  left,
-  right,
-  top,
-  bottom,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
-
-/// Point Text Justify Enum Class
-enum PointTextJustify {
-  auto,
-  left,
-  center,
-  right,
-}
-
-/// Point Text Transform Enum Class
-enum PointTextTransform {
-  none,
-  uppercase,
-  lowercase,
 }

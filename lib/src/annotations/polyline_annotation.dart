@@ -1,3 +1,4 @@
+import '../../mapbox_map_gl.dart';
 import 'annotation.dart';
 import 'annotation_options.dart';
 import '../utils/point.dart';
@@ -84,9 +85,9 @@ class PolylineAnnotationOptions extends AnnotationOptions {
 
   /// The display of lines when joining.
   /// Accepted data type:
-  /// - PolylineJoin
-  /// default value is PolylineJoin.miter
-  final PolylineJoin? lineJoin;
+  /// - LineJoin
+  /// default value is LineJoin.miter
+  final LineJoin? lineJoin;
 
   /// Set line-pattern to initialise the polylineAnnotation with.
   /// Name of image in sprite to use for drawing image lines. For seamless
@@ -183,7 +184,3 @@ class PolylineAnnotationOptions extends AnnotationOptions {
     return args.isNotEmpty ? args : null;
   }
 }
-
-/// PolylineJoin
-/// ROUND, BEVEl and MITER
-enum PolylineJoin { round, bevel, miter }

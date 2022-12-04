@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
@@ -260,5 +261,3 @@ class RasterLayerProperties extends LayerProperties {
     return args.isNotEmpty ? args : null;
   }
 }
-
-enum RasterResampling { linear, nearest }

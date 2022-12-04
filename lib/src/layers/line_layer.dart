@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
 
@@ -478,15 +479,3 @@ class LineLayerProperties extends LayerProperties {
     return args.isNotEmpty ? args : null;
   }
 }
-
-/// LineCap
-/// BUTT, ROUND and SQUARE
-enum LineCap { butt, round, square }
-
-/// LineJoin
-/// ROUND, BEVEl and MITER
-enum LineJoin { round, bevel, miter }
-
-/// LineTranslateAnchor
-/// MAP and VIEWPORT
-enum LineTranslateAnchor { map, viewport }

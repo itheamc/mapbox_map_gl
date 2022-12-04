@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import '../utils/style_transition.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
@@ -387,12 +388,4 @@ class FillExtrusionLayerProperties extends LayerProperties {
     }
     return args.isNotEmpty ? args : null;
   }
-}
-
-enum FillExtrusionTranslateAnchor {
-  /// The fill extrusion is translated relative to the map.
-  map,
-
-  /// The fill extrusion is translated relative to the viewport.
-  viewport,
 }

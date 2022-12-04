@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
 
@@ -395,15 +396,3 @@ class CircleLayerProperties extends LayerProperties {
     return args.isNotEmpty ? args : null;
   }
 }
-
-/// CircleTranslateAnchor
-/// MAP and VIEWPORT
-enum CircleTranslateAnchor { map, viewport }
-
-/// CirclePitchScale
-/// MAP and VIEWPORT
-enum CirclePitchScale { map, viewport }
-
-/// CirclePitchScale
-/// MAP and VIEWPORT
-enum CirclePitchAlignment { map, viewport }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../utils/enums.dart';
 import 'layer.dart';
 import 'layer_properties.dart';
 
@@ -290,7 +291,3 @@ class FillLayerProperties extends LayerProperties {
     return args.isNotEmpty ? args : null;
   }
 }
-
-/// FillTranslateAnchor
-/// MAP and VIEWPORT
-enum FillTranslateAnchor { map, viewport }

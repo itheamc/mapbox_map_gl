@@ -411,6 +411,8 @@ abstract class MapboxMapController with Listeners {
   /// Returns a batch of screen coordinates on the screen in pixels.
   Future<List<ScreenCoordinate>?> pixelsForCoordinates(List<Point> coordinates);
 
+
+
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);
 
