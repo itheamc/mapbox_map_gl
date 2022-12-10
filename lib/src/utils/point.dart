@@ -69,7 +69,7 @@ class Point {
 
   /// Method to convert args get from native platform
   /// to Point object
-  /// [args] Map<String, dynamic> args
+  /// [args] String args
   factory Point.fromArgs(dynamic args) {
     final decodedArgs = jsonDecode(args);
     final argsType = decodedArgs["type"];

@@ -17,4 +17,17 @@ class StringUtility {
         return AnnotationType.unknown;
     }
   }
+
+  static DragEvent dragEventFromString(String value) {
+    switch (value) {
+      case "onDragStarted":
+        return DragEvent.started;
+      case "onDragging":
+        return DragEvent.dragging;
+      case "onDragFinished":
+        return DragEvent.finished;
+      default:
+        return DragEvent.unknown;
+    }
+  }
 }

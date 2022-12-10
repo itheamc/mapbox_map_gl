@@ -28,6 +28,11 @@ class Methods {
   static const onPolylineAnnotationLongClick = "onPolylineAnnotationLongClick";
   static const onPolygonAnnotationLongClick = "onPolygonAnnotationLongClick";
 
+  static const onCircleAnnotationDrag = "onCircleAnnotationDrag";
+  static const onPointAnnotationDrag = "onPointAnnotationDrag";
+  static const onPolylineAnnotationDrag = "onPolylineAnnotationDrag";
+  static const onPolygonAnnotationDrag = "onPolygonAnnotationDrag";
+
   /// Methods triggered from the flutter side
   static const animateCameraPosition = "animateCameraPosition";
   static const toggleStyle = "toggleStyle";

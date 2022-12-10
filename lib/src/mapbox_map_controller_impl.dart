@@ -97,6 +97,18 @@ class MapboxMapControllerImpl extends MapboxMapController {
       case Methods.onPolylineAnnotationLongClick:
         _handlingOnAnnotationLongClickListener(args);
         break;
+      case Methods.onCircleAnnotationDrag:
+        _handlingOnCircleAnnotationDragListener(args);
+        break;
+      case Methods.onPointAnnotationDrag:
+        _handlingOnPointAnnotationDragListener(args);
+        break;
+      case Methods.onPolylineAnnotationDrag:
+        _handlingOnPolylineAnnotationDragListener(args);
+        break;
+      case Methods.onPolygonAnnotationDrag:
+        _handlingOnPolygonAnnotationDragListener(args);
+        break;
       default:
     }
   }
@@ -136,6 +148,22 @@ class MapboxMapControllerImpl extends MapboxMapController {
   /// List of OnAnnotationLongClickListener
   final List<OnAnnotationLongClickListener> _onAnnotationLongClickListeners =
       List.empty(growable: true);
+
+  /// List of OnCircleAnnotationDragListener
+  final List<OnCircleAnnotationDragListener> _onCircleAnnotationDragListeners =
+      List.empty(growable: true);
+
+  /// List of OnPointAnnotationDragListener
+  final List<OnPointAnnotationDragListener> _onPointAnnotationDragListeners =
+      List.empty(growable: true);
+
+  /// List of OnPolylineAnnotationDragListener
+  final List<OnPolylineAnnotationDragListener>
+      _onPolylineAnnotationDragListeners = List.empty(growable: true);
+
+  /// List of OnPolygonAnnotationDragListener
+  final List<OnPolygonAnnotationDragListener>
+      _onPolygonAnnotationDragListeners = List.empty(growable: true);
 
   /// Method to toggle the map style between two styles
   /// [style1] - the first style (MapStyle)
@@ -1507,6 +1535,34 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onAnnotationLongClickListeners.add(onAnnotationLongClickListener);
   }
 
+  /// Method to set the onCircleAnnotationDragListener
+  @override
+  void setOnCircleAnnotationDragListener(
+      OnCircleAnnotationDragListener onCircleAnnotationDragListener) {
+    _onCircleAnnotationDragListeners.add(onCircleAnnotationDragListener);
+  }
+
+  /// Method to set the onPointAnnotationDragListener
+  @override
+  void setOnPointAnnotationDragListener(
+      OnPointAnnotationDragListener onPointAnnotationDragListener) {
+    _onPointAnnotationDragListeners.add(onPointAnnotationDragListener);
+  }
+
+  /// Method to set the onPolygonAnnotationDragListener
+  @override
+  void setOnPolygonAnnotationDragListener(
+      OnPolygonAnnotationDragListener onPolygonAnnotationDragListener) {
+    _onPolygonAnnotationDragListeners.add(onPolygonAnnotationDragListener);
+  }
+
+  /// Method to set the onPolylineAnnotationDragListener
+  @override
+  void setOnPolylineAnnotationDragListener(
+      OnPolylineAnnotationDragListener onPolylineAnnotationDragListener) {
+    _onPolylineAnnotationDragListeners.add(onPolylineAnnotationDragListener);
+  }
+
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
   /// [onCameraChangeListener] - Listener for onCameraChange
@@ -1524,6 +1580,10 @@ class MapboxMapControllerImpl extends MapboxMapController {
     OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
     OnAnnotationClickListener? onAnnotationClickListener,
     OnAnnotationLongClickListener? onAnnotationLongClickListener,
+    OnCircleAnnotationDragListener? onCircleAnnotationDragListener,
+    OnPointAnnotationDragListener? onPointAnnotationDragListener,
+    OnPolylineAnnotationDragListener? onPolylineAnnotationDragListener,
+    OnPolygonAnnotationDragListener? onPolygonAnnotationDragListener,
   }) {
     if (onMapIdleListener != null) {
       _onMapIdleListeners.add(onMapIdleListener);
@@ -1560,6 +1620,22 @@ class MapboxMapControllerImpl extends MapboxMapController {
     if (onAnnotationLongClickListener != null) {
       _onAnnotationLongClickListeners.add(onAnnotationLongClickListener);
     }
+
+    if (onCircleAnnotationDragListener != null) {
+      _onCircleAnnotationDragListeners.add(onCircleAnnotationDragListener);
+    }
+
+    if (onPointAnnotationDragListener != null) {
+      _onPointAnnotationDragListeners.add(onPointAnnotationDragListener);
+    }
+
+    if (onPolylineAnnotationDragListener != null) {
+      _onPolylineAnnotationDragListeners.add(onPolylineAnnotationDragListener);
+    }
+
+    if (onPolygonAnnotationDragListener != null) {
+      _onPolygonAnnotationDragListeners.add(onPolygonAnnotationDragListener);
+    }
   }
 
   /// Method to remove all listeners
@@ -1574,6 +1650,10 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onRenderFrameFinishedListeners.clear();
     _onAnnotationClickListeners.clear();
     _onAnnotationLongClickListeners.clear();
+    _onCircleAnnotationDragListeners.clear();
+    _onPointAnnotationDragListeners.clear();
+    _onPolylineAnnotationDragListeners.clear();
+    _onPolygonAnnotationDragListeners.clear();
   }
 
   /// Private method to handle OnMapIdleListener
@@ -1642,6 +1722,68 @@ class MapboxMapControllerImpl extends MapboxMapController {
           args['id'],
           StringUtility.annotationTypeFromString(args['type']),
           args['data'] != null ? jsonDecode(args['data']) : null);
+    }
+  }
+
+  /// Private method to handle OnCircleAnnotationDragListener
+  void _handlingOnCircleAnnotationDragListener(dynamic args) {
+    for (var element in _onCircleAnnotationDragListeners) {
+      element.call(
+        args['id'],
+        StringUtility.annotationTypeFromString(args['type']),
+        Point.fromArgs(args['point']),
+        args['data'] != null ? jsonDecode(args['data']) : null,
+        StringUtility.dragEventFromString(
+          args['event'],
+        ),
+      );
+    }
+  }
+
+  /// Private method to handle OnPointAnnotationDragListener
+  void _handlingOnPointAnnotationDragListener(dynamic args) {
+    for (var element in _onPointAnnotationDragListeners) {
+      element.call(
+        args['id'],
+        StringUtility.annotationTypeFromString(args['type']),
+        Point.fromArgs(args['point']),
+        args['data'] != null ? jsonDecode(args['data']) : null,
+        StringUtility.dragEventFromString(
+          args['event'],
+        ),
+      );
+    }
+  }
+
+  /// Private method to handle OnPolylineAnnotationDragListener
+  void _handlingOnPolylineAnnotationDragListener(dynamic args) {
+    for (var element in _onPolylineAnnotationDragListeners) {
+      element.call(
+        args['id'],
+        StringUtility.annotationTypeFromString(args['type']),
+        (args['points'] as List).map((e) => Point.fromArgs(e)).toList(),
+        args['data'] != null ? jsonDecode(args['data']) : null,
+        StringUtility.dragEventFromString(
+          args['event'],
+        ),
+      );
+    }
+  }
+
+  /// Private method to handle OnPolygonAnnotationDragListener
+  void _handlingOnPolygonAnnotationDragListener(dynamic args) {
+    for (var element in _onPolygonAnnotationDragListeners) {
+      element.call(
+        args['id'],
+        StringUtility.annotationTypeFromString(args['type']),
+        (args['points'] as List)
+            .map((e) => (e as List).map((p) => Point.fromArgs(p)).toList())
+            .toList(),
+        args['data'] != null ? jsonDecode(args['data']) : null,
+        StringUtility.dragEventFromString(
+          args['event'],
+        ),
+      );
     }
   }
 

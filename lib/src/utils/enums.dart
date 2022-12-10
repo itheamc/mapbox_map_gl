@@ -211,3 +211,11 @@ enum AnnotationType {
   polyline,
   unknown,
 }
+
+/// DragEvent
+enum DragEvent {
+  started,
+  dragging,
+  finished,
+  unknown,
+}

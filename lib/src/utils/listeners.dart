@@ -1,3 +1,4 @@
+import 'point.dart';
 import 'enums.dart';
 
 /// Type definition for onMapIdle listener
@@ -41,6 +42,62 @@ typedef OnAnnotationClickListener = void Function(
 typedef OnAnnotationLongClickListener = void Function(
     int id, AnnotationType type, Map<String, dynamic>? data);
 
+/// Type definition for OnCircleAnnotationDrag listener
+/// int -> id
+/// AnnotationType -> type
+/// Point -> point
+/// Map<String, dynamic>? -> data
+/// DragEvent -> event
+typedef OnCircleAnnotationDragListener = void Function(
+  int id,
+  AnnotationType type,
+  Point point,
+  Map<String, dynamic>? data,
+  DragEvent event,
+);
+
+/// Type definition for OnPointAnnotationDrag listener
+/// int -> id
+/// AnnotationType -> type
+/// Point -> point
+/// Map<String, dynamic>? -> data
+/// DragEvent -> event
+typedef OnPointAnnotationDragListener = void Function(
+  int id,
+  AnnotationType type,
+  Point point,
+  Map<String, dynamic>? data,
+  DragEvent event,
+);
+
+/// Type definition for OnPolylineAnnotationDrag listener
+/// int -> id
+/// AnnotationType -> type
+/// List<Point> -> points
+/// Map<String, dynamic>? -> data
+/// DragEvent -> event
+typedef OnPolylineAnnotationDragListener = void Function(
+  int id,
+  AnnotationType type,
+  List<Point> points,
+  Map<String, dynamic>? data,
+  DragEvent event,
+);
+
+/// Type definition for OnPolygonAnnotationDrag listener
+/// int -> id
+/// AnnotationType -> type
+/// List<List<Point>> -> points
+/// Map<String, dynamic>? -> data
+/// DragEvent -> event
+typedef OnPolygonAnnotationDragListener = void Function(
+  int id,
+  AnnotationType type,
+  List<List<Point>> points,
+  Map<String, dynamic>? data,
+  DragEvent event,
+);
+
 /// Listeners Mixin
 /// Added By Amit Chaudhary, 2022/10/15
 mixin Listeners {
@@ -69,13 +126,29 @@ mixin Listeners {
   void setOnRenderFrameFinishedListener(
       OnRenderFrameFinishedListener onRenderFrameFinishedListener);
 
-  /// Method to set onAnnotationClickListener listener
+  /// Method to set onAnnotationClick listener
   void setOnAnnotationClickListener(
       OnAnnotationClickListener onAnnotationClickListener);
 
-  /// Method to set onAnnotationLongClickListener listener
+  /// Method to set onAnnotationLongClick listener
   void setOnAnnotationLongClickListener(
       OnAnnotationLongClickListener onAnnotationLongClickListener);
+
+  /// Method to set onCircleAnnotationDrag listener
+  void setOnCircleAnnotationDragListener(
+      OnCircleAnnotationDragListener onCircleAnnotationDragListener);
+
+  /// Method to set onPointAnnotationDrag listener
+  void setOnPointAnnotationDragListener(
+      OnPointAnnotationDragListener onPointAnnotationDragListener);
+
+  /// Method to set onPolylineAnnotationDrag listener
+  void setOnPolylineAnnotationDragListener(
+      OnPolylineAnnotationDragListener onPolylineAnnotationDragListener);
+
+  /// Method to set onPolygonAnnotationDrag listener
+  void setOnPolygonAnnotationDragListener(
+      OnPolygonAnnotationDragListener onPolygonAnnotationDragListener);
 
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
@@ -97,6 +170,10 @@ mixin Listeners {
     OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
     OnAnnotationClickListener? onAnnotationClickListener,
     OnAnnotationLongClickListener? onAnnotationLongClickListener,
+    OnCircleAnnotationDragListener? onCircleAnnotationDragListener,
+    OnPointAnnotationDragListener? onPointAnnotationDragListener,
+    OnPolylineAnnotationDragListener? onPolylineAnnotationDragListener,
+    OnPolygonAnnotationDragListener? onPolygonAnnotationDragListener,
   });
 
   /// Method to remove listeners
