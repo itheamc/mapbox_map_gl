@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'annotation.dart';
 import 'annotation_options.dart';
 import '../utils/point.dart';
@@ -153,7 +155,7 @@ class CircleAnnotationOptions extends AnnotationOptions {
     }
 
     if (data != null) {
-      args['data'] = data;
+      args['data'] = jsonEncode(data);
     }
 
     args['draggable'] = draggable;

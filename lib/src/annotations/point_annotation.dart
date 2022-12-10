@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
@@ -418,7 +419,7 @@ class PointAnnotationOptions extends AnnotationOptions {
     }
 
     if (data != null) {
-      args['data'] = data;
+      args['data'] = jsonEncode(data);
     }
 
     args['draggable'] = draggable;

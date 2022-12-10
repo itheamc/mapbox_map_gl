@@ -1311,8 +1311,12 @@ class MapboxMapControllerImpl extends MapboxMapController {
   /// - PointAnnotation
   /// - PolylineAnnotation
   /// - Polygon Annotation
+  /// return is annotation Map<String, dynamic> that contains
+  /// - id,
+  /// - type,
+  /// - and data
   @override
-  Future<void> addAnnotation<T extends Annotation>(
+  Future<Map<String, dynamic>?> addAnnotation<T extends Annotation>(
       {required T annotation}) async {
     try {
       final method = annotation.runtimeType == CircleAnnotation
@@ -1330,7 +1334,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
           function: "addAnnotation<T>",
           message: "Unspecified annotation!",
         );
-        return;
+        return null;
       }
 
       Map<String, dynamic> args = annotation.toMap();
@@ -1351,7 +1355,27 @@ class MapboxMapControllerImpl extends MapboxMapController {
         }
       }
 
-      await _channel.invokeMethod(method, args);
+      final result = await _channel.invokeMethod<dynamic>(method, args);
+
+      final formattedResult = <String, dynamic>{};
+
+      if (result != null) {
+        if (result['id'] != null) {
+          formattedResult['id'] = result['id'];
+        }
+
+        if (result['type'] != null) {
+          formattedResult['type'] = result['type'];
+        }
+
+        if (result['data'] != null) {
+          formattedResult['data'] = jsonDecode(result['data']);
+        } else {
+          formattedResult['data'] = null;
+        }
+      }
+
+      return formattedResult.isNotEmpty ? formattedResult : null;
     } on Exception catch (e, _) {
       LogUtil.log(
         className: "MapboxMapController",
@@ -1359,6 +1383,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
         message: e,
       );
     }
+    return null;
   }
 
   /// Method to add onMapIdle listener

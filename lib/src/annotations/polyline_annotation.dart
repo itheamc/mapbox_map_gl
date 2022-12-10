@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../utils/enums.dart';
 import '../utils/point.dart';
 import 'annotation.dart';
@@ -176,7 +178,7 @@ class PolylineAnnotationOptions extends AnnotationOptions {
     }
 
     if (data != null) {
-      args['data'] = data;
+      args['data'] = jsonEncode(data);
     }
 
     args['draggable'] = draggable;

@@ -418,7 +418,12 @@ abstract class MapboxMapController with Listeners {
   /// - PointAnnotation
   /// - PolylineAnnotation
   /// - Polygon Annotation
-  Future<void> addAnnotation<T extends Annotation>({required T annotation});
+  /// return is annotation Map<String, dynamic> that contains
+  /// - id,
+  /// - type,
+  /// - and data
+  Future<Map<String, dynamic>?> addAnnotation<T extends Annotation>(
+      {required T annotation});
 
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);
