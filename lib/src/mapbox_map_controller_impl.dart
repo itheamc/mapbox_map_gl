@@ -1337,7 +1337,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
   /// - type,
   /// - and data
   @override
-  Future<Map<String, dynamic>?> addAnnotation<T extends Annotation>(
+  Future<int?> addAnnotation<T extends Annotation>(
       {required T annotation}) async {
     try {
       final method = annotation.runtimeType == CircleAnnotation
@@ -1376,27 +1376,7 @@ class MapboxMapControllerImpl extends MapboxMapController {
         }
       }
 
-      final result = await _channel.invokeMethod<dynamic>(method, args);
-
-      final formattedResult = <String, dynamic>{};
-
-      if (result != null) {
-        if (result['id'] != null) {
-          formattedResult['id'] = result['id'];
-        }
-
-        if (result['type'] != null) {
-          formattedResult['type'] = result['type'];
-        }
-
-        if (result['data'] != null) {
-          formattedResult['data'] = jsonDecode(result['data']);
-        } else {
-          formattedResult['data'] = null;
-        }
-      }
-
-      return formattedResult.isNotEmpty ? formattedResult : null;
+      return await _channel.invokeMethod<int?>(method, args);
     } on Exception catch (e, _) {
       LogUtil.log(
         className: "MapboxMapController",
