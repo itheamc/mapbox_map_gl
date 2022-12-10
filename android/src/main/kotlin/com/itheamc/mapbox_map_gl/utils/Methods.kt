@@ -29,6 +29,15 @@ object Methods {
     const val onRenderFrameStarted = "onRenderFrameStarted"
     const val onRenderFrameFinished = "onRenderFrameFinished"
 
+    const val onCircleAnnotationClick = "onCircleAnnotationClick"
+    const val onPointAnnotationClick = "onPointAnnotationClick"
+    const val onPolylineAnnotationClick = "onPolylineAnnotationClick"
+    const val onPolygonAnnotationClick = "onPolygonAnnotationClick"
+    const val onCircleAnnotationLongClick = "onCircleAnnotationLongClick"
+    const val onPointAnnotationLongClick = "onPointAnnotationLongClick"
+    const val onPolylineAnnotationLongClick = "onPolylineAnnotationLongClick"
+    const val onPolygonAnnotationLongClick = "onPolygonAnnotationLongClick"
+
 
     /**
      * These are the methods triggered from the flutter side

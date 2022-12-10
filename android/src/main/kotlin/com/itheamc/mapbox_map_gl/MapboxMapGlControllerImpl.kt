@@ -297,6 +297,117 @@ internal class MapboxMapGlControllerImpl(
         true
     }
 
+    /**
+     * CircleAnnotationClickListener object
+     */
+    private val circleAnnotationClickListener = OnCircleAnnotationClickListener {
+        methodChannel.invokeMethod(
+            Methods.onCircleAnnotationClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PointAnnotationClickListener object
+     */
+    private val pointAnnotationClickListener = OnPointAnnotationClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPointAnnotationClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PolylineAnnotationClickListener object
+     */
+    private val polylineAnnotationClickListener = OnPolylineAnnotationClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPolylineAnnotationClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PolygonAnnotationClickListener object
+     */
+    private val polygonAnnotationClickListener = OnPolygonAnnotationClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPolygonAnnotationClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * CircleAnnotationLongClickListener object
+     */
+    private val circleAnnotationLongClickListener = OnCircleAnnotationLongClickListener {
+        methodChannel.invokeMethod(
+            Methods.onCircleAnnotationLongClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PointAnnotationLongClickListener object
+     */
+    private val pointAnnotationLongClickListener = OnPointAnnotationLongClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPointAnnotationLongClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PolylineAnnotationLongClickListener object
+     */
+    private val polylineAnnotationLongClickListener = OnPolylineAnnotationLongClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPolylineAnnotationLongClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
+
+    /**
+     * PolygonAnnotationLongClickListener object
+     */
+    private val polygonAnnotationLongClickListener = OnPolygonAnnotationLongClickListener {
+        methodChannel.invokeMethod(
+            Methods.onPolygonAnnotationLongClick, mapOf(
+                "id" to it.id,
+                "type" to it.getType().name,
+                "data" to if (it.getData() != null) it.getData()!!.asJsonObject.toString() else null
+            )
+        )
+        true
+    }
 
     /**
      * Init Block
@@ -1516,7 +1627,8 @@ internal class MapboxMapGlControllerImpl(
                 mapOf(
                     "id" to annotation.id,
                     "type" to annotation.getType().name,
-                    "data" to if (annotation.getData() != null) annotation.getData()!!.toString() else null
+                    "data" to if (annotation.getData() != null) annotation.getData()!!
+                        .toString() else null
                 )
             )
         } catch (err: Exception) {
@@ -1679,6 +1791,46 @@ internal class MapboxMapGlControllerImpl(
          */
         mapboxMap.addOnMapLongClickListener(mapLongClickListener)
 
+        /**
+         * On Circle Annotation Click Click listener
+         */
+        circleAnnotationManager.addClickListener(circleAnnotationClickListener)
+
+        /**
+         * On Point Annotation Click Click listener
+         */
+        pointAnnotationManager.addClickListener(pointAnnotationClickListener)
+
+        /**
+         * On Polyline Annotation Click Click listener
+         */
+        polylineAnnotationManager.addClickListener(polylineAnnotationClickListener)
+
+        /**
+         * On Polygon Annotation Click listener
+         */
+        polygonAnnotationManager.addClickListener(polygonAnnotationClickListener)
+
+        /**
+         * On Circle Annotation Long Click listener
+         */
+        circleAnnotationManager.addLongClickListener(circleAnnotationLongClickListener)
+
+        /**
+         * On Point Annotation Long Click listener
+         */
+        pointAnnotationManager.addLongClickListener(pointAnnotationLongClickListener)
+
+        /**
+         * On Polyline Annotation Long Click listener
+         */
+        polylineAnnotationManager.addLongClickListener(polylineAnnotationLongClickListener)
+
+        /**
+         * On Polygon Annotation Long Click listener
+         */
+        polygonAnnotationManager.addLongClickListener(polygonAnnotationLongClickListener)
+
     }
 
     /**
@@ -1746,6 +1898,46 @@ internal class MapboxMapGlControllerImpl(
          * Removed OnMapLong Click listener
          */
         mapboxMap.removeOnMapLongClickListener(mapLongClickListener)
+
+        /**
+         * Removed Circle Annotation Click listener
+         */
+        circleAnnotationManager.removeClickListener(circleAnnotationClickListener)
+
+        /**
+         * Removed Point Annotation Click listener
+         */
+        pointAnnotationManager.removeClickListener(pointAnnotationClickListener)
+
+        /**
+         * Removed Polyline Annotation Click listener
+         */
+        polylineAnnotationManager.removeClickListener(polylineAnnotationClickListener)
+
+        /**
+         * Removed Polygon Annotation Click listener
+         */
+        polygonAnnotationManager.removeClickListener(polygonAnnotationClickListener)
+
+        /**
+         * Removed Circle Annotation Long Click listener
+         */
+        circleAnnotationManager.removeLongClickListener(circleAnnotationLongClickListener)
+
+        /**
+         * Removed Point Annotation Long Click listener
+         */
+        pointAnnotationManager.removeLongClickListener(pointAnnotationLongClickListener)
+
+        /**
+         * Removed Polyline Annotation Long Click listener
+         */
+        polylineAnnotationManager.removeLongClickListener(polylineAnnotationLongClickListener)
+
+        /**
+         * Removed Polygon Annotation Long Click listener
+         */
+        polygonAnnotationManager.removeLongClickListener(polygonAnnotationLongClickListener)
     }
 
     /**
