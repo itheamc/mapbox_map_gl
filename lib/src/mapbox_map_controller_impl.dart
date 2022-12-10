@@ -1589,16 +1589,20 @@ class MapboxMapControllerImpl extends MapboxMapController {
   /// Private method to handle OnAnnotationClickListener
   void _handlingOnAnnotationClickListener(dynamic args) {
     for (var element in _onAnnotationClickListeners) {
-      element.call(args['id'],
-          StringUtility.annotationTypeFromString(args['type']), args['data']);
+      element.call(
+          args['id'],
+          StringUtility.annotationTypeFromString(args['type']),
+          args['data'] != null ? jsonDecode(args['data']) : null);
     }
   }
 
   /// Private method to handle OnAnnotationLongClickListener
   void _handlingOnAnnotationLongClickListener(dynamic args) {
     for (var element in _onAnnotationLongClickListeners) {
-      element.call(args['id'],
-          StringUtility.annotationTypeFromString(args['type']), args['data']);
+      element.call(
+          args['id'],
+          StringUtility.annotationTypeFromString(args['type']),
+          args['data'] != null ? jsonDecode(args['data']) : null);
     }
   }
 
