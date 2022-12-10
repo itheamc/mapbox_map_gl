@@ -38,6 +38,10 @@ object Methods {
     const val onPolylineAnnotationLongClick = "onPolylineAnnotationLongClick"
     const val onPolygonAnnotationLongClick = "onPolygonAnnotationLongClick"
 
+    const val onCircleAnnotationDrag = "onCircleAnnotationDrag"
+    const val onPointAnnotationDrag = "onPointAnnotationDrag"
+    const val onPolylineAnnotationDrag = "onPolylineAnnotationDrag"
+    const val onPolygonAnnotationDrag = "onPolygonAnnotationDrag"
 
     /**
      * These are the methods triggered from the flutter side

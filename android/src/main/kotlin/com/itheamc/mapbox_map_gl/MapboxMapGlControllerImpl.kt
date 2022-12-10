@@ -24,6 +24,7 @@ import com.mapbox.maps.extension.style.sources.addSource
 import com.mapbox.maps.extension.style.sources.generated.*
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.*
+import com.mapbox.maps.plugin.annotation.Annotation
 import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.delegates.listeners.*
 import com.mapbox.maps.plugin.gestures.*
@@ -407,6 +408,182 @@ internal class MapboxMapGlControllerImpl(
             )
         )
         true
+    }
+
+    /**
+     * CircleAnnotationDragListener object
+     */
+    private val circleAnnotationDragListener = object : OnCircleAnnotationDragListener {
+        override fun onAnnotationDrag(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onCircleAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as CircleAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragging"
+                )
+            )
+        }
+
+        override fun onAnnotationDragFinished(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onCircleAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as CircleAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragFinished"
+                )
+            )
+        }
+
+        override fun onAnnotationDragStarted(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onCircleAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as CircleAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragStarted"
+                )
+            )
+        }
+    }
+
+    /**
+     * PointAnnotationDragListener object
+     */
+    private val pointAnnotationDragListener = object : OnPointAnnotationDragListener {
+        override fun onAnnotationDrag(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPointAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as PointAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragging"
+                )
+            )
+        }
+
+        override fun onAnnotationDragFinished(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPointAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as PointAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragFinished"
+                )
+            )
+        }
+
+        override fun onAnnotationDragStarted(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPointAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "point" to (annotation as PointAnnotation).point.toJson(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragStarted"
+                )
+            )
+        }
+    }
+
+    /**
+     * PolylineAnnotationDragListener object
+     */
+    private val polylineAnnotationDragListener = object : OnPolylineAnnotationDragListener {
+        override fun onAnnotationDrag(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolylineAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolylineAnnotation).points.map { it.toJson() }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragging"
+                )
+            )
+        }
+
+        override fun onAnnotationDragFinished(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolylineAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolylineAnnotation).points.map { it.toJson() }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragFinished"
+                )
+            )
+        }
+
+        override fun onAnnotationDragStarted(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolylineAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolylineAnnotation).points.map { it.toJson() }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragStarted"
+                )
+            )
+        }
+    }
+
+    /**
+     * PolygonAnnotationDragListener object
+     */
+    private val polygonAnnotationDragListener = object : OnPolygonAnnotationDragListener {
+        override fun onAnnotationDrag(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolygonAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolygonAnnotation).points.map {
+                        it.map { p -> p.toJson() }.toList()
+                    }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragging"
+                )
+            )
+        }
+
+        override fun onAnnotationDragFinished(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolygonAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolygonAnnotation).points.map {
+                        it.map { p -> p.toJson() }.toList()
+                    }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragFinished"
+                )
+            )
+        }
+
+        override fun onAnnotationDragStarted(annotation: Annotation<*>) {
+            methodChannel.invokeMethod(
+                Methods.onPolygonAnnotationDrag, mapOf(
+                    "id" to annotation.id,
+                    "type" to annotation.getType().name,
+                    "points" to (annotation as PolygonAnnotation).points.map {
+                        it.map { p -> p.toJson() }.toList()
+                    }
+                        .toList(),
+                    "data" to if (annotation.getData() != null) annotation.getData()!!.asJsonObject.toString() else null,
+                    "event" to "onDragStarted"
+                )
+            )
+        }
     }
 
     /**
@@ -1805,6 +1982,26 @@ internal class MapboxMapGlControllerImpl(
          */
         polygonAnnotationManager.addLongClickListener(polygonAnnotationLongClickListener)
 
+        /**
+         * On Circle Annotation Drag listener
+         */
+        circleAnnotationManager.addDragListener(circleAnnotationDragListener)
+
+        /**
+         * On Point Annotation Drag listener
+         */
+        pointAnnotationManager.addDragListener(pointAnnotationDragListener)
+
+        /**
+         * On Polyline Annotation Drag listener
+         */
+        polylineAnnotationManager.addDragListener(polylineAnnotationDragListener)
+
+        /**
+         * On Polygon Annotation Drag listener
+         */
+        polygonAnnotationManager.addDragListener(polygonAnnotationDragListener)
+
     }
 
     /**
@@ -1912,6 +2109,26 @@ internal class MapboxMapGlControllerImpl(
          * Removed Polygon Annotation Long Click listener
          */
         polygonAnnotationManager.removeLongClickListener(polygonAnnotationLongClickListener)
+
+        /**
+         * Removed Circle Annotation Drag listener
+         */
+        circleAnnotationManager.removeDragListener(circleAnnotationDragListener)
+
+        /**
+         * Removed Point Annotation Drag listener
+         */
+        pointAnnotationManager.removeDragListener(pointAnnotationDragListener)
+
+        /**
+         * Removed Polyline Annotation Drag listener
+         */
+        polylineAnnotationManager.removeDragListener(polylineAnnotationDragListener)
+
+        /**
+         * Removed Polygon Annotation Drag listener
+         */
+        polygonAnnotationManager.removeDragListener(polygonAnnotationDragListener)
     }
 
     /**
