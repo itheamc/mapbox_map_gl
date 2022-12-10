@@ -408,4 +408,9 @@ internal interface MapboxMapGlController : MethodChannel.MethodCallHandler {
      * Method to remove polyline annotations if any
      */
     fun removePolylineAnnotationsIfAny(args: Map<*, *>): Expected<String, None>
+
+    /**
+     * Method to remove all annotations
+     */
+    fun removeAllAnnotationsIfAny(): Expected<String, None>
 }

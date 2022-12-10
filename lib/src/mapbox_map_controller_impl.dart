@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:mapbox_map_gl/src/annotations/circle_annotation.dart';
-import 'package:mapbox_map_gl/src/annotations/point_annotation.dart';
-import 'package:mapbox_map_gl/src/annotations/polygon_annotation.dart';
-import 'package:mapbox_map_gl/src/annotations/polyline_annotation.dart';
-import 'package:mapbox_map_gl/src/utils/utility_functions.dart';
+import 'annotations/circle_annotation.dart';
+import 'annotations/point_annotation.dart';
+import 'annotations/polygon_annotation.dart';
+import 'annotations/polyline_annotation.dart';
+import 'utils/utility_functions.dart';
 import 'annotations/annotation.dart';
 import 'utils/feature.dart';
 import 'utils/point.dart';
@@ -1385,6 +1385,65 @@ class MapboxMapControllerImpl extends MapboxMapController {
       );
     }
     return null;
+  }
+
+  /// Method to remove style annotations
+  @override
+  Future<void> removeAnnotations({
+    required AnnotationType type,
+    List<int>? ids,
+    bool all = false,
+    void Function()? onRemoved,
+  }) async {
+    try {
+      final method = type == AnnotationType.circle
+          ? Methods.removeCircleAnnotation
+          : type == AnnotationType.point
+              ? Methods.removePointAnnotation
+              : type == AnnotationType.polygon
+                  ? Methods.removePolygonAnnotation
+                  : type == AnnotationType.polyline
+                      ? Methods.removePolylineAnnotation
+                      : null;
+
+      if (method == null) return;
+
+      final args = <String, dynamic>{
+        "ids": ids ?? List.empty(),
+        "all": all,
+      };
+
+      final removed = await _channel.invokeMethod<dynamic>(method, args);
+      if (removed is bool && removed == true) {
+        onRemoved?.call();
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeAnnotations",
+        message: e,
+      );
+    }
+  }
+
+  /// Method to remove all style annotations
+  @override
+  Future<void> removeAllAnnotations({
+    void Function()? onRemoved,
+  }) async {
+    try {
+      final removed = await _channel.invokeMethod<dynamic>(
+          Methods.removeAllAnnotations, null);
+      if (removed is bool && removed == true) {
+        onRemoved?.call();
+      }
+    } on Exception catch (e, _) {
+      LogUtil.log(
+        className: "MapboxMapController",
+        function: "removeAllAnnotations",
+        message: e,
+      );
+    }
   }
 
   /// Method to add onMapIdle listener

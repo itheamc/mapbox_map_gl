@@ -111,4 +111,5 @@ object Methods {
     const val removePointAnnotation = "removePointAnnotation"
     const val removePolygonAnnotation = "removePolygonAnnotation"
     const val removePolylineAnnotation = "removePolylineAnnotation"
+    const val removeAllAnnotations = "removeAllAnnotations"
 }

@@ -2017,7 +2017,7 @@ internal class MapboxMapGlControllerImpl(
         return try {
 
             val removeAll =
-                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+                if (args.containsKey("all") && args["all"] is Boolean) args["all"] as Boolean else false
 
             if (removeAll) {
                 circleAnnotationManager.deleteAll()
@@ -2051,7 +2051,7 @@ internal class MapboxMapGlControllerImpl(
         return try {
 
             val removeAll =
-                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+                if (args.containsKey("all") && args["all"] is Boolean) args["all"] as Boolean else false
 
             if (removeAll) {
                 pointAnnotationManager.deleteAll()
@@ -2084,7 +2084,7 @@ internal class MapboxMapGlControllerImpl(
         return try {
 
             val removeAll =
-                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+                if (args.containsKey("all") && args["all"] is Boolean) args["all"] as Boolean else false
 
             if (removeAll) {
                 polygonAnnotationManager.deleteAll()
@@ -2118,7 +2118,7 @@ internal class MapboxMapGlControllerImpl(
         return try {
 
             val removeAll =
-                if (args.containsKey("removeAll") && args["removeAll"] is Boolean) args["removeAll"] as Boolean else false
+                if (args.containsKey("all") && args["all"] is Boolean) args["all"] as Boolean else false
 
             if (removeAll) {
                 polylineAnnotationManager.deleteAll()
@@ -2145,6 +2145,20 @@ internal class MapboxMapGlControllerImpl(
         }
     }
 
+    /**
+     * Method to remove all annotations
+     */
+    override fun removeAllAnnotationsIfAny(): Expected<String, None> {
+        return try {
+            circleAnnotationManager.deleteAll()
+            pointAnnotationManager.deleteAll()
+            polygonAnnotationManager.deleteAll()
+            polylineAnnotationManager.deleteAll()
+            ExpectedFactory.createNone()
+        } catch (err: Exception) {
+            ExpectedFactory.createError("Error occurred while removing all annotations!")
+        }
+    }
 
     /**
      * Method to handle method call
@@ -2861,6 +2875,16 @@ internal class MapboxMapGlControllerImpl(
                     }
                     .onError {
                         result.error("REMOVE_POLYLINE_ANNOTATION_ERROR", it, null)
+                    }
+
+            }
+            Methods.removeAllAnnotations -> {
+                removeAllAnnotationsIfAny()
+                    .onValue {
+                        result.success(true)
+                    }
+                    .onError {
+                        result.error("REMOVE_ALL_ANNOTATIONS_ERROR", it, null)
                     }
 
             }

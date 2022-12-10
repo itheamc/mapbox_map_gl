@@ -424,6 +424,19 @@ abstract class MapboxMapController with Listeners {
   /// - and data
   Future<int?> addAnnotation<T extends Annotation>({required T annotation});
 
+  /// Method to remove style annotations
+  Future<void> removeAnnotations({
+    required AnnotationType type,
+    List<int>? ids,
+    bool all = false,
+    void Function()? onRemoved,
+  });
+
+  /// Method to remove all style annotations
+  Future<void> removeAllAnnotations({
+    void Function()? onRemoved,
+  });
+
   /// Method to handle callbacks
   void callbacks(Map<String, dynamic> params);
 

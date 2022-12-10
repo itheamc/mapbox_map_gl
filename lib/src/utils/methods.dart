@@ -99,4 +99,5 @@ class Methods {
   static const removePointAnnotation = "removePointAnnotation";
   static const removePolygonAnnotation = "removePolygonAnnotation";
   static const removePolylineAnnotation = "removePolylineAnnotation";
+  static const removeAllAnnotations = "removeAllAnnotations";
 }
