@@ -5,6 +5,7 @@ import 'package:mapbox_map_gl/src/annotations/circle_annotation.dart';
 import 'package:mapbox_map_gl/src/annotations/point_annotation.dart';
 import 'package:mapbox_map_gl/src/annotations/polygon_annotation.dart';
 import 'package:mapbox_map_gl/src/annotations/polyline_annotation.dart';
+import 'package:mapbox_map_gl/src/utils/utility_functions.dart';
 import 'annotations/annotation.dart';
 import 'utils/feature.dart';
 import 'utils/point.dart';
@@ -84,6 +85,18 @@ class MapboxMapControllerImpl extends MapboxMapController {
       case Methods.onRenderFrameFinished:
         _handlingOnRenderFrameFinishedListener(args);
         break;
+      case Methods.onCircleAnnotationClick:
+      case Methods.onPointAnnotationClick:
+      case Methods.onPolygonAnnotationClick:
+      case Methods.onPolylineAnnotationClick:
+        _handlingOnAnnotationClickListener(args);
+        break;
+      case Methods.onCircleAnnotationLongClick:
+      case Methods.onPointAnnotationLongClick:
+      case Methods.onPolygonAnnotationLongClick:
+      case Methods.onPolylineAnnotationLongClick:
+        _handlingOnAnnotationLongClickListener(args);
+        break;
       default:
     }
   }
@@ -114,6 +127,14 @@ class MapboxMapControllerImpl extends MapboxMapController {
 
   /// List of OnRenderFrameFinishedListener
   final List<OnRenderFrameFinishedListener> _onRenderFrameFinishedListeners =
+      List.empty(growable: true);
+
+  /// List of OnAnnotationClickListener
+  final List<OnAnnotationClickListener> _onAnnotationClickListeners =
+      List.empty(growable: true);
+
+  /// List of OnAnnotationLongClickListener
+  final List<OnAnnotationLongClickListener> _onAnnotationLongClickListeners =
       List.empty(growable: true);
 
   /// Method to toggle the map style between two styles
@@ -1433,6 +1454,20 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onRenderFrameFinishedListeners.add(onRenderFrameFinishedListener);
   }
 
+  /// Method to add onAnnotationClickListener listener
+  @override
+  void setOnAnnotationClickListener(
+      OnAnnotationClickListener onAnnotationClickListener) {
+    _onAnnotationClickListeners.add(onAnnotationClickListener);
+  }
+
+  /// Method to add onAnnotationLongClickListener listener
+  @override
+  void setOnAnnotationLongClickListener(
+      OnAnnotationLongClickListener onAnnotationLongClickListener) {
+    _onAnnotationLongClickListeners.add(onAnnotationLongClickListener);
+  }
+
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
   /// [onCameraChangeListener] - Listener for onCameraChange
@@ -1448,6 +1483,8 @@ class MapboxMapControllerImpl extends MapboxMapController {
     OnSourceRemovedListener? onSourceRemovedListener,
     OnRenderFrameStartedListener? onRenderFrameStartedListener,
     OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
+    OnAnnotationClickListener? onAnnotationClickListener,
+    OnAnnotationLongClickListener? onAnnotationLongClickListener,
   }) {
     if (onMapIdleListener != null) {
       _onMapIdleListeners.add(onMapIdleListener);
@@ -1476,6 +1513,14 @@ class MapboxMapControllerImpl extends MapboxMapController {
     if (onRenderFrameFinishedListener != null) {
       _onRenderFrameFinishedListeners.add(onRenderFrameFinishedListener);
     }
+
+    if (onAnnotationClickListener != null) {
+      _onAnnotationClickListeners.add(onAnnotationClickListener);
+    }
+
+    if (onAnnotationLongClickListener != null) {
+      _onAnnotationLongClickListeners.add(onAnnotationLongClickListener);
+    }
   }
 
   /// Method to remove all listeners
@@ -1488,6 +1533,8 @@ class MapboxMapControllerImpl extends MapboxMapController {
     _onSourceRemovedListeners.clear();
     _onRenderFrameStartedListeners.clear();
     _onRenderFrameFinishedListeners.clear();
+    _onAnnotationClickListeners.clear();
+    _onAnnotationLongClickListeners.clear();
   }
 
   /// Private method to handle OnMapIdleListener
@@ -1536,6 +1583,22 @@ class MapboxMapControllerImpl extends MapboxMapController {
   void _handlingOnRenderFrameFinishedListener(dynamic args) {
     for (var element in _onRenderFrameFinishedListeners) {
       element.call();
+    }
+  }
+
+  /// Private method to handle OnAnnotationClickListener
+  void _handlingOnAnnotationClickListener(dynamic args) {
+    for (var element in _onAnnotationClickListeners) {
+      element.call(args['id'],
+          StringUtility.annotationTypeFromString(args['type']), args['data']);
+    }
+  }
+
+  /// Private method to handle OnAnnotationLongClickListener
+  void _handlingOnAnnotationLongClickListener(dynamic args) {
+    for (var element in _onAnnotationLongClickListeners) {
+      element.call(args['id'],
+          StringUtility.annotationTypeFromString(args['type']), args['data']);
     }
   }
 

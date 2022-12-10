@@ -19,6 +19,15 @@ class Methods {
   static const onRenderFrameStarted = "onRenderFrameStarted";
   static const onRenderFrameFinished = "onRenderFrameFinished";
 
+  static const onCircleAnnotationClick = "onCircleAnnotationClick";
+  static const onPointAnnotationClick = "onPointAnnotationClick";
+  static const onPolylineAnnotationClick = "onPolylineAnnotationClick";
+  static const onPolygonAnnotationClick = "onPolygonAnnotationClick";
+  static const onCircleAnnotationLongClick = "onCircleAnnotationLongClick";
+  static const onPointAnnotationLongClick = "onPointAnnotationLongClick";
+  static const onPolylineAnnotationLongClick = "onPolylineAnnotationLongClick";
+  static const onPolygonAnnotationLongClick = "onPolygonAnnotationLongClick";
+
   /// Methods triggered from the flutter side
   static const animateCameraPosition = "animateCameraPosition";
   static const toggleStyle = "toggleStyle";

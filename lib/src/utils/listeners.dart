@@ -1,3 +1,5 @@
+import 'enums.dart';
+
 /// Type definition for onMapIdle listener
 typedef OnMapIdleListener = void Function();
 
@@ -25,6 +27,20 @@ typedef OnRenderFrameStartedListener = void Function();
 /// Type definition for onRenderFrameFinished listener
 typedef OnRenderFrameFinishedListener = void Function();
 
+/// Type definition for onAnnotationClick listener
+/// int -> id
+/// AnnotationType -> type
+/// Map<String, dynamic> -> data
+typedef OnAnnotationClickListener = void Function(
+    int id, AnnotationType type, Map<String, dynamic>? data);
+
+/// Type definition for onAnnotationLongClick listener
+/// int -> id
+/// AnnotationType -> type
+/// Map<String, dynamic>? -> data
+typedef OnAnnotationLongClickListener = void Function(
+    int id, AnnotationType type, Map<String, dynamic>? data);
+
 /// Listeners Mixin
 /// Added By Amit Chaudhary, 2022/10/15
 mixin Listeners {
@@ -45,13 +61,21 @@ mixin Listeners {
   void setOnSourceRemovedListener(
       OnSourceRemovedListener onSourceRemovedListener);
 
-  /// Method to set nRenderFrameStarted listener
+  /// Method to set onRenderFrameStarted listener
   void setOnRenderFrameStartedListener(
       OnRenderFrameStartedListener onRenderFrameStartedListener);
 
-  /// Method to set nRenderFrameFinished listener
+  /// Method to set onRenderFrameFinished listener
   void setOnRenderFrameFinishedListener(
       OnRenderFrameFinishedListener onRenderFrameFinishedListener);
+
+  /// Method to set onAnnotationClickListener listener
+  void setOnAnnotationClickListener(
+      OnAnnotationClickListener onAnnotationClickListener);
+
+  /// Method to set onAnnotationLongClickListener listener
+  void setOnAnnotationLongClickListener(
+      OnAnnotationLongClickListener onAnnotationLongClickListener);
 
   /// Method to add listeners
   /// [onMapIdleListener] - Listener for onMapIdle
@@ -61,6 +85,8 @@ mixin Listeners {
   /// [onSourceRemovedListener] - Listener for onSourceRemoved
   /// [onRenderFrameStartedListener] - Listener for onRenderFrameStarted
   /// [onRenderFrameFinishedListener] - Listener for onRenderFrameFinished
+  /// [onAnnotationClickListener] - Listener for onAnnotationClickListener
+  /// [onAnnotationLongClickListener] - Listener for onAnnotationLongClickListener
   void addListeners({
     OnMapIdleListener? onMapIdleListener,
     OnCameraChangeListener? onCameraChangeListener,
@@ -69,6 +95,8 @@ mixin Listeners {
     OnSourceRemovedListener? onSourceRemovedListener,
     OnRenderFrameStartedListener? onRenderFrameStartedListener,
     OnRenderFrameFinishedListener? onRenderFrameFinishedListener,
+    OnAnnotationClickListener? onAnnotationClickListener,
+    OnAnnotationLongClickListener? onAnnotationLongClickListener,
   });
 
   /// Method to remove listeners

@@ -1,5 +1,8 @@
 /// Enum for map memory budget
-enum MapMemoryBudgetIn { megaBytes, tiles }
+enum MapMemoryBudgetIn {
+  megaBytes,
+  tiles,
+}
 
 /// Satisfies embedding platforms that requires the viewport coordinate systems
 /// to be set according to its standards.
@@ -198,4 +201,13 @@ enum CirclePitchScale {
 enum CirclePitchAlignment {
   map,
   viewport,
+}
+
+/// Annotation Type
+enum AnnotationType {
+  circle,
+  point,
+  polygon,
+  polyline,
+  unknown,
 }
