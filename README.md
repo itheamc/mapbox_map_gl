@@ -8,8 +8,8 @@
 
 This flutter plugin allow you to embed Mapbox Map to your flutter app. This plugin uses the latest
 version of the Mapbox Map SDK so that you can experience all the latest feature introduced.
-Currently this plugin only support android platform. It is based on Mapbox SDK
-version```v10.9.1```
+Currently this plugin only support android platform. It is based on Mapbox Map SDK
+version```v10.10.0```
 
 ## Setting up
 
@@ -97,7 +97,7 @@ You have to use ```MapboxMap()``` widget to add map in your page.
           onMapClick(point, coordinates) {},
           onMapLongClick(point, coordinates) {},
           onFeatureClick: (details) {
-             // details contains:
+             // details contain:
              // - point (lat and lng),
              // - coordinates (x and y screen coordinate)
              // - feature (Feature object)
@@ -221,6 +221,66 @@ You can add style image from your assets or from the url. Svg image is not suppo
     );
 ```
 
+### How to add annotations?
+
+You can add circle, point/symbol, polyline and polygon annotations.
+
+```
+    // Add circle annotation
+    final id = await _controller?.addAnnotation<CircleAnnotation>(
+              annotation: CircleAnnotation(
+                annotationOptions: CircleAnnotationOptions(
+                  point: Point.fromLatLng(27.321, 82.323),
+                  circleRadius: 20.0,
+                  circleColor: "red",
+                  circleStrokeWidth: 2.0,
+                  circleStrokeColor: "#fff",
+                  data: {"id": 124, "name": "testing circle"},
+                  draggable: true,
+                ),
+              ),
+            );
+    
+    
+    // Add point annotation
+    // You have three options for image source that you want to show
+    // iconUrl: Url of the icon other than .svg format
+    // iconPath: If you want to use image from assets then you can provide path here
+    // iconImage: If you want to use image added through style image, then provide imageId here
+    final id = await _controller?.addAnnotation<PointAnnotation>(
+              annotation: PointAnnotation(
+                iconUrl: "https://yourdomain.com/icons/name.png",
+                            or
+                iconPath: "assets/icons/name.png",
+                            or
+                iconImage: "image-Id-given-while-adding-style-image",
+                annotationOptions: PointAnnotationOptions(
+                  point: Point.fromLatLng(27.321, 82.323),
+                  iconColor: "red",
+                  iconSize: 1.2,
+                  data: {"id": 124, "icon": "icon.png", "color": "#fff"},
+                  draggable: true,
+                ),
+              ),
+            );
+    
+    // Add Polyline Annotation
+    final id = await _controller?.addAnnotation<PolylineAnnotation>(
+              annotation: PolylineAnnotation(
+                annotationOptions: PolylineAnnotationOptions(
+                  points: [Point.fromLatLng(27.412, 82.331), Point.fromLatLng(27.432, 82.321)],
+                  lineColor: "red",
+                  lineGapWidth: 2,
+                  lineSortKey: 0.3,
+                  lineWidth: 2.0,
+                  data: {"id": 124, "icon": "icon.png", "color": "#fff"},
+                  draggable: true,
+                ),
+              ),
+            );
+```
+
+
 ### How to show users current location on Map (location puck)?
 
 If you want to show the current location indicator (location puck) on map then you have to
@@ -235,6 +295,12 @@ For more info:
 
 ```
 implementation "com.google.android.gms:play-services-location:18.0.0"
+```
+
+And these permissions to the AndroidManifest.xml
+```
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 ```
 
 ### Supported Mapbox Api
@@ -260,6 +326,10 @@ implementation "com.google.android.gms:play-services-location:18.0.0"
 | RasterDem Source         | :white_check_mark:  | :x: | 
 | GeoJson Source           | :white_check_mark:  | :x: | 
 | Image Source             | :white_check_mark:  | :x: | 
+| Circle Annotation        | :white_check_mark:  | :x: | 
+| Point Annotation         | :white_check_mark:  | :x: | 
+| Polyline Annotation      | :white_check_mark:  | :x: | 
+| Polygon Annotation       | :white_check_mark:  | :x: | 
 | Expressions              | :white_check_mark:  | :x: |
 | Transitions              | :white_check_mark:  | :x: |
 

@@ -89,5 +89,20 @@
     - getMapSize
     - setViewportMode
     - setCamera
-* Upgraded Mapbox SDK version to 10.9.1
+    - createCircleAnnotation
+    - createPointAnnotation
+    - createPolygonAnnotation
+    - createPolylineAnnotation
+    - removeCircleAnnotation
+    - removePointAnnotation
+    - removePolygonAnnotation
+    - removePolylineAnnotation
+    - removeAllAnnotations
+    - onAnnotationClickListener
+    - onAnnotationLongClickListener
+    - onCircleAnnotationDragListener
+    - onPointAnnotationDragListener
+    - onPolylineAnnotationDragListener
+    - onPolygonAnnotationDragListener
+* Upgraded Mapbox SDK version to 10.10.0
 * Fix known bug from the previous version
